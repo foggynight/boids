@@ -20,6 +20,7 @@ int main(void)
 			break;
 
 		screen_update();
+
 		SDL_Delay(SLEEP_TIME);
 	}
 
