@@ -12,8 +12,16 @@ int main(void)
 {
 	screen_init();
 
-	while (screen_update())
+	while (1) {
+		SDL_Event event;
+
+		SDL_PollEvent(&event);
+		if (event.type == SDL_QUIT)
+			break;
+
+		screen_update();
 		SDL_Delay(SLEEP_TIME);
+	}
 
 	screen_destroy();
 

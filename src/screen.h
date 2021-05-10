@@ -9,6 +9,6 @@
 
 void screen_init(void);
 void screen_destroy(void);
-int screen_update(void);
+void screen_update(void);
 
 #endif // SCREEN_H

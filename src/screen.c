@@ -42,18 +42,10 @@ void screen_destroy(void)
 	SDL_Quit();
 }
 
-int screen_update(void)
+void screen_update(void)
 {
-	SDL_Event event;
-
-	SDL_PollEvent(&event);
-	if (event.type == SDL_QUIT)
-		return 0;
-
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	SDL_RenderPresent(renderer);
-
-	return 1;
 }
