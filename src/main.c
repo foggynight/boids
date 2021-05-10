@@ -10,11 +10,11 @@
 
 int main(void)
 {
+	SDL_Event event;
+
 	screen_init();
 
 	while (1) {
-		SDL_Event event;
-
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
