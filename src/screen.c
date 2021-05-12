@@ -42,10 +42,14 @@ void screen_destroy(void)
 	SDL_Quit();
 }
 
-void screen_update(void)
+void screen_update(boid_t boids[], size_t boid_count)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
+
+	for (int i = 0; i < boid_count; ++i) {
+		// DRAW BOIDS
+	}
 
 	SDL_RenderPresent(renderer);
 }
