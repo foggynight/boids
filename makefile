@@ -1,7 +1,7 @@
 # Copyright (C) 2021 Robert Coffey
 # Released under the GPLv2 license
 
-EXEC := boyds
+EXEC := boids
 
 SRC_DIR := src
 OBJ_DIR := obj

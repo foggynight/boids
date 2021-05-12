@@ -4,11 +4,13 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include "boid.h"
+
 #define WIN_WIDTH	1280
 #define WIN_HEIGHT	720
 
 void screen_init(void);
 void screen_destroy(void);
-void screen_update(void);
+void screen_update(boid_t boids[], size_t boid_count);
 
 #endif // SCREEN_H

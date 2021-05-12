@@ -1,4 +1,4 @@
-# boyds
+# boids
 
 Bird simulation.
 
