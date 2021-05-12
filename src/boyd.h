@@ -11,7 +11,4 @@ typedef struct boyd {
 	float velocity;	// Forward velocity
 } boyd_t;
 
-boyd_t *boyd_init(void);
-void boyd_destroy(boyd_t *boyd);
-
 #endif	// BOYD_H
