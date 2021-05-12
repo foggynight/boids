@@ -8,7 +8,7 @@
 
 boyd_t *boyd_init(void)
 {
-	boyd_t *boyd = malloc(sizeof boyd);
+	boyd_t *boyd = calloc(1, sizeof boyd);
 	if (!boyd) {
 		printf("Error: boyd_init: malloc failed\n");
 		exit(1);
