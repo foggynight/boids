@@ -8,6 +8,7 @@ typedef struct boyd {
 	int x;	// x position
 	int y;	// y position
 	int angle;	// Angle relative to the right facing x-axis
+	float velocity;	// Forward velocity
 } boyd_t;
 
 boyd_t *boyd_init(void);
