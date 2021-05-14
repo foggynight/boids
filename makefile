@@ -12,7 +12,7 @@ OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CC := gcc
 CFLAGS := -Wall -Wextra -Wpedantic
 
-SDL_CONFIG := `sdl2-config --cflags --libs`
+SDL_CONFIG := `sdl2-config --cflags --libs` -lSDL2_image
 
 all: $(EXEC)
 
