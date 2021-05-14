@@ -18,6 +18,9 @@ int main(void)
 	size_t boid_count = 0;
 	boid_t boids[MAX_BOID_COUNT] = {0};
 
+	boids[0].x = boids[0].y = 128;
+	boid_count = 1;
+
 	screen_init();
 	while (1) {
 		SDL_PollEvent(&event);
