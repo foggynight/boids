@@ -1,8 +1,9 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
+#include "boid.h"
 #include "screen.h"
 
 #define MAX_BOID_COUNT	16
