@@ -4,17 +4,28 @@
 #include <stdlib.h>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "boid.h"
 #include "screen.h"
 
+#define BOID_SPRITE_PATH	"res/boid_wireframe.png"
+
 static SDL_Window *window;
 static SDL_Renderer *renderer;
+
+static SDL_Texture *boid_sprite_texture;
+static int boid_sprite_w, boid_sprite_h;
 
 void screen_init(void)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		SDL_Log("Error: Failed to initialize SDL: %s", SDL_GetError());
+		exit(1);
+	}
+
+	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
+		SDL_Log("Error: Failed to initialize SDL_image: %s", IMG_GetError());
 		exit(1);
 	}
 
@@ -33,13 +44,24 @@ void screen_init(void)
 		SDL_Log("Error: Failed to create renderer: %s", SDL_GetError());
 		exit(1);
 	}
+
+	boid_sprite_texture = IMG_LoadTexture(renderer, BOID_SPRITE_PATH);
+	if (!boid_sprite_texture) {
+		SDL_Log("Error: Failed to load boid sprite: %s", IMG_GetError());
+		exit(1);
+	}
+
+	SDL_QueryTexture(boid_sprite_texture, NULL, NULL, &boid_sprite_w, &boid_sprite_h);
 }
 
 void screen_destroy(void)
 {
+	SDL_DestroyTexture(boid_sprite_texture);
+
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
+	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -48,8 +70,13 @@ void screen_update(boid_t boids[], size_t boid_count)
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	for (int i = 0; i < boid_count; ++i) {
-		// DRAW BOIDS
+	SDL_Rect boid_sprite_rect;
+	for (size_t i = 0; i < boid_count; ++i) {
+		boid_sprite_rect.x = boids[i].x;
+		boid_sprite_rect.y = boids[i].y;
+		boid_sprite_rect.w = boid_sprite_w;
+		boid_sprite_rect.h = boid_sprite_h;
+		SDL_RenderCopy(renderer, boid_sprite_texture, NULL, &boid_sprite_rect);
 	}
 
 	SDL_RenderPresent(renderer);
