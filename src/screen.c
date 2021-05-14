@@ -3,8 +3,9 @@
 
 #include <stdlib.h>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
+#include "boid.h"
 #include "screen.h"
 
 static SDL_Window *window;

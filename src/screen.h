@@ -13,4 +13,4 @@ void screen_init(void);
 void screen_destroy(void);
 void screen_update(boid_t boids[], size_t boid_count);
 
-#endif // SCREEN_H
+#endif	// SCREEN_H
