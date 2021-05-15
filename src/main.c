@@ -18,7 +18,9 @@ int main(void)
 	size_t boid_count = 0;
 	boid_t boids[MAX_BOID_COUNT] = {0};
 
-	boids[0].x = boids[0].y = 128;
+	boids[0].x = boids[0].y = 128.0f;
+	boids[0].angle = 0;
+	boids[0].velocity = 1.0f;
 	boid_count = 1;
 
 	screen_init();
@@ -27,6 +29,7 @@ int main(void)
 		if (event.type == SDL_QUIT)
 			break;
 
+		boid_update(boids, boid_count);
 		screen_update(boids, boid_count);
 
 		SDL_Delay(SLEEP_TIME);
