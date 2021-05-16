@@ -1,6 +1,11 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
+#include <math.h>
+#ifndef M_PI
+	#define M_PI	3.14159265358979323846
+#endif
+
 #include <SDL2/SDL.h>
 
 #include "boid.h"
@@ -15,11 +20,11 @@ int main(void)
 {
 	SDL_Event event;
 
-	size_t boid_count = 0;
 	boid_t boids[MAX_BOID_COUNT] = {0};
+	size_t boid_count = 0;
 
 	boids[0].x = boids[0].y = 128.0f;
-	boids[0].angle = 0;
+	boids[0].angle = 1.0f * (float)M_PI;
 	boids[0].velocity = 1.0f;
 	boid_count = 1;
 
