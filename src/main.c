@@ -1,8 +1,6 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
-#include <math.h>
-
 #include <SDL2/SDL.h>
 
 #include "boid.h"
