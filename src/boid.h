@@ -9,7 +9,7 @@
 typedef struct boid {
 	float x;	// x position
 	float y;	// y position
-	float angle;	// Angle in radians -- Relative to the right facing x-axis
+	int angle;	// Angle in degrees -- Relative to the right facing x-axis with a counter-clockwise rotation
 	float velocity;	// Forward velocity
 } boid_t;
 

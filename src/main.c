@@ -20,8 +20,8 @@ int main(void)
 	boid_t boids[MAX_BOID_COUNT] = {0};
 	size_t boid_count = 0;
 
-	boids[0].x = boids[0].y = 128.0f;
-	boids[0].angle = 1.0f * (float)M_PI;
+	boids[0].x = boids[0].y = 0.0f;
+	boids[0].angle = 270;
 	boids[0].velocity = 1.0f;
 	boid_count = 1;
 
