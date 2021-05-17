@@ -11,11 +11,12 @@
 
 #define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"
 
+int boid_sprite_w, boid_sprite_h;
+
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 
 static SDL_Texture *boid_sprite_texture;
-static int boid_sprite_w, boid_sprite_h;
 
 void screen_init(void)
 {
