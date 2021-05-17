@@ -72,8 +72,8 @@ void screen_update(boid_t boids[], size_t boid_count)
 
 	SDL_Rect boid_sprite_rect;
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_sprite_rect.x = boids[i].x;
-		boid_sprite_rect.y = boids[i].y;
+		boid_sprite_rect.x = boids[i].x - boid_sprite_w/2;
+		boid_sprite_rect.y = boids[i].y - boid_sprite_h/2;
 		boid_sprite_rect.w = boid_sprite_w;
 		boid_sprite_rect.h = boid_sprite_h;
 		SDL_RenderCopy(renderer, boid_sprite_texture, NULL, &boid_sprite_rect);
