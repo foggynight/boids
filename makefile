@@ -28,4 +28,8 @@ $(OBJ_DIR):
 
 .PHONY: clean
 clean:
-	@rm -rv $(OBJ_DIR) $(EXEC)
+	@rm -frv $(OBJ_DIR)
+
+.PHONY: remove
+remove:
+	@rm -frv $(OBJ_DIR) $(EXEC)
