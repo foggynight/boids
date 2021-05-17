@@ -76,7 +76,16 @@ void screen_update(boid_t boids[], size_t boid_count)
 		boid_sprite_rect.y = boids[i].y - boid_sprite_h/2;
 		boid_sprite_rect.w = boid_sprite_w;
 		boid_sprite_rect.h = boid_sprite_h;
-		SDL_RenderCopy(renderer, boid_sprite_texture, NULL, &boid_sprite_rect);
+
+		SDL_RenderCopyEx(
+				renderer,
+				boid_sprite_texture,
+				NULL,
+				&boid_sprite_rect,
+				boids[i].angle + 90,
+				NULL,
+				SDL_FLIP_NONE
+			);
 	}
 
 	SDL_RenderPresent(renderer);
