@@ -18,14 +18,14 @@ void boid_update(boid_t boids[], size_t boid_count)
 		boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
 		boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
 
-		if (boid->x < -boid_sprite_w/2)
-			boid->x = (WIN_WIDTH-1) + boid_sprite_w/2;
-		else if (boid->x >= WIN_WIDTH + boid_sprite_w/2)
-			boid->x = -boid_sprite_w/2;
+		if (boid->x < -boid_sprite_w * 0.7071f)
+			boid->x = (WIN_WIDTH-1) + boid_sprite_w * 0.7071f;
+		else if (boid->x >= WIN_WIDTH + boid_sprite_w * 0.7071f)
+			boid->x = -boid_sprite_w * 0.7071f;
 
-		if (boid->y < -boid_sprite_h/2)
-			boid->y = (WIN_HEIGHT-1) + boid_sprite_h/2;
-		else if (boid->y >= WIN_HEIGHT + boid_sprite_h/2)
-			boid->y = -boid_sprite_h/2;
+		if (boid->y < -boid_sprite_h * 0.7071f)
+			boid->y = (WIN_HEIGHT-1) + boid_sprite_h * 0.7071f;
+		else if (boid->y >= WIN_HEIGHT + boid_sprite_h * 0.7071f)
+			boid->y = -boid_sprite_h * 0.7071f;
 	}
 }
