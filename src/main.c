@@ -2,6 +2,7 @@
 // Released under the GPLv2 license
 
 #include <stdio.h>
+#include <string.h>
 
 #include <SDL2/SDL.h>
 
