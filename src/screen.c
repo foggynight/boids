@@ -82,7 +82,7 @@ void screen_update(boid_t boids[], size_t boid_count)
 				boid_sprite_texture,
 				NULL,
 				&boid_sprite_rect,
-				boids[i].angle + 90,
+				boids[i].angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);
