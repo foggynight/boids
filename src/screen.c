@@ -10,9 +10,6 @@
 #include "screen.h"
 
 #define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"
-#define BOID_SPRITE_SIZE_FACTOR	0.5f
-
-int boid_sprite_w, boid_sprite_h;
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
@@ -52,10 +49,6 @@ void screen_init(void)
 		SDL_Log("Error: Failed to load boid sprite: %s", IMG_GetError());
 		exit(1);
 	}
-
-	SDL_QueryTexture(boid_sprite_texture, NULL, NULL, &boid_sprite_w, &boid_sprite_h);
-	boid_sprite_w *= BOID_SPRITE_SIZE_FACTOR;
-	boid_sprite_h *= BOID_SPRITE_SIZE_FACTOR;
 }
 
 void screen_destroy(void)
@@ -76,10 +69,10 @@ void screen_update(boid_t boids[], size_t boid_count)
 
 	SDL_Rect boid_sprite_rect;
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_sprite_rect.x = boids[i].x - boid_sprite_w/2;
-		boid_sprite_rect.y = boids[i].y - boid_sprite_h/2;
-		boid_sprite_rect.w = boid_sprite_w;
-		boid_sprite_rect.h = boid_sprite_h;
+		boid_sprite_rect.x = boids[i].x - boid_w/2;
+		boid_sprite_rect.y = boids[i].y - boid_h/2;
+		boid_sprite_rect.w = boid_w;
+		boid_sprite_rect.h = boid_h;
 
 		SDL_RenderCopyEx(
 				renderer,
