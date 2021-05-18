@@ -13,6 +13,8 @@ typedef struct boid {
 	float velocity;	// Forward velocity
 } boid_t;
 
+extern int boid_w, boid_h;
+
 void boid_update(boid_t boids[], size_t boid_count);
 
 #endif	// BOID_H
