@@ -7,6 +7,7 @@
 #include "boid.h"
 #include "screen.h"
 
+// Each boid is represented by a square
 #define BOID_SIDE_LENGTH	32
 #define BOID_ROTATED_OFFSET	0.7071f
 
