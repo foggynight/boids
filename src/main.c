@@ -12,8 +12,6 @@
 
 #define SETUP_FILE_PATH	"./res/setups/"
 
-#define MAX_BOID_COUNT	16
-
 #define TARGET_FPS	144
 #define SLEEP_TIME	(1000 / TARGET_FPS)
 
