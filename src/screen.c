@@ -10,6 +10,7 @@
 #include "screen.h"
 
 #define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"
+#define BOID_SPRITE_SIZE_FACTOR	0.5f
 
 int boid_sprite_w, boid_sprite_h;
 
@@ -53,6 +54,8 @@ void screen_init(void)
 	}
 
 	SDL_QueryTexture(boid_sprite_texture, NULL, NULL, &boid_sprite_w, &boid_sprite_h);
+	boid_sprite_w *= BOID_SPRITE_SIZE_FACTOR;
+	boid_sprite_h *= BOID_SPRITE_SIZE_FACTOR;
 }
 
 void screen_destroy(void)
