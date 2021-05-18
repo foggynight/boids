@@ -14,20 +14,23 @@
 
 void boid_update(boid_t boids[], size_t boid_count)
 {
+	float boid_wrap_offset_w = boid_sprite_w * ROTATED_SQUARE_OFFSET;
+	float boid_wrap_offset_h = boid_sprite_h * ROTATED_SQUARE_OFFSET;
+
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = boids + i;
 
 		boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
 		boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
 
-		if (boid->x < -boid_sprite_w * ROTATED_SQUARE_OFFSET)
-			boid->x = (WIN_WIDTH-1) + boid_sprite_w * ROTATED_SQUARE_OFFSET;
-		else if (boid->x >= WIN_WIDTH + boid_sprite_w * ROTATED_SQUARE_OFFSET)
-			boid->x = -boid_sprite_w * ROTATED_SQUARE_OFFSET;
+		if (boid->x < -boid_wrap_offset_w)
+			boid->x = (float)(WIN_WIDTH-1) + boid_wrap_offset_w;
+		else if (boid->x >= (float)WIN_WIDTH + boid_wrap_offset_w)
+			boid->x = -boid_wrap_offset_w;
 
-		if (boid->y < -boid_sprite_h * ROTATED_SQUARE_OFFSET)
-			boid->y = (WIN_HEIGHT-1) + boid_sprite_h * ROTATED_SQUARE_OFFSET;
-		else if (boid->y >= WIN_HEIGHT + boid_sprite_h * ROTATED_SQUARE_OFFSET)
-			boid->y = -boid_sprite_h * ROTATED_SQUARE_OFFSET;
+		if (boid->y < -boid_wrap_offset_h)
+			boid->y = (float)(WIN_HEIGHT-1) + boid_wrap_offset_h;
+		else if (boid->y >= (float)WIN_HEIGHT + boid_wrap_offset_h)
+			boid->y = -boid_wrap_offset_h;
 	}
 }
