@@ -6,11 +6,13 @@
 
 #include <stddef.h>
 
+#define MAX_BOID_COUNT	16
+
 typedef struct boid {
 	float x;	// x position
 	float y;	// y position
-	int angle;	// Angle in degrees -- Relative to the right facing x-axis with a clockwise rotation
 	float velocity;	// Forward velocity
+	int angle;	// Angle in degrees -- Relative to the right facing x-axis with a clockwise rotation
 } boid_t;
 
 extern int boid_w, boid_h;
