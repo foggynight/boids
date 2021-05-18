@@ -14,8 +14,8 @@
 
 void boid_update(boid_t boids[], size_t boid_count)
 {
-	float boid_wrap_offset_w = boid_sprite_w * ROTATED_SQUARE_OFFSET;
-	float boid_wrap_offset_h = boid_sprite_h * ROTATED_SQUARE_OFFSET;
+	float boid_wrap_offset_w = (float)boid_sprite_w * ROTATED_SQUARE_OFFSET;
+	float boid_wrap_offset_h = (float)boid_sprite_h * ROTATED_SQUARE_OFFSET;
 
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = boids + i;
