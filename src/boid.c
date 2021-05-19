@@ -28,7 +28,7 @@ typedef struct vector2 {
 static vector2_t direction_vectors[MAX_BOID_COUNT];
 
 static void boid_alignment(boid_t boids[], size_t boid_count);
-static void boid_calculate_direction_vector(boid_t boid, vector2_t *direction_vector);
+static void boid_calculate_direction_vector(boid_t *boid, vector2_t *direction_vector);
 
 void boid_update(boid_t boids[], size_t boid_count)
 {
@@ -58,14 +58,14 @@ void boid_update(boid_t boids[], size_t boid_count)
 static void boid_alignment(boid_t boids[], size_t boid_count)
 {
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_calculate_direction_vector(boids[i], &direction_vectors[i]);
+		boid_calculate_direction_vector(&boids[i], &direction_vectors[i]);
 	}
 
 	// Align boid angles using direction_vectors
 }
 
-static void boid_calculate_direction_vector(boid_t boid, vector2_t *direction_vector)
+static void boid_calculate_direction_vector(boid_t *boid, vector2_t *direction_vector)
 {
-	direction_vector->x = (float)cos(deg_to_rad(boid.angle));
-	direction_vector->y = (float)sin(deg_to_rad(boid.angle));
+	direction_vector->x = (float)cos(deg_to_rad(boid->angle));
+	direction_vector->y = (float)sin(deg_to_rad(boid->angle));
 }
