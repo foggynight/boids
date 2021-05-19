@@ -66,6 +66,6 @@ static void boid_alignment(boid_t boids[], size_t boid_count)
 
 static void boid_calculate_direction_vector(boid_t boid, vector2_t *direction_vector)
 {
-	direction_vector->x = (float)cos(boid.angle);
-	direction_vector->y = (float)sin(boid.angle);
+	direction_vector->x = (float)cos(deg_to_rad(boid.angle));
+	direction_vector->y = (float)sin(deg_to_rad(boid.angle));
 }
