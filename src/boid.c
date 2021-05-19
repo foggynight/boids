@@ -12,7 +12,6 @@
 #define BOID_SIDE_LENGTH	32
 #define BOID_ROTATED_OFFSET	0.7071f
 
-#define DIMENSION_COUNT	2
 #define TIME_CONSTANT	(1000 / 144)	// Currently same as SLEEP_TIME -- Unsure how I want to handle this
 
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)
@@ -21,10 +20,15 @@
 int boid_w = BOID_SIDE_LENGTH;
 int boid_h = BOID_SIDE_LENGTH;
 
-static float direction_vectors[MAX_BOID_COUNT][DIMENSION_COUNT];
+typedef struct vector2 {
+	float x;
+	float y;
+} vector2_t;
+
+static vector2_t direction_vectors[MAX_BOID_COUNT];
 
 static void boid_alignment(boid_t boids[], size_t boid_count);
-static void boid_calculate_direction_vector(boid_t boid, float direction_vector[]);
+static void boid_calculate_direction_vector(boid_t boid, vector2_t *direction_vector);
 
 void boid_update(boid_t boids[], size_t boid_count)
 {
@@ -54,14 +58,14 @@ void boid_update(boid_t boids[], size_t boid_count)
 static void boid_alignment(boid_t boids[], size_t boid_count)
 {
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_calculate_direction_vector(boids[i], *(direction_vectors + i));
+		boid_calculate_direction_vector(boids[i], &direction_vectors[i]);
 	}
 
 	// Align boid angles using direction_vectors
 }
 
-static void boid_calculate_direction_vector(boid_t boid, float direction_vector[])
+static void boid_calculate_direction_vector(boid_t boid, vector2_t *direction_vector)
 {
-	direction_vector[0] = (float)cos(boid.angle);
-	direction_vector[1] = (float)sin(boid.angle);
+	direction_vector->x = (float)cos(boid.angle);
+	direction_vector->y = (float)sin(boid.angle);
 }
