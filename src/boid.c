@@ -12,7 +12,7 @@
 #define BOID_SIDE_LENGTH	32
 #define BOID_ROTATED_OFFSET	0.7071f
 
-#define TIME_CONSTANT	(1000 / 144)	// Currently same as SLEEP_TIME -- Unsure how I want to handle this
+#define BOID_ROTATION_RATE	1	// Number of degrees the boids will rotate per second
 
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)
@@ -20,22 +20,15 @@
 int boid_w = BOID_SIDE_LENGTH;
 int boid_h = BOID_SIDE_LENGTH;
 
-typedef struct vector2 {
-	float x;
-	float y;
-} vector2_t;
-
-static vector2_t direction_vectors[MAX_BOID_COUNT];
-
-static void boid_alignment(boid_t boids[], size_t boid_count);
-static void boid_calculate_direction_vector(boid_t *boid, vector2_t *direction_vector);
+static void boid_align(boid_t boids[], size_t boid_count);
+static int boid_calculate_mean_angle(boid_t boids[], size_t boid_count);
 
 void boid_update(boid_t boids[], size_t boid_count)
 {
-	boid_alignment(boids, boid_count);
-
 	float boid_wrap_offset_w = (float)boid_w * BOID_ROTATED_OFFSET;
 	float boid_wrap_offset_h = (float)boid_h * BOID_ROTATED_OFFSET;
+
+	boid_align(boids, boid_count);
 
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = boids + i;
@@ -55,17 +48,28 @@ void boid_update(boid_t boids[], size_t boid_count)
 	}
 }
 
-static void boid_alignment(boid_t boids[], size_t boid_count)
+static void boid_align(boid_t boids[], size_t boid_count)
 {
-	for (size_t i = 0; i < boid_count; ++i) {
-		boid_calculate_direction_vector(&boids[i], &direction_vectors[i]);
-	}
+	int boid_mean_angle = calculate_boid_mean_angle(boids, boid_count);
 
-	// Align boid angles using direction_vectors
+	for (size_t i = 0; i < boid_count; ++i) {
+		int new_angle;
+		if (boid_mean_angle - boids[i].angle > 0) {
+
+		}
+		if (boid_mean_angle - boids[i].angle > 0) {
+
+		}
+		else {
+			new_angle = boids[i].angle;
+		}
+	}
 }
 
-static void boid_calculate_direction_vector(boid_t *boid, vector2_t *direction_vector)
+static int boid_calculate_mean_angle(boid_t boids[], size_t boid_count)
 {
-	direction_vector->x = (float)cos(deg_to_rad(boid->angle));
-	direction_vector->y = (float)sin(deg_to_rad(boid->angle));
+	int sum = 0;
+	for (size_t i = 0; i < boid_count; ++i)
+		sum += boids[i].angle;
+	return sum / boid_count;
 }
