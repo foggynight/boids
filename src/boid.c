@@ -62,7 +62,6 @@ static void boid_alignment(boid_t boids[], size_t boid_count)
 
 static void boid_calculate_direction_vector(boid_t boid, float direction_vector[])
 {
-	float vector_length = boid.velocity * TIME_CONSTANT;
-	direction_vector[0] = vector_length * (float)cos(boid.angle);
-	direction_vector[1] = vector_length * (float)sin(boid.angle);
+	direction_vector[0] = (float)cos(boid.angle);
+	direction_vector[1] = (float)sin(boid.angle);
 }
