@@ -21,7 +21,7 @@ size_t setup_boids(FILE *setup_file, boid_t boids[], size_t max_boid_count)
 
 		boids[boid_count].x = atof(strtok(line, ","));
 		boids[boid_count].y = atof(strtok(NULL, ","));
-		boids[boid_count].angle = atoi(strtok(NULL, ","));
+		boids[boid_count].angle = atof(strtok(NULL, ","));
 		boids[boid_count].velocity = atof(strtok(NULL, "\n"));
 	}
 

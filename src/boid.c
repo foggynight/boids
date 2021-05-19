@@ -2,36 +2,35 @@
 // Released under the GPLv2 license
 
 #include <math.h>
-#include <stddef.h>
-#include <stdlib.h>
+#include <time.h>
 
 #include "boid.h"
 #include "screen.h"
 
 // Each boid is represented by a square
-#define BOID_SIDE_LENGTH	32
-#define BOID_ROTATED_OFFSET	0.7071f
+#define BOID_SIDE_LENGTH	32.0f	// Side length of the square containing the boid
+#define BOID_ROTATED_OFFSET	0.7071f	// Ratio of side length to co-axial radius of a square rotated at 45 degrees
 
-#define BOID_ROTATION_RATE	1	// Number of degrees the boids will rotate per second
+#define BOID_ROTATION_RATE	90.0f	// Boid rotation rate in degrees per second
 
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)
 
-int boid_w = BOID_SIDE_LENGTH;
-int boid_h = BOID_SIDE_LENGTH;
+float boid_w = BOID_SIDE_LENGTH;
+float boid_h = BOID_SIDE_LENGTH;
 
-static void boid_align(boid_t boids[], size_t boid_count);
-static int boid_calculate_mean_angle(boid_t boids[], size_t boid_count);
+static void boid_align(boid_t boids[], size_t boid_count, clock_t time_delta);
+static float boid_calculate_mean_angle(boid_t boids[], size_t boid_count);
 
-void boid_update(boid_t boids[], size_t boid_count)
+void boid_update(boid_t boids[], size_t boid_count, clock_t time_delta)
 {
 	float boid_wrap_offset_w = (float)boid_w * BOID_ROTATED_OFFSET;
 	float boid_wrap_offset_h = (float)boid_h * BOID_ROTATED_OFFSET;
 
-	boid_align(boids, boid_count);
+	boid_align(boids, boid_count, time_delta);
 
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_t *boid = boids + i;
+		boid_t *boid = &boids[i];
 
 		boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
 		boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
@@ -48,28 +47,29 @@ void boid_update(boid_t boids[], size_t boid_count)
 	}
 }
 
-static void boid_align(boid_t boids[], size_t boid_count)
+static void boid_align(boid_t boids[], size_t boid_count, clock_t time_delta)
 {
-	int boid_mean_angle = calculate_boid_mean_angle(boids, boid_count);
+	float time_delta_seconds = (float)time_delta / (float)CLOCKS_PER_SEC;
+	float boid_mean_angle = boid_calculate_mean_angle(boids, boid_count);
 
 	for (size_t i = 0; i < boid_count; ++i) {
-		int new_angle;
-		if (boid_mean_angle - boids[i].angle > 0) {
+		float new_angle;
 
-		}
-		if (boid_mean_angle - boids[i].angle > 0) {
-
-		}
-		else {
+		if (boid_mean_angle - boids[i].angle > 0)
+			new_angle = boids[i].angle + time_delta_seconds * BOID_ROTATION_RATE;
+		else if (boid_mean_angle - boids[i].angle < 0)
+			new_angle = boids[i].angle - time_delta_seconds * BOID_ROTATION_RATE;
+		else
 			new_angle = boids[i].angle;
-		}
+
+		boids[i].angle = new_angle;
 	}
 }
 
-static int boid_calculate_mean_angle(boid_t boids[], size_t boid_count)
+static float boid_calculate_mean_angle(boid_t boids[], size_t boid_count)
 {
-	int sum = 0;
+	float sum = 0;
 	for (size_t i = 0; i < boid_count; ++i)
 		sum += boids[i].angle;
-	return sum / boid_count;
+	return sum / (float)boid_count;
 }
