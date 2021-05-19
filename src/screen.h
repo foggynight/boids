@@ -4,6 +4,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include <stddef.h>
+
 #include "boid.h"
 
 #define WIN_WIDTH	1280

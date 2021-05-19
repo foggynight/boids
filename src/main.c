@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include <SDL2/SDL.h>
 
@@ -12,8 +13,8 @@
 
 #define SETUP_FILE_PATH	"./res/setups/"
 
-#define TARGET_FPS	144
-#define SLEEP_TIME	(1000 / TARGET_FPS)
+#define FRAMES_PER_SECOND	144
+#define CLOCKS_PER_FRAME	(CLOCKS_PER_SEC / FRAMES_PER_SECOND)
 
 int main(int argc, char **argv)
 {
@@ -39,17 +40,24 @@ int main(int argc, char **argv)
 	boid_t boids[MAX_BOID_COUNT] = {0};
 	size_t boid_count = setup_boids(setup_file, boids, MAX_BOID_COUNT);
 
+	clock_t time = 0;
+	clock_t time_delta = 0;
+
 	screen_init();
 	while (1) {
+		time = clock();
+
 		SDL_Event event;
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
 
-		boid_update(boids, boid_count);
+		boid_update(boids, boid_count, time_delta);
 		screen_update(boids, boid_count);
 
-		SDL_Delay(SLEEP_TIME);
+		do {
+			time_delta = clock() - time;
+		} while (time_delta < CLOCKS_PER_FRAME);
 	}
 	screen_destroy();
 

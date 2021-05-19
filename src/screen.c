@@ -69,17 +69,17 @@ void screen_update(boid_t boids[], size_t boid_count)
 
 	SDL_Rect boid_sprite_rect;
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_sprite_rect.x = boids[i].x - boid_w/2;
-		boid_sprite_rect.y = boids[i].y - boid_h/2;
-		boid_sprite_rect.w = boid_w;
-		boid_sprite_rect.h = boid_h;
+		boid_sprite_rect.x = (int)(boids[i].x - boid_w / 2.0f);
+		boid_sprite_rect.y = (int)(boids[i].y - boid_h / 2.0f);
+		boid_sprite_rect.w = (int)boid_w;
+		boid_sprite_rect.h = (int)boid_h;
 
 		SDL_RenderCopyEx(
 				renderer,
 				boid_sprite_texture,
 				NULL,
 				&boid_sprite_rect,
-				boids[i].angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
+				(int)boids[i].angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);
