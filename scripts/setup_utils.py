@@ -15,7 +15,7 @@ MAX_ANGLE = 360
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 
-SETUP_PATH = '../res/setups/'
+SETUP_PATH = '../res/setups'
 
 def sort_by_title_number(element):
     return int(element.split('-')[1].split('.')[0])
@@ -26,4 +26,4 @@ def setup_open_new(setup_name):
 
     print(f'Creating {SETUP_PATH}/{setup_name}.csv')
 
-    return open(SETUP_PATH + setup_name + '.csv', 'w')
+    return open(SETUP_PATH + '/' + setup_name + '.csv', 'w')
