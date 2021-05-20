@@ -6,21 +6,24 @@
 import glob
 import os
 
-setup_path = '../res/setups/'
+BOID_COUNT = 16
+
+DEFAULT_VELOCITY = 1
+
+MAX_ANGLE = 360
+
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+SETUP_PATH = '../res/setups/'
 
 def sort_by_title_number(element):
     return int(element.split('-')[1].split('.')[0])
 
-def open_new_setup_file():
+def setup_open_new(setup_name):
     if os.getcwd().split('/')[-1] != 'scripts':
         exit("Invalid usage: Working directory must be '.../boids/scripts'")
 
-    random_setup_files = sorted(glob.glob(setup_path + 'random-*.csv'), key=sort_by_title_number)
+    print(f'Creating {SETUP_PATH}/{setup_name}.csv')
 
-    if len(random_setup_files) == 0:
-        next_number = 0
-    else:
-        next_number = int(random_setup_files[-1].split('-')[1].split('.')[0]) + 1
-
-    print(f'Creating {setup_path}random-{next_number}.csv')
-    return open(setup_path + 'random-' + str(next_number) + '.csv', 'w')
+    return open(SETUP_PATH + setup_name + '.csv', 'w')
