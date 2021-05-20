@@ -10,7 +10,6 @@
 // Each boid is represented by a square
 #define BOID_SIDE_LENGTH	32.0f	// Side length of the square containing the boid
 #define BOID_ROTATED_OFFSET	0.7071f	// Ratio of side length to co-axial radius of a square rotated at 45 degrees
-
 #define BOID_ROTATION_RATE	90.0f	// Boid rotation rate in degrees per second
 
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)
@@ -55,12 +54,19 @@ static void boid_align(boid_t boids[], size_t boid_count, clock_t time_delta)
 	for (size_t i = 0; i < boid_count; ++i) {
 		float new_angle;
 
-		if (boid_mean_angle - boids[i].angle > 0)
+		if (boid_mean_angle - boids[i].angle > 0) {
 			new_angle = boids[i].angle + time_delta_seconds * BOID_ROTATION_RATE;
-		else if (boid_mean_angle - boids[i].angle < 0)
+			if (new_angle >= 360.0f)
+				new_angle = 0.0f;
+		}
+		else if (boid_mean_angle - boids[i].angle < 0) {
 			new_angle = boids[i].angle - time_delta_seconds * BOID_ROTATION_RATE;
-		else
+			if (new_angle < 0.0f)
+				new_angle = 0.0f;
+		}
+		else {
 			new_angle = boids[i].angle;
+		}
 
 		boids[i].angle = new_angle;
 	}
