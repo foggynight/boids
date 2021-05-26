@@ -10,20 +10,20 @@
 
 #define MAX_LINE_LENGTH	128	// Max length of a line of boid parameters
 
-size_t setup_boids(FILE *setup_file, boid_t boids[], size_t max_boid_count)
+void setup_boid_arr(FILE *setup_file)
 {
-	size_t boid_count;
+	size_t line_count;
 	char line[MAX_LINE_LENGTH+1];
 
-	for (boid_count = 0; boid_count < max_boid_count; ++boid_count) {
+	for (line_count = 0; line_count < MAX_BOID_COUNT; ++line_count) {
 		if (fscanf(setup_file, "%s", line) == EOF)
 			break;
 
-		boids[boid_count].x = atof(strtok(line, ","));
-		boids[boid_count].y = atof(strtok(NULL, ","));
-		boids[boid_count].angle = atof(strtok(NULL, ","));
-		boids[boid_count].velocity = atof(strtok(NULL, "\n"));
+		boid_arr[line_count].x = atof(strtok(line, ","));
+		boid_arr[line_count].y = atof(strtok(NULL, ","));
+		boid_arr[line_count].angle = atof(strtok(NULL, ","));
+		boid_arr[line_count].velocity = atof(strtok(NULL, "\n"));
 	}
 
-	return boid_count;
+	boid_count = line_count;
 }
