@@ -6,8 +6,6 @@
 
 #include <stddef.h>
 
-#include "boid.h"
-
 #define WIN_WIDTH	1280	// Width of the window
 #define WIN_HEIGHT	720	// Height of the window
 

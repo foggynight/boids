@@ -6,8 +6,6 @@
 
 #include <stdio.h>
 
-#include "boid.h"
-
 /**
  * Setup the boids by reading their initial parameters from a CSV file
  * and filling in the members of the boids in the boid array.
