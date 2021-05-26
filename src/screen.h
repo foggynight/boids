@@ -6,8 +6,8 @@
 
 #include <stddef.h>
 
-#define WIN_WIDTH	1280	// Width of the window
-#define WIN_HEIGHT	720	// Height of the window
+#define WIN_WIDTH	1920	// Width of the window
+#define WIN_HEIGHT	1080	// Height of the window
 
 /**
  * Initialize the screen and associated modules.
