@@ -37,8 +37,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	boid_t boids[MAX_BOID_COUNT] = {0};
-	size_t boid_count = setup_boids(setup_file, boids, MAX_BOID_COUNT);
+	setup_boid_arr(setup_file);
 
 	clock_t time = 0;
 	clock_t time_delta = 0;
@@ -52,8 +51,8 @@ int main(int argc, char **argv)
 		if (event.type == SDL_QUIT)
 			break;
 
-		boid_update(boids, boid_count, time_delta);
-		screen_update(boids, boid_count);
+		boid_update(time_delta);
+		screen_update();
 
 		do {
 			time_delta = clock() - time;

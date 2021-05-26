@@ -6,7 +6,7 @@
 
 #include <time.h>
 
-#define MAX_BOID_COUNT	16
+#define MAX_BOID_COUNT	16	// Max number of boids able to be simulated -- Size of boid array
 
 typedef struct boid {
 	float x;	// x position
@@ -15,8 +15,16 @@ typedef struct boid {
 	float velocity;	// Forward velocity
 } boid_t;
 
-extern float boid_w, boid_h;
+extern boid_t boid_arr[MAX_BOID_COUNT];	// Array containing boids to be simulated
+extern size_t boid_count;	// Number of boids currently in boid_arr
 
-void boid_update(boid_t boids[], size_t boid_count, clock_t time_delta);
+extern float boid_w, boid_h;	// Width and height of a boid
+
+/**
+ * Update all boids in the boid array.
+ *
+ * @param time_delta	Number of clock cycles since previous update
+ **/
+void boid_update(clock_t time_delta);
 
 #endif	// BOID_H

@@ -23,10 +23,7 @@ void screen_destroy(void);
 
 /**
  * Update the screen -- Draw all the boids.
- *
- * @param boids	Boid array
- * @param boid_count	Number of boids in the boid array
  **/
-void screen_update(boid_t boids[], size_t boid_count);
+void screen_update(void);
 
 #endif	// SCREEN_H

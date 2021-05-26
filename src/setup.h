@@ -12,12 +12,11 @@
  * Setup the boids by reading their initial parameters from a CSV file
  * and filling in the members of the boids in the boid array.
  *
- * @param setup_file	File containing initial boid parameters
- * @param boids	Boid array
- * @param max_boid_count	Maximum number of boids to read from the file
+ * @param setup_file	File containing initial boid parameters in CSV format
  *
- * @return Number of boids read from the file
+ * @sideeffect Fills in the members of the boids in the boid_arr global
+ * @sideeffect Sets the boid_count global to the number of lines read
  **/
-size_t setup_boids(FILE *setup_file, boid_t boids[], size_t max_boid_count);
+void setup_boid_arr(FILE *setup_file);
 
 #endif	// SETUP_H

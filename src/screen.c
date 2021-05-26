@@ -62,15 +62,15 @@ void screen_destroy(void)
 	SDL_Quit();
 }
 
-void screen_update(boid_t boids[], size_t boid_count)
+void screen_update(void)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	SDL_Rect boid_sprite_rect;
 	for (size_t i = 0; i < boid_count; ++i) {
-		boid_sprite_rect.x = (int)(boids[i].x - boid_w / 2.0f);
-		boid_sprite_rect.y = (int)(boids[i].y - boid_h / 2.0f);
+		boid_sprite_rect.x = (int)(boid_arr[i].x - boid_w / 2.0f);
+		boid_sprite_rect.y = (int)(boid_arr[i].y - boid_h / 2.0f);
 		boid_sprite_rect.w = (int)boid_w;
 		boid_sprite_rect.h = (int)boid_h;
 
@@ -79,7 +79,7 @@ void screen_update(boid_t boids[], size_t boid_count)
 				boid_sprite_texture,
 				NULL,
 				&boid_sprite_rect,
-				(int)boids[i].angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
+				(int)boid_arr[i].angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);
