@@ -8,7 +8,7 @@
 #include "boid.h"
 #include "setup.h"
 
-#define MAX_LINE_LENGTH	128
+#define MAX_LINE_LENGTH	128	// Max length of a line of boid parameters
 
 size_t setup_boids(FILE *setup_file, boid_t boids[], size_t max_boid_count)
 {
