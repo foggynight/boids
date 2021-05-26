@@ -9,7 +9,7 @@
 #include "boid.h"
 #include "screen.h"
 
-#define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"
+#define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"	// Path to the boid sprite relative to the program executable
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;

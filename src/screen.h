@@ -8,11 +8,25 @@
 
 #include "boid.h"
 
-#define WIN_WIDTH	1280
-#define WIN_HEIGHT	720
+#define WIN_WIDTH	1280	// Width of the window
+#define WIN_HEIGHT	720	// Height of the window
 
+/**
+ * Initialize the screen and associated modules.
+ **/
 void screen_init(void);
+
+/**
+ * Destroy the screen and associated modules.
+ **/
 void screen_destroy(void);
+
+/**
+ * Update the screen -- Draw all the boids.
+ *
+ * @param boids	Boid array
+ * @param boid_count	Number of boids in the boid array
+ **/
 void screen_update(boid_t boids[], size_t boid_count);
 
 #endif	// SCREEN_H
