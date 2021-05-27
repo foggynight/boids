@@ -10,7 +10,7 @@
 #define BOID_SIDE_LENGTH	32.0f	// Side length of the square containing a boid
 #define BOID_ROTATION_RATE	90.0f	// Rotation rate in degrees per second
 
-#define BOID_FOV_RADIUS	10.0f	// Radius of a boid's field of view -- Equivalent to a view distance
+#define BOID_FOV_RADIUS	100.0f	// Radius of a boid's field of view -- Equivalent to a view distance
 #define BOID_FOV_MAX_ANGLE	135.0f	// Max angle of a boid's field of view relative to its forward direction
 
 #define ROTATED_SQUARE_OFFSET	0.7071f	// Ratio of side length to co-axial radius of a square rotated at 45 degrees
@@ -18,11 +18,38 @@
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)	// Convert degrees to radians
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
-float boid_w = BOID_SIDE_LENGTH;	// Width of the square containing a boid
-float boid_h = BOID_SIDE_LENGTH;	// Height of the square containing a boid
+float boid_w = BOID_SIDE_LENGTH;
+float boid_h = BOID_SIDE_LENGTH;
 
 boid_t boid_arr[MAX_BOID_COUNT];
 size_t boid_count;
+
+static boid_t *boid_neighbour_lookup_table[MAX_BOID_COUNT];
+static size_t boid_neighbour_count;
+
+/**
+ * Determine if a boid is a neighbour of another. That is, if a boid is
+ * within another boid's field of view.
+ *
+ * @param boid	Boid looking for neighbours
+ * @param target	Boid being looked at
+ *
+ * @return Non-zero implies the target is a neighbour of the boid
+ **/
+static int boid_is_neighbour(const boid_t *boid, const boid_t *target);
+
+/**
+ * Find the neighbours of a given boid, where a neighbour is defined as
+ * another boid within a boid's field of view.
+ *
+ * @param boid	Boid to look for neighbours
+ *
+ * @sideeffect Sets the boid_neighbour_count global to the number of
+ *	neighbours found
+ * @sideeffect Points the first boid_neighbour_count of pointers in
+ *	boid_neighbour_lookup_table to the target boid's neighbours
+ **/
+static void boid_find_neighbours(const boid_t *boid);
 
 static void boid_align(clock_t time_delta);
 static float boid_calculate_mean_angle(void);
@@ -37,6 +64,8 @@ void boid_update(clock_t time_delta)
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = &boid_arr[i];
 
+		boid_find_neighbours(boid);
+
 		boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
 		boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
 
@@ -49,6 +78,25 @@ void boid_update(clock_t time_delta)
 			boid->y = (float)(WIN_HEIGHT-1) + boid_wrap_offset_h;
 		else if (boid->y >= (float)WIN_HEIGHT + boid_wrap_offset_h)
 			boid->y = -boid_wrap_offset_h;
+	}
+}
+
+static int boid_is_neighbour(const boid_t *boid, const boid_t *target)
+{
+	float angle = fabs(target->angle - boid->angle);
+	float distance = sqrt(pow(fabs(target->x - boid->x), 2) + pow(fabs(target->y - boid->y), 2));
+	return angle <= BOID_FOV_MAX_ANGLE && distance <= BOID_FOV_RADIUS;
+}
+
+static void boid_find_neighbours(const boid_t *boid)
+{
+	boid_neighbour_count = 0;
+
+	for (boid_t *candidate = boid_arr;
+			candidate < boid_arr + boid_count;
+			++candidate) {
+		if (candidate != boid && boid_is_neighbour(boid, candidate))
+			boid_neighbour_lookup_table[boid_neighbour_count++] = candidate;
 	}
 }
 
