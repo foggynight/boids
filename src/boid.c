@@ -24,8 +24,31 @@ float boid_h = BOID_SIDE_LENGTH;
 boid_t boid_arr[MAX_BOID_COUNT];
 size_t boid_count;
 
-static boid_t *boid_neighbour_lookup_table[MAX_BOID_COUNT];
-static size_t boid_neighbour_count;
+static boid_t *boid_neighbour_lookup_table[MAX_BOID_COUNT];	// Neighbour array -- Array of pointers to boid neighbours
+static size_t boid_neighbour_count;	// Number of neighbours currently stored in the neighbour array
+
+/**
+ * Find the neighbours of a given boid, where a neighbour is defined as
+ * another boid within a boid's field of view.
+ *
+ * @param boid	Boid to look for neighbours
+ *
+ * @sideeffect Sets the boid_neighbour_count global to the number of
+ *	neighbours found
+ * @sideeffect Points the first boid_neighbour_count of pointers in
+ *	boid_neighbour_lookup_table to the looking boid's neighbours
+ **/
+static void boid_find_neighbours(const boid_t *boid);
+
+// TODO Replace with boid_align_with_neighbours
+static void boid_align(clock_t time_delta);
+
+/**
+ * Update the position of a boid based on its angle and velocity.
+ *
+ * @param boid	Boid to update
+ **/
+static void boid_update_position(boid_t *boid);
 
 /**
  * Determine if a boid is a neighbour of another. That is, if a boid is
@@ -39,50 +62,30 @@ static size_t boid_neighbour_count;
 static int boid_is_neighbour(const boid_t *boid, const boid_t *target);
 
 /**
- * Find the neighbours of a given boid, where a neighbour is defined as
- * another boid within a boid's field of view.
+ * Calculate the mean angle of the set of boids.
  *
- * @param boid	Boid to look for neighbours
- *
- * @sideeffect Sets the boid_neighbour_count global to the number of
- *	neighbours found
- * @sideeffect Points the first boid_neighbour_count of pointers in
- *	boid_neighbour_lookup_table to the target boid's neighbours
+ * @return Mean angle of the set of boids
  **/
-static void boid_find_neighbours(const boid_t *boid);
-
-static void boid_align(clock_t time_delta);
 static float boid_calculate_mean_angle(void);
-static void boid_update_position(boid_t *boid);
 
 void boid_update(clock_t time_delta)
 {
 	float boid_wrap_offset_w = (float)boid_w * ROTATED_SQUARE_OFFSET;
 	float boid_wrap_offset_h = (float)boid_h * ROTATED_SQUARE_OFFSET;
 
-	// TODO Make each boid alignment individual and based on
-	// neighbours
 	boid_align(time_delta);
 
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = &boid_arr[i];
 		boid_find_neighbours(boid);
-		// Boids should be aligned here using neighbours
+		// Boids should be aligned here based on neighbours
 		boid_update_position(boid);
 	}
-}
-
-static int boid_is_neighbour(const boid_t *boid, const boid_t *target)
-{
-	float angle = fabs(target->angle - boid->angle);
-	float distance = sqrt(pow(fabs(target->x - boid->x), 2) + pow(fabs(target->y - boid->y), 2));
-	return angle <= BOID_FOV_MAX_ANGLE && distance <= BOID_FOV_RADIUS;
 }
 
 static void boid_find_neighbours(const boid_t *boid)
 {
 	boid_neighbour_count = 0;
-
 	for (boid_t *candidate = boid_arr;
 			candidate < boid_arr + boid_count;
 			++candidate) {
@@ -117,14 +120,6 @@ static void boid_align(clock_t time_delta)
 	}
 }
 
-static float boid_calculate_mean_angle(void)
-{
-	float sum = 0;
-	for (size_t i = 0; i < boid_count; ++i)
-		sum += boid_arr[i].angle;
-	return sum / (float)boid_count;
-}
-
 static void boid_update_position(boid_t *boid)
 {
 	boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
@@ -139,4 +134,22 @@ static void boid_update_position(boid_t *boid)
 		boid->y = (float)(WIN_HEIGHT-1) + boid_wrap_offset_h;
 	else if (boid->y >= (float)WIN_HEIGHT + boid_wrap_offset_h)
 		boid->y = -boid_wrap_offset_h;
+}
+
+static int boid_is_neighbour(const boid_t *boid, const boid_t *target)
+{
+	float distance = sqrt(pow(fabs(target->x - boid->x), 2) + pow(fabs(target->y - boid->y), 2));
+	// TODO Fix angle calculation -- Currently not accounting for
+	// the forward angle of the looking boid
+	// TODO Prevent division by zero
+	float angle = atan(fabs((target->x - boid->x) / (target->y - boid->y)));
+	return distance <= BOID_FOV_RADIUS && angle <= BOID_FOV_MAX_ANGLE;
+}
+
+static float boid_calculate_mean_angle(void)
+{
+	float sum = 0;
+	for (size_t i = 0; i < boid_count; ++i)
+		sum += boid_arr[i].angle;
+	return sum / (float)boid_count;
 }
