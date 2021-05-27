@@ -10,7 +10,7 @@
  * Setup the boids by reading their initial parameters from a CSV file
  * and filling in the members of the boids in the boid array.
  *
- * @param setup_file	File containing initial boid parameters in CSV format
+ * @param setup_file	CSV file containing initial boid parameters
  *
  * @sideeffect Fills in the members of the boids in the boid_arr global
  * @sideeffect Sets the boid_count global to the number of lines read
