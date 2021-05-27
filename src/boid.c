@@ -53,31 +53,22 @@ static void boid_find_neighbours(const boid_t *boid);
 
 static void boid_align(clock_t time_delta);
 static float boid_calculate_mean_angle(void);
+static void boid_update_position(boid_t *boid);
 
 void boid_update(clock_t time_delta)
 {
 	float boid_wrap_offset_w = (float)boid_w * ROTATED_SQUARE_OFFSET;
 	float boid_wrap_offset_h = (float)boid_h * ROTATED_SQUARE_OFFSET;
 
+	// TODO Make each boid alignment individual and based on
+	// neighbours
 	boid_align(time_delta);
 
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = &boid_arr[i];
-
 		boid_find_neighbours(boid);
-
-		boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
-		boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
-
-		if (boid->x < -boid_wrap_offset_w)
-			boid->x = (float)(WIN_WIDTH-1) + boid_wrap_offset_w;
-		else if (boid->x >= (float)WIN_WIDTH + boid_wrap_offset_w)
-			boid->x = -boid_wrap_offset_w;
-
-		if (boid->y < -boid_wrap_offset_h)
-			boid->y = (float)(WIN_HEIGHT-1) + boid_wrap_offset_h;
-		else if (boid->y >= (float)WIN_HEIGHT + boid_wrap_offset_h)
-			boid->y = -boid_wrap_offset_h;
+		// Boids should be aligned here using neighbours
+		boid_update_position(boid);
 	}
 }
 
@@ -132,4 +123,20 @@ static float boid_calculate_mean_angle(void)
 	for (size_t i = 0; i < boid_count; ++i)
 		sum += boid_arr[i].angle;
 	return sum / (float)boid_count;
+}
+
+static void boid_update_position(boid_t *boid)
+{
+	boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
+	boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
+
+	if (boid->x < -boid_wrap_offset_w)
+		boid->x = (float)(WIN_WIDTH-1) + boid_wrap_offset_w;
+	else if (boid->x >= (float)WIN_WIDTH + boid_wrap_offset_w)
+		boid->x = -boid_wrap_offset_w;
+
+	if (boid->y < -boid_wrap_offset_h)
+		boid->y = (float)(WIN_HEIGHT-1) + boid_wrap_offset_h;
+	else if (boid->y >= (float)WIN_HEIGHT + boid_wrap_offset_h)
+		boid->y = -boid_wrap_offset_h;
 }
