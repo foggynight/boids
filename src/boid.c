@@ -24,23 +24,23 @@ float boid_h = BOID_SIDE_LENGTH;
 boid_t boid_arr[MAX_BOID_COUNT];
 size_t boid_count;
 
-static boid_t *boid_neighbour_lookup_table[MAX_BOID_COUNT];	// Neighbour array -- Array of pointers to boid neighbours
-static size_t boid_neighbour_count;	// Number of neighbours currently stored in the neighbour array
+static boid_t *boid_neighbor_lookup_table[MAX_BOID_COUNT];	// Neighbor array -- Array of pointers to boid neighbors
+static size_t boid_neighbor_count;	// Number of neighbors currently stored in the neighbor array
 
 /**
- * Find the neighbours of a given boid, where a neighbour is defined as
+ * Find the neighbors of a given boid, where a neighbor is defined as
  * another boid within a boid's field of view.
  *
- * @param boid	Boid to look for neighbours
+ * @param boid	Boid to look for neighbors
  *
- * @sideeffect Sets the boid_neighbour_count global to the number of
- *	neighbours found
- * @sideeffect Points the first boid_neighbour_count of pointers in
- *	boid_neighbour_lookup_table to the looking boid's neighbours
+ * @sideeffect Sets the boid_neighbor_count global to the number of
+ *	neighbors found
+ * @sideeffect Points the first boid_neighbor_count of pointers in
+ *	boid_neighbor_lookup_table to the looking boid's neighbors
  **/
-static void boid_find_neighbours(const boid_t *boid);
+static void boid_find_neighbors(const boid_t *boid);
 
-// TODO Replace with boid_align_with_neighbours
+// TODO Replace with boid_align_with_neighbors
 static void boid_align(clock_t time_delta);
 
 /**
@@ -51,15 +51,15 @@ static void boid_align(clock_t time_delta);
 static void boid_update_position(boid_t *boid);
 
 /**
- * Determine if a boid is a neighbour of another. That is, if a boid is
+ * Determine if a boid is a neighbor of another. That is, if a boid is
  * within another boid's field of view.
  *
- * @param boid	Boid looking for neighbours
+ * @param boid	Boid looking for neighbors
  * @param target	Boid being looked at
  *
- * @return Non-zero implies the target is a neighbour of the boid
+ * @return Non-zero implies the target is a neighbor of the boid
  **/
-static int boid_is_neighbour(const boid_t *boid, const boid_t *target);
+static int boid_is_neighbor(const boid_t *boid, const boid_t *target);
 
 /**
  * Calculate the mean angle of the set of boids.
@@ -74,20 +74,20 @@ void boid_update(clock_t time_delta)
 
 	for (size_t i = 0; i < boid_count; ++i) {
 		boid_t *boid = &boid_arr[i];
-		boid_find_neighbours(boid);
-		// Boids should be aligned here based on neighbours
+		boid_find_neighbors(boid);
+		// Boids should be aligned here based on neighbors
 		boid_update_position(boid);
 	}
 }
 
-static void boid_find_neighbours(const boid_t *boid)
+static void boid_find_neighbors(const boid_t *boid)
 {
-	boid_neighbour_count = 0;
+	boid_neighbor_count = 0;
 	for (boid_t *candidate = boid_arr;
 			candidate < boid_arr + boid_count;
 			++candidate) {
-		if (candidate != boid && boid_is_neighbour(boid, candidate))
-			boid_neighbour_lookup_table[boid_neighbour_count++] = candidate;
+		if (candidate != boid && boid_is_neighbor(boid, candidate))
+			boid_neighbor_lookup_table[boid_neighbor_count++] = candidate;
 	}
 }
 
@@ -136,7 +136,7 @@ static void boid_update_position(boid_t *boid)
 		boid->y = -boid_wrap_offset_h;
 }
 
-static int boid_is_neighbour(const boid_t *boid, const boid_t *target)
+static int boid_is_neighbor(const boid_t *boid, const boid_t *target)
 {
 	float distance = sqrt(pow(fabs(target->x - boid->x), 2) + pow(fabs(target->y - boid->y), 2));
 	// TODO Fix angle calculation -- Currently not accounting for
