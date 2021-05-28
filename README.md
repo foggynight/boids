@@ -1,6 +1,6 @@
 # boids
 
-Bird simulation.
+Swarm simulation.
 
 
 ## Dependencies
