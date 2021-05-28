@@ -70,9 +70,6 @@ static float boid_calculate_mean_angle(void);
 
 void boid_update(clock_t time_delta)
 {
-	float boid_wrap_offset_w = (float)boid_w * ROTATED_SQUARE_OFFSET;
-	float boid_wrap_offset_h = (float)boid_h * ROTATED_SQUARE_OFFSET;
-
 	boid_align(time_delta);
 
 	for (size_t i = 0; i < boid_count; ++i) {
@@ -122,6 +119,9 @@ static void boid_align(clock_t time_delta)
 
 static void boid_update_position(boid_t *boid)
 {
+	float boid_wrap_offset_w = (float)boid_w * ROTATED_SQUARE_OFFSET;
+	float boid_wrap_offset_h = (float)boid_h * ROTATED_SQUARE_OFFSET;
+
 	boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
 	boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
 
