@@ -6,6 +6,7 @@ EXEC := boids
 SRC_DIR := src
 OBJ_DIR := obj
 
+HEDS := $(wildcard $(SRC_DIR)/*.h)
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -19,6 +20,8 @@ all: $(EXEC)
 
 $(EXEC): $(OBJS)
 	$(CC) -o $@ $^ $(SDL_CONFIG) $(LIBS)
+
+$(OBJS): $(HEDS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) -o $@ $(CFLAGS) -c $< $(SDL_CONFIG)
