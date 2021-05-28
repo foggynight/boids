@@ -19,12 +19,12 @@ SDL_CONFIG := `sdl2-config --cflags --libs` -lSDL2_image
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -o $@ $^ $(SDL_CONFIG) $(LIBS)
+	$(CC) -o $@ $^ $(LIBS) $(SDL_CONFIG)
 
 $(OBJS): $(HEDS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) -o $@ $(CFLAGS) -c $< $(SDL_CONFIG)
+	$(CC) -o $@ $(CFLAGS) -c $<
 
 $(OBJ_DIR):
 	@mkdir -p $@
