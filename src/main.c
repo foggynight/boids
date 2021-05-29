@@ -51,8 +51,8 @@ int main(int argc, char **argv)
 		if (event.type == SDL_QUIT)
 			break;
 
-		boid_update(time_delta);
 		screen_update();
+		boid_update(time_delta);
 
 		do {
 			time_delta = clock() - time;
