@@ -18,8 +18,8 @@
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)	// Convert degrees to radians
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
-float boid_w = BOID_SIDE_LENGTH;
-float boid_h = BOID_SIDE_LENGTH;
+const float boid_w = BOID_SIDE_LENGTH;
+const float boid_h = BOID_SIDE_LENGTH;
 
 boid_t boid_arr[MAX_BOID_COUNT];
 size_t boid_count;
@@ -93,8 +93,8 @@ static void boid_find_neighbors(const boid_t *boid)
 
 static void boid_align(clock_t time_delta)
 {
-	float time_delta_seconds = (float)time_delta / (float)CLOCKS_PER_SEC;
-	float boid_mean_angle = boid_calculate_mean_angle();
+	const float time_delta_seconds = (float)time_delta / (float)CLOCKS_PER_SEC;
+	const float boid_mean_angle = boid_calculate_mean_angle();
 
 	for (size_t i = 0; i < boid_count; ++i) {
 		float new_angle;
@@ -119,8 +119,8 @@ static void boid_align(clock_t time_delta)
 
 static void boid_update_position(boid_t *boid)
 {
-	float boid_wrap_offset_w = (float)boid_w * ROTATED_SQUARE_OFFSET;
-	float boid_wrap_offset_h = (float)boid_h * ROTATED_SQUARE_OFFSET;
+	const float boid_wrap_offset_w = (float)boid_w * ROTATED_SQUARE_OFFSET;
+	const float boid_wrap_offset_h = (float)boid_h * ROTATED_SQUARE_OFFSET;
 
 	boid->x += boid->velocity * (float)cos(deg_to_rad(boid->angle));
 	boid->y += boid->velocity * (float)sin(deg_to_rad(boid->angle));
@@ -138,11 +138,11 @@ static void boid_update_position(boid_t *boid)
 
 static int boid_is_neighbor(const boid_t *boid, const boid_t *target)
 {
-	float distance = sqrt(pow(fabs(target->x - boid->x), 2) + pow(fabs(target->y - boid->y), 2));
+	const float distance = sqrt(pow(fabs(target->x - boid->x), 2) + pow(fabs(target->y - boid->y), 2));
 	// TODO Fix angle calculation -- Currently not accounting for
 	// the forward angle of the looking boid
 	// TODO Prevent division by zero
-	float angle = atan(fabs((target->x - boid->x) / (target->y - boid->y)));
+	const float angle = atan(fabs((target->x - boid->x) / (target->y - boid->y)));
 	return distance <= BOID_FOV_RADIUS && angle <= BOID_FOV_MAX_ANGLE;
 }
 
