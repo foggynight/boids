@@ -18,7 +18,7 @@ typedef struct boid {
 extern boid_t boid_arr[MAX_BOID_COUNT];	// Array containing boids to be simulated
 extern size_t boid_count;	// Number of boids currently in boid_arr
 
-extern float boid_w, boid_h;	// Width and height of a boid
+extern const float boid_w, boid_h;	// Width and height of a boid
 
 /**
  * Update all boids in the boid array.
