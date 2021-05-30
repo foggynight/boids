@@ -3,8 +3,8 @@
 
 #include <chrono>
 #include <cstdio>
-#include <cstring>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <SDL2/SDL.h>
@@ -21,20 +21,18 @@
 
 int main(int argc, char **argv)
 {
-	char setup_file_fullpath[FILENAME_MAX+1] = SETUP_FILE_PATH;
+	std::string setup_file_fullpath = SETUP_FILE_PATH;
 	if (argc > 2) {
 		std::cout << "Invalid usage: Too many arguments" << std::endl;
 		return 1;
 	}
-	else if (argc < 2) {
-		strcat(setup_file_fullpath, "default");
-	}
-	else {
-		strcat(setup_file_fullpath, argv[1]);
-	}
-	strcat(setup_file_fullpath, ".csv");
+	else if (argc < 2)
+		setup_file_fullpath += "default";
+	else
+		setup_file_fullpath += argv[1];
+	setup_file_fullpath += ".csv";
 
-	FILE *setup_file = fopen(setup_file_fullpath, "r");
+	FILE *setup_file = fopen(setup_file_fullpath.c_str(), "r");
 	if (!setup_file) {
 		std::cout << "Error: Failed to open setup file: " << setup_file_fullpath << std::endl;
 		return 1;
@@ -47,10 +45,10 @@ int main(int argc, char **argv)
 
 	screen_init();
 	while (1) {
-		auto delta_time = std::chrono::high_resolution_clock::now() - last_time;
+		const auto delta_time = std::chrono::high_resolution_clock::now() - last_time;
 		last_time = std::chrono::high_resolution_clock::now();
 
-		int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
+		const int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
 		std::cout << "\rFPS: " << (float)MICROSECONDS_PER_SECOND / (float)delta_time_us;
 		std::flush(std::cout);
@@ -65,7 +63,11 @@ int main(int argc, char **argv)
 			boid.update_pos(delta_time_us);
 		}
 
-		while (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - last_time).count() < MICROSECONDS_PER_FRAME);
+		int wait_time = 0;
+		while (wait_time < MICROSECONDS_PER_FRAME) {
+			const auto now = std::chrono::high_resolution_clock::now();
+			wait_time = std::chrono::duration_cast<std::chrono::microseconds>(now - last_time).count();
+		}
 	}
 	screen_destroy();
 
