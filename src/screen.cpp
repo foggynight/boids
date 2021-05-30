@@ -17,7 +17,7 @@ static SDL_Renderer *renderer;
 
 static SDL_Texture *boid_sprite_texture;
 
-void screen_init(void)
+void screen_init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		SDL_Log("Error: Failed to initialize SDL: %s", SDL_GetError());
@@ -52,7 +52,7 @@ void screen_init(void)
 	}
 }
 
-void screen_destroy(void)
+void screen_destroy()
 {
 	SDL_DestroyTexture(boid_sprite_texture);
 
@@ -63,13 +63,13 @@ void screen_destroy(void)
 	SDL_Quit();
 }
 
-void screen_update(std::vector<Boid> &boid_vec)
+void screen_update(const std::vector<Boid>& boid_vec)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	SDL_Rect rect;
-	for (auto boid : boid_vec) {
+	for (const auto& boid : boid_vec) {
 		rect.w = (int)boid.w;
 		rect.h = (int)boid.h;
 		rect.x = (int)(boid.x - boid.w / 2.0f);
