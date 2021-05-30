@@ -2,7 +2,6 @@
 // Released under the GPLv2 license
 
 #include <chrono>
-#include <cstdio>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -32,14 +31,11 @@ int main(int argc, char **argv)
 		setup_file_fullpath += argv[1];
 	setup_file_fullpath += ".csv";
 
-	FILE *setup_file = fopen(setup_file_fullpath.c_str(), "r");
-	if (!setup_file) {
+	std::vector<Boid> boid_vec;
+	if (!setup_boid_vec(boid_vec, setup_file_fullpath)) {
 		std::cout << "Error: Failed to open setup file: " << setup_file_fullpath << std::endl;
 		return 1;
 	}
-
-	std::vector<Boid> boid_vec;
-	setup_boid_vec(boid_vec, setup_file);
 
 	auto last_time = std::chrono::high_resolution_clock::now();
 
@@ -59,7 +55,7 @@ int main(int argc, char **argv)
 			break;
 
 		screen_update(boid_vec);
-		for (auto &boid : boid_vec) {
+		for (auto& boid : boid_vec) {
 			boid.update_pos(delta_time_us);
 		}
 
