@@ -59,8 +59,7 @@ int main(int argc, char **argv)
 			boid.update_pos(delta_time_us);
 		}
 
-		int wait_time = 0;
-		while (wait_time < MICROSECONDS_PER_FRAME) {
+		for (int wait_time = 0; wait_time < MICROSECONDS_PER_FRAME;) {
 			const auto now = std::chrono::high_resolution_clock::now();
 			wait_time = std::chrono::duration_cast<std::chrono::microseconds>(now - last_time).count();
 		}
