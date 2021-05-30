@@ -51,6 +51,9 @@ int main(int argc, char **argv)
 		last_time = std::chrono::high_resolution_clock::now();
 		int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
+		std::cout << "\rFPS: " << MICROSECONDS_PER_SECOND / delta_time_us;
+		std::flush(std::cout);
+
 		SDL_Event event;
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
@@ -64,6 +67,8 @@ int main(int argc, char **argv)
 		while (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - last_time).count() < MICROSECONDS_PER_FRAME);
 	}
 	screen_destroy();
+
+	std::cout << std::endl;	// Print newline after FPS counter
 
 	return 0;
 }
