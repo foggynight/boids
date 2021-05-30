@@ -1,9 +1,10 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
+#include <string>
 #include <vector>
 
 #include "Boid.hpp"
@@ -11,10 +12,15 @@
 
 #define MAX_LINE_LENGTH	128	// Max length of a line of boid parameters
 
-void setup_boid_vec(std::vector<Boid> &boid_vec, FILE *setup_file)
+bool setup_boid_vec(std::vector<Boid>& boid_vec, const std::string& file_path)
 {
+	std::ifstream setup_file;
+	setup_file.open(file_path);
+	if (!setup_file.is_open())
+		return false;
+
 	char line[MAX_LINE_LENGTH+1];
-	while (fscanf(setup_file, "%s", line) != EOF) {
+	while (!setup_file.getline(line, MAX_LINE_LENGTH+1).eof()) {
 		const float w = atof(strtok(line, ","));
 		const float h = atof(strtok(NULL, ","));
 		const float x = atof(strtok(NULL, ","));
@@ -23,4 +29,7 @@ void setup_boid_vec(std::vector<Boid> &boid_vec, FILE *setup_file)
 		const float velocity = atof(strtok(NULL, "\n"));
 		boid_vec.emplace_back(w, h, x, y, angle, velocity);
 	}
+
+	setup_file.close();
+	return true;
 }

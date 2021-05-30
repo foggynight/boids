@@ -4,7 +4,7 @@
 #ifndef SETUP_HPP
 #define SETUP_HPP
 
-#include <cstdio>
+#include <string>
 #include <vector>
 
 #include "Boid.hpp"
@@ -15,8 +15,10 @@
  * vector.
  *
  * @param boid_vec	Vector to fill with boids
- * @param setup_file	CSV file containing initial boid parameters
+ * @param file_path	Path to file containing initial boid parameters
+ *
+ * @param false if opening the setup file fails, otherwise true
  **/
-void setup_boid_vec(std::vector<Boid> &boid_vec, FILE *setup_file);
+bool setup_boid_vec(std::vector<Boid>& boid_vec, const std::string& setup_file);
 
 #endif	// SETUP_HPP
