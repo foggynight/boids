@@ -6,11 +6,11 @@ EXEC := boids
 SRC_DIR := src
 OBJ_DIR := obj
 
-HEDS := $(wildcard $(SRC_DIR)/*.h)
-SRCS := $(wildcard $(SRC_DIR)/*.c)
-OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+HEDS := $(wildcard $(SRC_DIR)/*.hpp)
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-CC := gcc
+CC := g++
 CFLAGS := -Wall -Wextra -Wpedantic
 LIBS := -lm
 
@@ -23,7 +23,7 @@ $(EXEC): $(OBJS)
 
 $(OBJS): $(HEDS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CC) -o $@ $(CFLAGS) -c $<
 
 $(OBJ_DIR):
