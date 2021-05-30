@@ -49,9 +49,10 @@ int main(int argc, char **argv)
 	while (1) {
 		auto delta_time = std::chrono::high_resolution_clock::now() - last_time;
 		last_time = std::chrono::high_resolution_clock::now();
+
 		int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
-		std::cout << "\rFPS: " << MICROSECONDS_PER_SECOND / delta_time_us;
+		std::cout << "\rFPS: " << (float)MICROSECONDS_PER_SECOND / (float)delta_time_us;
 		std::flush(std::cout);
 
 		SDL_Event event;
