@@ -14,16 +14,18 @@
 /**
  * Initialize the screen and associated modules.
  **/
-void screen_init(void);
+void screen_init();
 
 /**
  * Destroy the screen and associated modules.
  **/
-void screen_destroy(void);
+void screen_destroy();
 
 /**
  * Update the screen -- Draw all the boids.
+ *
+ * @param boid_vec	Vector to source boid information from
  **/
-void screen_update(std::vector<Boid> &boid_vec);
+void screen_update(const std::vector<Boid>& boid_vec);
 
 #endif	// SCREEN_HPP
