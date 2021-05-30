@@ -1,13 +1,14 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
-#include <stdlib.h>
+#include <cstdlib>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "boid.h"
-#include "screen.h"
+#include "Boid.hpp"
+#include "screen.hpp"
 
 #define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"	// Path to the boid sprite relative to the program executable
 
@@ -62,24 +63,24 @@ void screen_destroy(void)
 	SDL_Quit();
 }
 
-void screen_update(void)
+void screen_update(std::vector<Boid> &boid_vec)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	SDL_Rect boid_sprite_rect;
-	for (size_t i = 0; i < boid_count; ++i) {
-		boid_sprite_rect.x = (int)(boid_arr[i].x - boid_w / 2.0f);
-		boid_sprite_rect.y = (int)(boid_arr[i].y - boid_h / 2.0f);
-		boid_sprite_rect.w = (int)boid_w;
-		boid_sprite_rect.h = (int)boid_h;
+	SDL_Rect rect;
+	for (auto boid : boid_vec) {
+		rect.w = (int)boid.w;
+		rect.h = (int)boid.h;
+		rect.x = (int)(boid.x - boid.w / 2.0f);
+		rect.y = (int)(boid.y - boid.h / 2.0f);
 
 		SDL_RenderCopyEx(
 				renderer,
 				boid_sprite_texture,
 				NULL,
-				&boid_sprite_rect,
-				(int)boid_arr[i].angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
+				&rect,
+				(int)boid.angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);

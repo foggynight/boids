@@ -4,11 +4,14 @@
 #include <cmath>
 
 #include "Entity.hpp"
+#include "screen.hpp"
+
+#define MICROSECONDS_PER_SECOND	1000000
 
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)	// Convert degrees to radians
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
-void Entity::update_pos(float delta_time)
+void Entity::update_pos(int delta_time_us)
 {
 	const float w_rotated = fabs((double)w * cos(deg_to_rad(angle))) + fabs((double)h * sin(deg_to_rad(angle)));
 	const float h_rotated = fabs((double)w * sin(deg_to_rad(angle))) + fabs((double)h * cos(deg_to_rad(angle)));
@@ -16,8 +19,8 @@ void Entity::update_pos(float delta_time)
 	const float w_rotated_radius = w_rotated / 2.0f;
 	const float h_rotated_radius = h_rotated / 2.0f;
 
-	x += velocity * delta_time * (float)cos(deg_to_rad(angle));
-	y += velocity * delta_time * (float)sin(deg_to_rad(angle));
+	x += velocity * (float)cos(deg_to_rad(angle)) * (float)delta_time_us / (float)MICROSECONDS_PER_SECOND;
+	y += velocity * (float)sin(deg_to_rad(angle)) * (float)delta_time_us / (float)MICROSECONDS_PER_SECOND;
 
 	if (x < -w_rotated_radius)
 		x = (float)(WIN_WIDTH-1) + w_rotated_radius;

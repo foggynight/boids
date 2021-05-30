@@ -4,8 +4,6 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include "screen.h"
-
 /**
  * Entity type representing an entity in the world. They are contained
  * within a rectangle with a width and height. They have a position, and
@@ -17,7 +15,7 @@
  * @member y	y position at the center of the entity
  * @member angle	Angle in degrees relative to the right facing
  *	x-axis with a clockwise rotation
- * @member velocity	Forward velocity
+ * @member velocity	Forward velocity in pixels per second
  **/
 class Entity
 {
@@ -37,9 +35,9 @@ public:
 	 * Update the position of the entity based on its angle and
 	 * velocity.
 	 *
-	 * @param delta_time	Seconds since the previous update
+	 * @param delta_time_us	Microseconds since previous update
 	 **/
-	void update_pos(float delta_time);
+	void update_pos(int delta_time_us);
 };
 
 #endif	// ENTITY_HPP
