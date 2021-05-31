@@ -1,8 +1,9 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
-
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
+
+#include <vector>
 
 /**
  * Entity type representing an entity in the world. They are contained
@@ -32,12 +33,15 @@ public:
 		: w(w), h(h), x(x), y(y), angle(angle), velocity(velocity) {}
 
 	/**
-	 * Update the position of the entity based on its angle and
+	 * Update the position of this entity based on its angle and
 	 * velocity.
 	 *
 	 * @param delta_time_us	Microseconds since previous update
 	 **/
 	void update_pos(int delta_time_us);
+
+protected:
+	bool in_fov(Entity target);
 };
 
 #endif	// ENTITY_HPP

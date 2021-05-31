@@ -2,6 +2,7 @@
 // Released under the GPLv2 license
 
 #include <cmath>
+#include <vector>
 
 #include "Entity.hpp"
 #include "screen.hpp"
@@ -31,4 +32,9 @@ void Entity::update_pos(int delta_time_us)
 		y = (float)(WIN_HEIGHT-1) + h_rotated_radius;
 	else if (y > (float)(WIN_HEIGHT-1) + h_rotated_radius)
 		y = -h_rotated_radius;
+}
+
+bool Entity::in_fov(Entity target)
+{
+	return false;	// @PLACEHOLDER
 }
