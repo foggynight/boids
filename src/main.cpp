@@ -46,8 +46,8 @@ int main(int argc, char **argv)
 
 		const int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
-		std::cout << "\rFPS: " << (float)MICROSECONDS_PER_SECOND / (float)delta_time_us;
-		std::flush(std::cout);
+		//std::cout << "\rFPS: " << (float)MICROSECONDS_PER_SECOND / (float)delta_time_us;
+		//std::flush(std::cout);
 
 		SDL_Event event;
 		SDL_PollEvent(&event);
@@ -55,7 +55,12 @@ int main(int argc, char **argv)
 			break;
 
 		screen_update(boid_vec);
+
+		std::vector<Boid *> neighbor_vec;
 		for (auto& boid : boid_vec) {
+			neighbor_vec.clear();
+			boid.get_neighbors(boid_vec, neighbor_vec);
+			std::cout << neighbor_vec.size() << std::endl;
 			boid.update_pos(delta_time_us);
 		}
 
