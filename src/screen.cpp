@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "Boid.hpp"
+#include "Entity.hpp"
 #include "screen.hpp"
 
 #define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"	// Path to the boid sprite relative to the program executable

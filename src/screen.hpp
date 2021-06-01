@@ -49,6 +49,6 @@ void draw_boids(const std::vector<Boid>& boid_vec);
  **/
 void draw_line_between(const Entity& reference, const Entity& target);
 
-#endif	// SCREEN_HPP
-
 }
+
+#endif	// SCREEN_HPP

@@ -4,8 +4,6 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include <vector>
-
 /**
  * Entity type representing an entity in the world. They are contained
  * within a rectangle with a width and height. They have a position, and
