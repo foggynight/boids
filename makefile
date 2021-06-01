@@ -10,7 +10,7 @@ HEDS := $(wildcard $(SRC_DIR)/*.hpp)
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-CC := g++
+CPPC := g++
 CFLAGS := -Wall -Wextra -Wpedantic
 LIBS := -lm
 
@@ -19,12 +19,12 @@ SDL_CONFIG := `sdl2-config --cflags --libs` -lSDL2_image
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -o $@ $^ $(LIBS) $(SDL_CONFIG)
+	$(CPPC) -o $@ $^ $(LIBS) $(SDL_CONFIG)
 
 $(OBJS): $(HEDS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-	$(CC) -o $@ $(CFLAGS) -c $<
+	$(CPPC) -o $@ $(CFLAGS) -c $<
 
 $(OBJ_DIR):
 	@mkdir -p $@
