@@ -7,25 +7,48 @@
 #include <vector>
 
 #include "Boid.hpp"
+#include "Entity.hpp"
 
 #define WIN_WIDTH	1280	// Width of the window
 #define WIN_HEIGHT	720	// Height of the window
 
+namespace screen {
+
 /**
  * Initialize the screen and associated modules.
  **/
-void screen_init();
+void init();
 
 /**
  * Destroy the screen and associated modules.
  **/
-void screen_destroy();
+void destroy();
 
 /**
- * Update the screen -- Draw all the boids.
- *
- * @param boid_vec	Vector to source boid information from
+ * Clear the screen.
  **/
-void screen_update(const std::vector<Boid>& boid_vec);
+void clear();
+
+/**
+ * Present what's been drawn to the screen.
+ **/
+void present();
+
+/**
+ * Draw all the boids.
+ *
+ * @param boid_vec	Vector to source boids from
+ **/
+void draw_boids(const std::vector<Boid>& boid_vec);
+
+/**
+ * Draw a line connecting the positions of two entities.
+ *
+ * @param reference	Entity at which to start the line
+ * @param target	Entity at which to end the line
+ **/
+void draw_line_between(const Entity& reference, const Entity& target);
 
 #endif	// SCREEN_HPP
+
+}

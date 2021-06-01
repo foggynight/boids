@@ -14,9 +14,9 @@
 
 #define SETUP_FILE_PATH	"./res/setups/"
 
-#define FRAMES_PER_SECOND	144
-#define MICROSECONDS_PER_SECOND	1000000
-#define MICROSECONDS_PER_FRAME	((float)MICROSECONDS_PER_SECOND / (float)FRAMES_PER_SECOND)
+#define FPS	144
+#define US_PER_SECOND	1000000
+#define US_PER_FRAME	((float)US_PER_SECOND / (float)FPS)
 
 int main(int argc, char **argv)
 {
@@ -39,37 +39,43 @@ int main(int argc, char **argv)
 
 	auto last_time = std::chrono::high_resolution_clock::now();
 
-	screen_init();
+	screen::init();
 	while (1) {
 		const auto delta_time = std::chrono::high_resolution_clock::now() - last_time;
 		last_time = std::chrono::high_resolution_clock::now();
 
 		const int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
-		//std::cout << "\rFPS: " << (float)MICROSECONDS_PER_SECOND / (float)delta_time_us;
-		//std::flush(std::cout);
+		std::cout << "\rFPS: " << (float)US_PER_SECOND / (float)delta_time_us;
+		std::flush(std::cout);
 
 		SDL_Event event;
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
 
-		screen_update(boid_vec);
+		screen::clear();
 
 		std::vector<Boid *> neighbor_vec;
 		for (auto& boid : boid_vec) {
 			neighbor_vec.clear();
 			boid.get_neighbors(boid_vec, neighbor_vec);
-			std::cout << neighbor_vec.size() << std::endl;
+
+			for (auto& neighbor : neighbor_vec)
+				screen::draw_line_between(boid, *neighbor);
+
 			boid.update_pos(delta_time_us);
 		}
 
-		for (int wait_time = 0; wait_time < MICROSECONDS_PER_FRAME;) {
+		screen::draw_boids(boid_vec);
+		screen::present();
+
+		for (int wait_time = 0; wait_time < US_PER_FRAME;) {
 			const auto now = std::chrono::high_resolution_clock::now();
 			wait_time = std::chrono::duration_cast<std::chrono::microseconds>(now - last_time).count();
 		}
 	}
-	screen_destroy();
+	screen::destroy();
 
 	std::cout << std::endl;	// Print newline after FPS counter
 
