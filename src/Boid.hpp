@@ -4,6 +4,8 @@
 #ifndef BOID_HPP
 #define BOID_HPP
 
+#include <vector>
+
 #include "Entity.hpp"
 
 class Boid : public Entity

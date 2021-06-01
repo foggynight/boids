@@ -2,7 +2,6 @@
 // Released under the GPLv2 license
 
 #include <cmath>
-#include <vector>
 
 #include "Entity.hpp"
 #include "screen.hpp"
@@ -13,7 +12,7 @@
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
 static float fov_radius = 10000.0f;
-static float fov_max_angle = 90.0f;
+static float fov_max_angle = 180.0f;
 
 static float get_delta_position_angle(float delta_x, float delta_y);
 
