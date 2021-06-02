@@ -20,7 +20,7 @@ if __name__ == '__main__':
     for i in range(BOID_COUNT):
         x = int(scr_center_x + radius * cos(radians(angle)))
         y = int(scr_center_y + radius * sin(radians(angle)))
-        file.write(f'{BOID_W},{BOID_H},{x},{y},{angle},{BOID_DEFAULT_VELOCITY}\n')
+        file.write(f'{x},{y},{angle},{BOID_DEFAULT_VELOCITY}\n')
         angle += angle_step
 
     file.close()
