@@ -13,7 +13,7 @@ def gen_random_boid():
     y = randrange(SCREEN_HEIGHT)
     angle = randrange(BOID_MAX_ANGLE)
     velocity = BOID_DEFAULT_VELOCITY
-    return f'{BOID_W},{BOID_H},{x},{y},{angle},{velocity}\n'
+    return f'{x},{y},{angle},{velocity}\n'
 
 if __name__ == '__main__':
     random_files = glob(SETUP_PATH + '/' + 'random-*.csv')
