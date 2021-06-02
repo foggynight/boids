@@ -10,6 +10,9 @@ extern "C" {
 #include "util.h"
 }
 
+static int width = 32;
+static int height = 32;
+
 static float fov_radius = 256.0f;
 static float fov_max_angle = 120.0f;
 
@@ -20,8 +23,8 @@ void Entity::update_pos(int delta_time_us)
 	x += velocity * (float)cos(deg_to_rad(angle)) * (float)delta_time_us / (float)US_PER_SECOND;
 	y += velocity * (float)sin(deg_to_rad(angle)) * (float)delta_time_us / (float)US_PER_SECOND;
 
-	const float w_rotated = fabs((double)w * cos(deg_to_rad(angle))) + fabs((double)h * sin(deg_to_rad(angle)));
-	const float h_rotated = fabs((double)w * sin(deg_to_rad(angle))) + fabs((double)h * cos(deg_to_rad(angle)));
+	const float w_rotated = fabs((double)width * cos(deg_to_rad(angle))) + fabs((double)height * sin(deg_to_rad(angle)));
+	const float h_rotated = fabs((double)width * sin(deg_to_rad(angle))) + fabs((double)height * cos(deg_to_rad(angle)));
 
 	const float w_rotated_radius = w_rotated / 2.0f;
 	const float h_rotated_radius = h_rotated / 2.0f;
@@ -55,6 +58,9 @@ bool Entity::in_fov(Entity& target)
 	return distance <= fov_radius
 		&& (delta_angle <= fov_max_angle || delta_angle >= 360.0f - fov_max_angle);
 }
+
+int Entity::get_width() { return width; }
+int Entity::get_height() { return height; }
 
 float Entity::get_fov_radius() { return fov_radius; }
 float Entity::get_fov_max_angle() { return fov_max_angle; }

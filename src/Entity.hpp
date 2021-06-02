@@ -9,9 +9,6 @@
  * within a rectangle with a width and height. They have a position, and
  * move through the world based on their angle and velocity.
  *
- * @member w	Width of the rectangle containing the entity
- * @member h	Height of the rectangle containing the entity
- *
  * @member x	x position at the center of the entity
  * @member y	y position at the center of the entity
  *
@@ -22,9 +19,6 @@
 class Entity
 {
 public:
-	float w;
-	float h;
-
 	float x;
 	float y;
 
@@ -32,8 +26,8 @@ public:
 	float velocity;
 
 public:
-	Entity(float w, float h, float x, float y, float angle, float velocity)
-		: w(w), h(h), x(x), y(y), angle(angle), velocity(velocity) {}
+	Entity(float x, float y, float angle, float velocity)
+		: x(x), y(y), angle(angle), velocity(velocity) {}
 
 	/**
 	 * Update the position of this entity based on its angle and
@@ -43,7 +37,9 @@ public:
 	 **/
 	void update_pos(int delta_time_us);
 
-	// For drawing the FOV
+	int get_width();
+	int get_height();
+
 	float get_fov_radius();
 	float get_fov_max_angle();
 
