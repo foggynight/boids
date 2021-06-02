@@ -1,6 +1,7 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
+#include <cmath>
 #include <cstdlib>
 #include <vector>
 
@@ -11,12 +12,21 @@
 #include "Entity.hpp"
 #include "screen.hpp"
 
+extern "C" {
+#include "util.h"
+}
+
 #define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"	// Path to the boid sprite relative to the program executable
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 
 static SDL_Texture *boid_sprite_texture;
+
+static void draw_circular_arc(
+		float center_x, float center_y,
+		float radius,
+		float start_angle, float end_angle);
 
 void screen::init()
 {
@@ -79,6 +89,7 @@ void screen::draw_boids(const std::vector<Boid>& boid_vec)
 {
 	SDL_Rect rect;
 	for (const auto& boid : boid_vec) {
+		// @TODO Round these values instead of truncate
 		rect.w = (int)boid.w;
 		rect.h = (int)boid.h;
 		rect.x = (int)(boid.x - boid.w / 2.0f);
@@ -89,11 +100,48 @@ void screen::draw_boids(const std::vector<Boid>& boid_vec)
 				boid_sprite_texture,
 				NULL,
 				&rect,
+				// @TODO Round this value instead of truncate
 				(int)boid.angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);
 	}
+}
+
+void screen::draw_fov(Entity& entity)
+{
+	const float x_start = entity.x, y_start = entity.y;
+	const float fov_radius = entity.get_fov_radius();
+	const float fov_max_angle = entity.get_fov_max_angle();
+
+	const float forward_angle = entity.angle;
+	const float center_x_end = x_start + fov_radius * (float)cos(deg_to_rad(forward_angle));
+	const float center_y_end = y_start + fov_radius * (float)sin(deg_to_rad(forward_angle));
+
+	float left_angle = forward_angle - fov_max_angle;
+	if (left_angle < 0)
+		left_angle += 360.0f;
+	const float left_x_end = x_start + fov_radius * (float)cos(deg_to_rad(left_angle));
+	const float left_y_end = y_start + fov_radius * (float)sin(deg_to_rad(left_angle));
+
+	float right_angle = forward_angle + fov_max_angle;
+	if (right_angle >= 360.0f)
+		right_angle -= 360.0f;
+	const float right_x_end = x_start + fov_radius * (float)cos(deg_to_rad(right_angle));
+	const float right_y_end = y_start + fov_radius * (float)sin(deg_to_rad(right_angle));
+
+	SDL_SetRenderDrawColor(renderer, 100, 0, 100, 255);
+	SDL_RenderDrawLine(renderer,
+			x_start, y_start,
+			center_x_end, center_y_end);
+	SDL_RenderDrawLine(renderer,
+			x_start, y_start,
+			left_x_end, left_y_end);
+	SDL_RenderDrawLine(renderer,
+			x_start, y_start,
+			right_x_end, right_y_end);
+
+	draw_circular_arc(x_start, y_start, fov_radius, left_angle, right_angle);
 }
 
 void screen::draw_line_between(const Entity& reference, const Entity& target)
@@ -102,4 +150,25 @@ void screen::draw_line_between(const Entity& reference, const Entity& target)
 	SDL_RenderDrawLine(renderer,
 			reference.x, reference.y,
 			target.x, target.y);
+}
+
+static void draw_circular_arc(
+		float center_x, float center_y,
+		float radius,
+		float start_angle, float end_angle)
+{
+	const int steps = 2.0f * radius * (float)M_PI;
+	float delta_angle = end_angle - start_angle;
+	if (delta_angle < 0.0f)
+		delta_angle += 360.0f;
+	const float step_size = delta_angle / (float)steps;
+
+	float angle = start_angle;
+	SDL_SetRenderDrawColor(renderer, 100, 0, 100, 255);
+	for (int i = 0; i < steps; ++i) {
+		SDL_RenderDrawPoint(renderer,
+				center_x + radius * (float)cos(deg_to_rad(angle)),
+				center_y + radius * (float)sin(deg_to_rad(angle)));
+		angle += step_size;
+	}
 }

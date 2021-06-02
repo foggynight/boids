@@ -12,10 +12,13 @@
 #include "screen.hpp"
 #include "setup.hpp"
 
+extern "C" {
+#include "util.h"
+}
+
 #define SETUP_FILE_PATH	"./res/setups/"
 
 #define FPS	144
-#define US_PER_SECOND	1000000
 #define US_PER_FRAME	((float)US_PER_SECOND / (float)FPS)
 
 int main(int argc, char **argv)
@@ -61,6 +64,7 @@ int main(int argc, char **argv)
 			neighbor_vec.clear();
 			boid.get_neighbors(boid_vec, neighbor_vec);
 
+			screen::draw_fov(boid);
 			for (auto& neighbor : neighbor_vec)
 				screen::draw_line_between(boid, *neighbor);
 

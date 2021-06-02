@@ -42,6 +42,11 @@ void present();
 void draw_boids(const std::vector<Boid>& boid_vec);
 
 /**
+ * Draw the field of view of an entity.
+ **/
+void draw_fov(Entity& entity);
+
+/**
  * Draw a line connecting the positions of two entities.
  *
  * @param reference	Entity at which to start the line
