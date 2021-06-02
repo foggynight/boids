@@ -39,7 +39,7 @@ void present();
  *
  * @param boid_vec	Vector to source boids from
  **/
-void draw_boids(const std::vector<Boid>& boid_vec);
+void draw_boids(std::vector<Boid>& boid_vec);
 
 /**
  * Draw the field of view of an entity.

@@ -21,13 +21,11 @@ bool setup_boid_vec(std::vector<Boid>& boid_vec, const std::string& file_path)
 
 	char line[MAX_LINE_LENGTH+1];
 	while (!setup_file.getline(line, MAX_LINE_LENGTH+1).eof()) {
-		const float w = atof(strtok(line, ","));
-		const float h = atof(strtok(NULL, ","));
-		const float x = atof(strtok(NULL, ","));
+		const float x = atof(strtok(line, ","));
 		const float y = atof(strtok(NULL, ","));
 		const float angle = atof(strtok(NULL, ","));
 		const float velocity = atof(strtok(NULL, "\n"));
-		boid_vec.emplace_back(w, h, x, y, angle, velocity);
+		boid_vec.emplace_back(x, y, angle, velocity);
 	}
 
 	setup_file.close();

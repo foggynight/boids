@@ -85,15 +85,18 @@ void screen::present()
 	SDL_RenderPresent(renderer);
 }
 
-void screen::draw_boids(const std::vector<Boid>& boid_vec)
+void screen::draw_boids(std::vector<Boid>& boid_vec)
 {
 	SDL_Rect rect;
-	for (const auto& boid : boid_vec) {
+	for (auto& boid : boid_vec) {
+		const int w = boid.get_width();
+		const int h = boid.get_height();
+
 		// @TODO Round these values instead of truncate
-		rect.w = (int)boid.w;
-		rect.h = (int)boid.h;
-		rect.x = (int)(boid.x - boid.w / 2.0f);
-		rect.y = (int)(boid.y - boid.h / 2.0f);
+		rect.w = w;
+		rect.h = h;
+		rect.x = (int)(boid.x - (float)w / 2.0f);
+		rect.y = (int)(boid.y - (float)h / 2.0f);
 
 		SDL_RenderCopyEx(
 				renderer,
