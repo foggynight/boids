@@ -6,13 +6,12 @@
 #include "Entity.hpp"
 #include "screen.hpp"
 
-#define US_PER_SECOND	1000000
+extern "C" {
+#include "util.h"
+}
 
-#define deg_to_rad(X)	((double)(X) * M_PI / 180.0)	// Convert degrees to radians
-#define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
-
-static float fov_radius = 10000.0f;
-static float fov_max_angle = 180.0f;
+static float fov_radius = 256.0f;
+static float fov_max_angle = 120.0f;
 
 static float get_delta_position_angle(float delta_x, float delta_y);
 
