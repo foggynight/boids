@@ -30,6 +30,26 @@ public:
 		: x(x), y(y), angle(angle), velocity(velocity) {}
 
 	/**
+	 * Rotate this entity by adding delta_angle to its angle member,
+	 * and resolving the overflows.
+	 *
+	 * @param delta_angle	Number of degrees to add to the angle
+	 *	member
+	 **/
+	void rotate(float delta_angle);
+
+	/**
+	 * Gradually rotate this entity about its center, based on the
+	 * entity rotation speed and time passed.
+	 *
+	 * @param target_angle	Angle to rotate this entity by, positive
+	 *	indicates clockwise, negative indicates counter
+	 *	clockwise
+	 * @param delta_time_us	Microseconds since previous update
+	 **/
+	void rotate_towards(float target_angle, int delta_time_us);
+
+	/**
 	 * Update the position of this entity based on its angle and
 	 * velocity.
 	 *
