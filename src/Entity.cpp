@@ -1,6 +1,7 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
+#include <cassert>
 #include <cmath>
 
 #include "Entity.hpp"
@@ -10,13 +11,52 @@ extern "C" {
 #include "util.h"
 }
 
-static int width = 32;
-static int height = 32;
+static const float rotation_speed = 90.0f;	// Rotation speed in degrees/sec
 
-static float fov_radius = 256.0f;
-static float fov_max_angle = 120.0f;
+static int width = 32;	// Width in pixels
+static int height = 32;	// Height in pixels
+
+static float fov_radius = 256.0f;	// Radius of the FOV in pixels
+static float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees
 
 static float get_delta_position_angle(float delta_x, float delta_y);
+
+void Entity::rotate(float delta_angle)
+{
+	float new_angle = angle + delta_angle;
+	while (new_angle < 0.0f)
+		new_angle += 360.0f;
+	while (new_angle >= 360.0f)
+		new_angle -= 360.0f;
+	angle = new_angle;
+}
+
+void Entity::rotate_towards(float target_angle, int delta_time_us)
+{
+	assert(target_angle >= 0.0f && target_angle < 360.0f);
+
+	if (angle != target_angle) {
+		float cw_angle, ccw_angle;
+		if (angle < target_angle) {
+			cw_angle = target_angle - angle;
+			ccw_angle = 360.0f - target_angle + angle;
+		}
+		else {	// angle > target_angle
+			cw_angle = angle - target_angle;
+			ccw_angle = 360.0f - angle + target_angle;
+		}
+
+		float delta_angle;
+		if (cw_angle > ccw_angle)
+			delta_angle = -ccw_angle;
+		else {	// cw_angle <= ccw_angle
+			delta_angle = cw_angle;
+		}
+
+		float rotation_magnitude = rotation_speed * (float)delta_time_us / (float)US_PER_SECOND;
+		rotate(delta_angle >= 0.0f ? 1 : -1 * rotation_magnitude);
+	}
+}
 
 void Entity::update_pos(int delta_time_us)
 {

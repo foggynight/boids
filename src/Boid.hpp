@@ -21,6 +21,12 @@ public:
 	 * @param neighbor_vec	Vector to fill with neighbor pointers
 	 **/
 	void get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec);
+
+	/**
+	 * Align with neighbors by gradually turning towards the average
+	 * angle of the boids within this boid's FOV.
+	 **/
+	void align_with_neighbors(const std::vector<Boid *>& neighbor_vec, int delta_time_us);
 };
 
 #endif	// BOID_HPP

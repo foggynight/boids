@@ -49,8 +49,8 @@ int main(int argc, char **argv)
 
 		const int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
-		std::cout << "\rFPS: " << (float)US_PER_SECOND / (float)delta_time_us;
-		std::flush(std::cout);
+		//std::cout << "\rFPS: " << (float)US_PER_SECOND / (float)delta_time_us;
+		//std::flush(std::cout);
 
 		SDL_Event event;
 		SDL_PollEvent(&event);
@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 			break;
 
 		screen::clear();
+		screen::draw_boids(boid_vec);
 
 		std::vector<Boid *> neighbor_vec;
 		for (auto& boid : boid_vec) {
@@ -68,10 +69,13 @@ int main(int argc, char **argv)
 			for (auto& neighbor : neighbor_vec)
 				screen::draw_line_between(boid, *neighbor);
 
+			if (neighbor_vec.size() > 0) {
+				boid.align_with_neighbors(neighbor_vec, delta_time_us);
+			}
+
 			boid.update_pos(delta_time_us);
 		}
 
-		screen::draw_boids(boid_vec);
 		screen::present();
 
 		for (int wait_time = 0; wait_time < US_PER_FRAME;) {
