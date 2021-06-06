@@ -40,10 +40,14 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	auto last_time = std::chrono::high_resolution_clock::now();
+	bool to_quit = false;
+	bool draw_fov_toggle = false;
+	bool draw_neighbor_line_toggle = false;
 
 	screen::init();
-	while (1) {
+
+	auto last_time = std::chrono::high_resolution_clock::now();
+	while (!to_quit) {
 		const auto delta_time = std::chrono::high_resolution_clock::now() - last_time;
 		last_time = std::chrono::high_resolution_clock::now();
 
@@ -54,8 +58,21 @@ int main(int argc, char **argv)
 
 		SDL_Event event;
 		SDL_PollEvent(&event);
-		if (event.type == SDL_QUIT)
+		switch (event.type) {
+		case SDL_QUIT:
+			to_quit = true;
 			break;
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_f:
+				draw_fov_toggle = !draw_fov_toggle;
+				break;
+			case SDLK_n:
+				draw_neighbor_line_toggle = !draw_neighbor_line_toggle;
+				break;
+			}
+			break;
+		}
 
 		screen::clear();
 		screen::draw_boids(boid_vec);
@@ -65,9 +82,11 @@ int main(int argc, char **argv)
 			neighbor_vec.clear();
 			boid.get_neighbors(boid_vec, neighbor_vec);
 
-			screen::draw_fov(boid);
-			for (auto& neighbor : neighbor_vec)
-				screen::draw_line_between(boid, *neighbor);
+			if (draw_fov_toggle)
+				screen::draw_fov(boid);
+			if (draw_neighbor_line_toggle)
+				for (auto& neighbor : neighbor_vec)
+					screen::draw_line_between(boid, *neighbor);
 
 			if (neighbor_vec.size() > 0) {
 				boid.align_with_neighbors(neighbor_vec, delta_time_us);
@@ -84,8 +103,8 @@ int main(int argc, char **argv)
 			wait_time = std::chrono::duration_cast<std::chrono::microseconds>(now - last_time).count();
 		}
 	}
-	screen::destroy();
 
+	screen::destroy();
 	std::cout << std::endl;	// Print newline after FPS counter
 
 	return 0;
