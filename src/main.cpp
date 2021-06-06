@@ -64,6 +64,9 @@ int main(int argc, char **argv)
 			break;
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym) {
+			case SDLK_q:
+				to_quit = true;
+				break;
 			case SDLK_f:
 				draw_fov_toggle = !draw_fov_toggle;
 				break;
