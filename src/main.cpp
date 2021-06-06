@@ -53,8 +53,8 @@ int main(int argc, char **argv)
 
 		const int delta_time_us = std::chrono::duration_cast<std::chrono::microseconds>(delta_time).count();
 
-		//std::cout << "\rFPS: " << (float)US_PER_SECOND / (float)delta_time_us;
-		//std::flush(std::cout);
+		std::cout << "\rFPS: " << (float)US_PER_SECOND / (float)delta_time_us;
+		std::flush(std::cout);
 
 		SDL_Event event;
 		SDL_PollEvent(&event);
