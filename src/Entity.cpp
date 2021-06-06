@@ -47,9 +47,8 @@ void Entity::rotate_towards(float target_angle, int delta_time_us)
 		float delta_angle;
 		if (cw_angle > ccw_angle)
 			delta_angle = -ccw_angle;
-		else {	// cw_angle <= ccw_angle
+		else	// cw_angle <= ccw_angle
 			delta_angle = cw_angle;
-		}
 
 		float rotation_magnitude = rotation_speed * (float)delta_time_us / (float)US_PER_SECOND;
 		rotate(delta_angle >= 0.0f ? 1 : -1 * rotation_magnitude);
