@@ -16,13 +16,23 @@ extern "C" {
 #include "util.h"
 }
 
-#define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"	// Path to the boid sprite relative to the program executable
+// Path to the boid sprite relative to the program executable
+#define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 
 static SDL_Texture *boid_sprite_texture;
 
+/**
+ * Draw a circular arc, which is a segment of a circle.
+ *
+ * @param center_x	x position at the center of the circle
+ * @param center_y	y position at the center of the circle
+ * @param radius	Radius of the circle
+ * @param start_angle	Angle to start the arc at
+ * @param end_angle	Angle to end the arc at
+ **/
 static void draw_circular_arc(
 		float center_x, float center_y,
 		float radius,

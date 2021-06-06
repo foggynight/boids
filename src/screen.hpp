@@ -43,14 +43,16 @@ void draw_boids(std::vector<Boid>& boid_vec);
 
 /**
  * Draw the field of view of an entity.
+ *
+ * @param entity	Entity to derive FOV from
  **/
 void draw_fov(Entity& entity);
 
 /**
  * Draw a line connecting the positions of two entities.
  *
- * @param reference	Entity at which to start the line
- * @param target	Entity at which to end the line
+ * @param reference	Entity to start line at
+ * @param target	Entity to end line at
  **/
 void draw_line_between(const Entity& reference, const Entity& target);
 
