@@ -42,9 +42,7 @@ public:
 	 * Gradually rotate this entity about its center, based on the
 	 * entity rotation speed and time passed.
 	 *
-	 * @param target_angle	Angle to rotate this entity by, positive
-	 *	indicates clockwise, negative indicates counter
-	 *	clockwise
+	 * @param target_angle	Angle to rotate this entity towards
 	 * @param delta_time_us	Microseconds since previous update
 	 **/
 	void rotate_towards(float target_angle, int delta_time_us);
@@ -65,6 +63,7 @@ public:
 
 protected:
 	bool in_fov(Entity& target);
+	float get_delta_position_angle(float delta_x, float delta_y);
 };
 
 #endif	// ENTITY_HPP

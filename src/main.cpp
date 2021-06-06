@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 
 			if (neighbor_vec.size() > 0) {
 				boid.align_with_neighbors(neighbor_vec, delta_time_us);
+				boid.cohere_with_neighbors(neighbor_vec, delta_time_us);
 			}
 
 			boid.update_pos(delta_time_us);
