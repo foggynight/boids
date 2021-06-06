@@ -12,8 +12,8 @@
  * @member x	x position at the center of the entity
  * @member y	y position at the center of the entity
  *
- * @member angle	Angle in degrees relative to the right facing
- *	x-axis with a clockwise rotation
+ * @member angle	Angle in degrees relative to the right facing x-axis
+ *		with a clockwise rotation
  * @member velocity	Forward velocity in pixels per second
  **/
 class Entity
@@ -30,11 +30,10 @@ public:
 		: x(x), y(y), angle(angle), velocity(velocity) {}
 
 	/**
-	 * Rotate this entity by adding delta_angle to its angle member,
-	 * and resolving the overflows.
+	 * Rotate this entity by adding delta_angle to its angle member, and
+	 * resolving the overflows.
 	 *
-	 * @param delta_angle	Number of degrees to add to the angle
-	 *	member
+	 * @param delta_angle	Number of degrees to add to the angle member
 	 **/
 	void rotate(float delta_angle);
 
