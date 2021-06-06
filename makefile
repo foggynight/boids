@@ -6,7 +6,8 @@ EXEC := boids
 SRC_DIR := src
 OBJ_DIR := obj
 
-HEDS := $(wildcard $(SRC_DIR)/*.hpp)
+HEDS := $(wildcard $(SRC_DIR)/*.h)
+HEDS := $(HEDS) $(wildcard $(SRC_DIR)/*.hpp)
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
