@@ -27,6 +27,8 @@ public:
 	 * angle of the boids within this boid's FOV.
 	 **/
 	void align_with_neighbors(const std::vector<Boid *>& neighbor_vec, int delta_time_us);
+
+	void cohere_with_neighbors(const std::vector<Boid *>& neighbor_vec, int delta_time_us);
 };
 
 #endif	// BOID_HPP

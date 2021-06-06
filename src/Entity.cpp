@@ -19,8 +19,6 @@ static int height = 32;	// Height in pixels
 static float fov_radius = 256.0f;	// Radius of the FOV in pixels
 static float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees
 
-static float get_delta_position_angle(float delta_x, float delta_y);
-
 void Entity::rotate(float delta_angle)
 {
 	float new_angle = angle + delta_angle;
@@ -80,6 +78,12 @@ void Entity::update_pos(int delta_time_us)
 		y = -h_rotated_radius;
 }
 
+int Entity::get_width() { return width; }
+int Entity::get_height() { return height; }
+
+float Entity::get_fov_radius() { return fov_radius; }
+float Entity::get_fov_max_angle() { return fov_max_angle; }
+
 bool Entity::in_fov(Entity& target)
 {
 	const float delta_x = target.x - x;
@@ -99,13 +103,7 @@ bool Entity::in_fov(Entity& target)
 		&& (delta_angle <= fov_max_angle || delta_angle >= 360.0f - fov_max_angle);
 }
 
-int Entity::get_width() { return width; }
-int Entity::get_height() { return height; }
-
-float Entity::get_fov_radius() { return fov_radius; }
-float Entity::get_fov_max_angle() { return fov_max_angle; }
-
-static float get_delta_position_angle(float delta_x, float delta_y)
+float Entity::get_delta_position_angle(float delta_x, float delta_y)
 {
 	float phi = 0.0f;	// Shorthand for delta_position_angle
 
