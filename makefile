@@ -8,9 +8,14 @@ OBJ_DIR := obj
 
 HEDS := $(wildcard $(SRC_DIR)/*.h)
 HEDS := $(HEDS) $(wildcard $(SRC_DIR)/*.hpp)
-SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
+SRCS := $(wildcard $(SRC_DIR)/*.c)
+SRCS := $(SRCS) $(wildcard $(SRC_DIR)/*.cpp)
+
+OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJS := $(OBJS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+CC := gcc
 CPPC := g++
 CFLAGS := -Wall -Wextra -Wpedantic
 LIBS := -lm
@@ -23,6 +28,9 @@ $(EXEC): $(OBJS)
 	$(CPPC) -o $@ $^ $(LIBS) $(SDL_CONFIG)
 
 $(OBJS): $(HEDS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) -o $@ $(CFLAGS) -c $<
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CPPC) -o $@ $(CFLAGS) -c $<
