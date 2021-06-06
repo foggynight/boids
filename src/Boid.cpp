@@ -7,6 +7,10 @@
 
 #include "Boid.hpp"
 
+extern "C" {
+#include "util.h"
+}
+
 void Boid::get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec)
 {
 	for (auto& boid : boid_vec)

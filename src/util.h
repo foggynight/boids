@@ -9,4 +9,6 @@
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)	// Convert degrees to radians
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
+float get_delta_position_angle(float delta_x, float delta_y);
+
 #endif	// UTIL_H

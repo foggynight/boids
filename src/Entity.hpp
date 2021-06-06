@@ -62,7 +62,6 @@ public:
 
 protected:
 	bool in_fov(Entity& target);
-	float get_delta_position_angle(float delta_x, float delta_y);
 };
 
 #endif	// ENTITY_HPP
