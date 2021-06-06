@@ -60,22 +60,13 @@ int main(int argc, char **argv)
 		SDL_Event event;
 		SDL_PollEvent(&event);
 		switch (event.type) {
-		case SDL_QUIT:
-			to_quit = true;
-			break;
+		case SDL_QUIT: to_quit = true; break;
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym) {
-			case SDLK_q:
-				to_quit = true;
-				break;
-			case SDLK_f:
-				draw_fov_toggle = !draw_fov_toggle;
-				break;
-			case SDLK_n:
-				draw_neighbor_line_toggle = !draw_neighbor_line_toggle;
-				break;
-			}
-			break;
+			case SDLK_q: to_quit = true; break;
+			case SDLK_f: draw_fov_toggle = !draw_fov_toggle; break;
+			case SDLK_n: draw_neighbor_line_toggle = !draw_neighbor_line_toggle; break;
+			} break;
 		}
 
 		screen::clear();
