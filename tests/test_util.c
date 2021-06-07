@@ -21,29 +21,29 @@ int main(void)
 void test_get_delta_position_angle(void)
 {
 	// Test 0: 0, 0, 0
-	assert(get_delta_position_angle(0, 0) == 0);
+	assert(get_delta_position_angle(0, 0) == 0.0f);
 
 	// Test 1: 1, 0, 0
-	assert(get_delta_position_angle(1, 0) == 0);
+	assert(get_delta_position_angle(1, 0) == 0.0f);
 
 	// Test 2: 1, 1, 45
-	assert(get_delta_position_angle(1, 1) == 45);
+	assert(get_delta_position_angle(1, 1) == 45.0f);
 
 	// Test 3: 0, 1, 90
-	assert(get_delta_position_angle(0, 1) == 90);
+	assert(get_delta_position_angle(0, 1) == 90.0f);
 
 	// Test 4: -1, 1, 135
-	assert(get_delta_position_angle(-1, 1) == 135);
+	assert(get_delta_position_angle(-1, 1) == 135.0f);
 
 	// Test 5: -1, 0, 180
-	assert(get_delta_position_angle(-1, 0) == 180);
+	assert(get_delta_position_angle(-1, 0) == 180.0f);
 
 	// Test 6: -1, -1, 225
-	assert(get_delta_position_angle(-1, -1) == 225);
+	assert(get_delta_position_angle(-1, -1) == 225.0f);
 
 	// Test 7: 0, -1, 270
-	assert(get_delta_position_angle(0, -1) == 270);
+	assert(get_delta_position_angle(0, -1) == 270.0f);
 
 	// Test 8: 1, -1, 315
-	assert(get_delta_position_angle(1, -1) == 315);
+	assert(get_delta_position_angle(1, -1) == 315.0f);
 }
