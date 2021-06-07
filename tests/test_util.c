@@ -15,11 +15,12 @@ int main(void)
 	return 0;
 }
 
-/**
- * Test case format: delta_x, delta_y, expected_result
- **/
 void test_get_delta_position_angle(void)
 {
+	/**
+	 * Test case format: delta_x, delta_y, expected_result
+	 **/
+
 	// Test 0: 0, 0, 0
 	assert(get_delta_position_angle(0, 0) == 0.0f);
 
