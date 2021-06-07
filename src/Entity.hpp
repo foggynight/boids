@@ -60,7 +60,6 @@ public:
 	float get_fov_radius();
 	float get_fov_max_angle();
 
-protected:
 	bool in_fov(Entity& target);
 };
 
