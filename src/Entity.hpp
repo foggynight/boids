@@ -5,12 +5,14 @@
 #define ENTITY_HPP
 
 /**
- * Entity type representing an entity in the world. They are contained
- * within a rectangle with a width and height. They have a position, and
- * move through the world based on their angle and velocity.
+ * Entity type representing an entity in the world.
  *
- * @member x	x position at the center of the entity
- * @member y	y position at the center of the entity
+ * An entity is contained within a rectangle with a width and height, it
+ * has a position, and moves through the world in a forward direction
+ * based on its angle and velocity.
+ *
+ * @member x	x position at the center of this entity
+ * @member y	y position at the center of this entity
  *
  * @member angle	Angle in degrees relative to the right facing x-axis
  *		with a clockwise rotation
@@ -60,6 +62,7 @@ public:
 	float get_fov_radius();
 	float get_fov_max_angle();
 
+	// @TODO Explain FOV
 	bool in_fov(Entity& target);
 };
 

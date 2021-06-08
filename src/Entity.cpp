@@ -18,7 +18,7 @@ static const int height = 32;	// Height in pixels
 static const float rotation_speed = 90.0f;	// Rotation speed in degrees/sec
 
 static const float fov_radius = 256.0f;	// Radius of the FOV in pixels
-static const float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees
+static const float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees, 0 <= fov_max_angle <= 180
 // END: Entity constants
 
 void Entity::rotate(float delta_angle)
