@@ -18,7 +18,7 @@ void Boid::get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neigh
 			neighbor_vec.push_back(&boid);
 }
 
-void Boid::align_with_neighbors(const std::vector<Boid *>& neighbor_vec, int delta_time_us)
+float Boid::alignment(const std::vector<Boid *>& neighbor_vec)
 {
 	assert(neighbor_vec.size() > 0);
 
@@ -27,10 +27,10 @@ void Boid::align_with_neighbors(const std::vector<Boid *>& neighbor_vec, int del
 		mean_angle += neighbor->angle;
 	mean_angle /= (float)neighbor_vec.size();
 
-	rotate_towards(mean_angle, delta_time_us);
+	return mean_angle;
 }
 
-void Boid::cohere_with_neighbors(const std::vector<Boid *>& neighbor_vec, int delta_time_us)
+float Boid::cohesion(const std::vector<Boid *>& neighbor_vec)
 {
 	assert(neighbor_vec.size() > 0);
 
@@ -43,6 +43,5 @@ void Boid::cohere_with_neighbors(const std::vector<Boid *>& neighbor_vec, int de
 	mean_x /= (float)neighbor_count;
 	mean_y /= (float)neighbor_count;
 
-	const float delta_position_angle = get_delta_position_angle(mean_x - x, mean_y - y);
-	rotate_towards(delta_position_angle, delta_time_us);
+	return get_delta_position_angle(mean_x - x, mean_y - y);
 }

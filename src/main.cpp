@@ -85,8 +85,11 @@ int main(int argc, char **argv)
 					screen::draw_line_between(boid, *neighbor);
 
 			if (neighbor_vec.size() > 0) {
-				boid.align_with_neighbors(neighbor_vec, delta_time_us);
-				boid.cohere_with_neighbors(neighbor_vec, delta_time_us);
+				float target_angle = 0.0f;
+				target_angle += boid.alignment(neighbor_vec);
+				target_angle += boid.cohesion(neighbor_vec);
+				target_angle /= 2.0f;
+				boid.rotate_towards(target_angle, delta_time_us);
 			}
 
 			boid.update_pos(delta_time_us);
