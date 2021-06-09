@@ -99,8 +99,8 @@ void screen::draw_boids(std::vector<Boid>& boid_vec)
 {
 	SDL_Rect rect;
 	for (auto& boid : boid_vec) {
-		const int w = boid.get_width();
-		const int h = boid.get_height();
+		const int w = Entity::get_width();
+		const int h = Entity::get_height();
 
 		// @TODO Round these values instead of truncate
 		rect.w = w;
@@ -124,8 +124,8 @@ void screen::draw_boids(std::vector<Boid>& boid_vec)
 void screen::draw_fov(Entity& entity)
 {
 	const float x_start = entity.x, y_start = entity.y;
-	const float fov_radius = entity.get_fov_radius();
-	const float fov_max_angle = entity.get_fov_max_angle();
+	const float fov_radius = Entity::get_fov_radius();
+	const float fov_max_angle = Entity::get_fov_max_angle();
 
 	const float forward_angle = entity.angle;
 	const float center_x_end = x_start + fov_radius * (float)cos(deg_to_rad(forward_angle));
