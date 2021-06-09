@@ -10,8 +10,8 @@
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
 /**
- * Get the angle of a vector with components delta_x and delta_y,
- * relative to the right facing x-axis with a clockwise rotation.
+ * Get the angle of a vector with components delta_x and delta_y, relative to
+ * the right facing x-axis with a clockwise rotation.
  *
  * @param delta_x	x component of the vector
  * @param delta_y	y component of the vector

@@ -1,8 +1,8 @@
 // Copyright (C) 2021 Robert Coffey
 // Released under the GPLv2 license
 
-// Not a fan of using a C++ compiler for C, but this makes writing the
-// test script easier so I will do it for now.
+// Not a fan of using a C++ compiler for C, but this makes writing the test
+// script easier so I will do it for now.
 #ifdef __cplusplus
 extern "C" {
 #endif

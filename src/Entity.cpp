@@ -96,8 +96,8 @@ bool Entity::in_fov(Entity& target)
 	// Angle of the vector pointing from this to target
 	const float delta_position_angle = get_delta_position_angle(delta_x, delta_y);
 
-	// Difference in the angle of the vector pointing from this to
-	// target and the forward angle of this
+	// Difference in the angle of the vector pointing from this to target and
+	// the forward angle of this
 	const float delta_angle = fabs(delta_position_angle - angle);
 
 	return distance <= fov_radius

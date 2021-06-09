@@ -14,9 +14,8 @@ public:
 	using Entity::Entity;
 
 	/**
-	 * Get the neighbors of this boid from the boid vector. The
-	 * neighbors vector is cleared and then filled with pointers to the
-	 * neighboring boids.
+	 * Get the neighbors of this boid from the boid vector. The neighbors vector
+	 * is cleared and then filled with pointers to the neighboring boids.
 	 *
 	 * @param entity_vec	Vector to derive neighbors from
 	 * @param neighbor_vec	Vector to fill with neighbor pointers
@@ -33,13 +32,13 @@ public:
 	float alignment(const std::vector<Boid *>& neighbor_vec);
 
 	/**
-	 * Get the angle of the vector pointing from this boid to the
-	 * average position of this boid's neighbors.
+	 * Get the angle of the vector pointing from this boid to the average
+	 * position of this boid's neighbors.
 	 *
 	 * @param neighbor_vec Vector of neighbors
 	 *
-	 * @return Angle of the vector pointing from this boid to the
-	 *		average position of its neighbors
+	 * @return Angle of the vector pointing from this boid to the average
+	 *		position of its neighbors
 	 **/
 	float cohesion(const std::vector<Boid *>& neighbor_vec);
 };
