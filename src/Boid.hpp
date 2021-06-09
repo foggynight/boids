@@ -20,7 +20,7 @@ public:
 	 * @param entity_vec	Vector to derive neighbors from
 	 * @param neighbor_vec	Vector to fill with neighbor pointers
 	 **/
-	void get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec);
+	void get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec) const;
 
 	/**
 	 * Get the mean average angle of this boid's neighbors.
@@ -29,7 +29,7 @@ public:
 	 *
 	 * @return Mean average angle of this boid's neighbors
 	 **/
-	float alignment(const std::vector<Boid *>& neighbor_vec);
+	float alignment(const std::vector<Boid *>& neighbor_vec) const;
 
 	/**
 	 * Get the angle of the vector pointing from this boid to the average
@@ -40,7 +40,7 @@ public:
 	 * @return Angle of the vector pointing from this boid to the average
 	 *		position of its neighbors
 	 **/
-	float cohesion(const std::vector<Boid *>& neighbor_vec);
+	float cohesion(const std::vector<Boid *>& neighbor_vec) const;
 };
 
 #endif	// BOID_HPP
