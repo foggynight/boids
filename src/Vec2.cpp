@@ -12,27 +12,7 @@ extern "C" {
 Vec2::Vec2(float x, float y)
 	: x(x), y(y) {}
 
-Vec2 Vec2::operator+(const Vec2& target)
-{
-	return Vec2(x + target.x, y + target.y);
-}
-
-Vec2 Vec2::operator-(const Vec2& target)
-{
-	return Vec2(x - target.x, y - target.y);
-}
-
-Vec2 Vec2::operator*(float target)
-{
-	return Vec2(x * target, y * target);
-}
-
-Vec2 Vec2::operator/(float target)
-{
-	return Vec2(x / target, y / target);
-}
-
-float Vec2::get_angle()
+float Vec2::angle() const
 {
 	float theta = 0.0f;
 
@@ -61,7 +41,55 @@ float Vec2::get_angle()
 	return theta;
 }
 
-float Vec2::get_length()
+float Vec2::length() const
 {
 	return sqrt(pow(x, 2) + pow(y, 2));
+}
+
+Vec2 Vec2::operator+(const Vec2& target) const
+{
+	return Vec2(x + target.x, y + target.y);
+}
+
+Vec2 Vec2::operator-(const Vec2& target) const
+{
+	return Vec2(x - target.x, y - target.y);
+}
+
+Vec2 Vec2::operator*(float target) const
+{
+	return Vec2(x * target, y * target);
+}
+
+Vec2 Vec2::operator/(float target) const
+{
+	return Vec2(x / target, y / target);
+}
+
+Vec2& Vec2::operator+=(const Vec2& target)
+{
+	x += target.x;
+	y += target.y;
+	return *this;
+}
+
+Vec2& Vec2::operator-=(const Vec2& target)
+{
+	x -= target.x;
+	y -= target.y;
+	return *this;
+}
+
+Vec2& Vec2::operator*=(float target)
+{
+	x *= target;
+	y *= target;
+	return *this;
+}
+
+Vec2& Vec2::operator/=(float target)
+{
+	x /= target;
+	y /= target;
+	return *this;
 }
