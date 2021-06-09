@@ -43,5 +43,5 @@ float Boid::cohesion(const std::vector<Boid *>& neighbor_vec)
 	mean_x /= (float)neighbor_count;
 	mean_y /= (float)neighbor_count;
 
-	return get_delta_position_angle(mean_x - x, mean_y - y);
+	return get_vec2_angle(mean_x - x, mean_y - y);
 }

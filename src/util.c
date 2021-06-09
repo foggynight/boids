@@ -11,7 +11,7 @@ extern "C" {
 
 #include "util.h"
 
-float get_delta_position_angle(float delta_x, float delta_y)
+float get_vec2_angle(float delta_x, float delta_y)
 {
 	float phi = 0.0f;	// Shorthand for delta_position_angle
 
