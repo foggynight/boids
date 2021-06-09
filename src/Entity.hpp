@@ -7,15 +7,15 @@
 /**
  * Entity type representing an entity in the world.
  *
- * An entity is contained within a rectangle with a width and height, it
- * has a position, and moves through the world in a forward direction
- * based on its angle and velocity.
+ * An entity is contained within a rectangle with a width and height, it has a
+ * position, and moves through the world in a forward direction based on its
+ * angle and velocity.
  *
  * @member x	x position at the center of this entity
  * @member y	y position at the center of this entity
  *
- * @member angle	Angle in degrees relative to the right facing x-axis
- *		with a clockwise rotation
+ * @member angle	Angle in degrees relative to the right facing x-axis with a
+ *		clockwise rotation
  * @member velocity	Forward velocity in pixels per second
  **/
 class Entity
@@ -40,8 +40,8 @@ public:
 	void rotate(float delta_angle);
 
 	/**
-	 * Gradually rotate this entity about its center, based on the
-	 * entity rotation speed and time passed.
+	 * Gradually rotate this entity about its center, based on the entity
+	 * rotation speed and time passed.
 	 *
 	 * @param target_angle	Angle to rotate this entity towards
 	 * @param delta_time_us	Microseconds since previous update
@@ -49,8 +49,7 @@ public:
 	void rotate_towards(float target_angle, int delta_time_us);
 
 	/**
-	 * Update the position of this entity based on its angle and
-	 * velocity.
+	 * Update the position of this entity based on its angle and velocity.
 	 *
 	 * @param delta_time_us	Microseconds since previous update
 	 **/
