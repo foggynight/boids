@@ -15,12 +15,12 @@
 namespace screen {
 
 /**
- * Initialize the screen and associated modules.
+ * Initialize the screen.
  **/
 void init();
 
 /**
- * Destroy the screen and associated modules.
+ * Destroy the screen.
  **/
 void destroy();
 
