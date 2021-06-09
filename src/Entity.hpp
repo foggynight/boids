@@ -60,7 +60,7 @@ public:
 	void update_pos(int delta_time_us);
 
 	// @TODO Explain FOV
-	bool in_fov(Entity& target);
+	bool in_fov(Entity& target) const;
 };
 
 #endif	// ENTITY_HPP

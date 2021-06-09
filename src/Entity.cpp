@@ -93,7 +93,7 @@ void Entity::update_pos(int delta_time_us)
 		pos.y = -h_rotated_radius;
 }
 
-bool Entity::in_fov(Entity& target)
+bool Entity::in_fov(Entity& target) const
 {
 	const Vec2 delta_pos { target.pos - pos };
 	const float delta_angle = fabs(delta_pos.angle() - angle);

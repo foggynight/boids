@@ -11,14 +11,14 @@ extern "C" {
 #include "util.h"
 }
 
-void Boid::get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec)
+void Boid::get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec) const
 {
 	for (auto& boid : boid_vec)
 		if (&boid != this && in_fov(boid))
 			neighbor_vec.push_back(&boid);
 }
 
-float Boid::alignment(const std::vector<Boid *>& neighbor_vec)
+float Boid::alignment(const std::vector<Boid *>& neighbor_vec) const
 {
 	assert(neighbor_vec.size() > 0);
 
@@ -30,7 +30,7 @@ float Boid::alignment(const std::vector<Boid *>& neighbor_vec)
 	return mean_angle;
 }
 
-float Boid::cohesion(const std::vector<Boid *>& neighbor_vec)
+float Boid::cohesion(const std::vector<Boid *>& neighbor_vec) const
 {
 	assert(neighbor_vec.size() > 0);
 
