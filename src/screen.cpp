@@ -10,6 +10,7 @@
 
 #include "Boid.hpp"
 #include "Entity.hpp"
+#include "Vec2.hpp"
 #include "screen.hpp"
 
 extern "C" {
@@ -97,16 +98,17 @@ void screen::present()
 
 void screen::draw_boids(std::vector<Boid>& boid_vec)
 {
-	SDL_Rect rect;
-	for (auto& boid : boid_vec) {
-		const int w = Entity::get_width();
-		const int h = Entity::get_height();
+	const int w = Entity::get_width();
+	const int h = Entity::get_height();
 
+	SDL_Rect rect;
+	rect.w = w;
+	rect.h = h;
+
+	for (auto& boid : boid_vec) {
 		// @TODO Round these values instead of truncate
-		rect.w = w;
-		rect.h = h;
-		rect.x = (int)(boid.x - (float)w / 2.0f);
-		rect.y = (int)(boid.y - (float)h / 2.0f);
+		rect.x = (int)(boid.pos.x - (float)w / 2.0f);
+		rect.y = (int)(boid.pos.y - (float)h / 2.0f);
 
 		SDL_RenderCopyEx(
 				renderer,
@@ -123,7 +125,7 @@ void screen::draw_boids(std::vector<Boid>& boid_vec)
 
 void screen::draw_fov(Entity& entity)
 {
-	const float x_start = entity.x, y_start = entity.y;
+	const float x_start = entity.pos.x, y_start = entity.pos.y;
 	const float fov_radius = Entity::get_fov_radius();
 	const float fov_max_angle = Entity::get_fov_max_angle();
 
@@ -161,8 +163,8 @@ void screen::draw_line_between(const Entity& reference, const Entity& target)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 	SDL_RenderDrawLine(renderer,
-			reference.x, reference.y,
-			target.x, target.y);
+			reference.pos.x, reference.pos.y,
+			target.pos.x, target.pos.y);
 }
 
 static void draw_circular_arc(

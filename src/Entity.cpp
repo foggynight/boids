@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "Entity.hpp"
+#include "Vec2.hpp"
 #include "screen.hpp"
 
 extern "C" {
@@ -29,8 +30,8 @@ float Entity::get_fov_radius() { return fov_radius; }
 float Entity::get_fov_max_angle() { return fov_max_angle; }
 // END: Entity static functions
 
-Entity::Entity(float x, float y, float angle, float velocity)
-	: x(x), y(y), angle(angle), velocity(velocity) {}
+Entity::Entity(Vec2 pos, float angle, float velocity)
+	: pos(pos), angle(angle), velocity(velocity) {}
 
 void Entity::rotate(float delta_angle)
 {
@@ -72,8 +73,8 @@ void Entity::rotate_towards(float target_angle, int delta_time_us)
 
 void Entity::update_pos(int delta_time_us)
 {
-	x += velocity * (float)cos(deg_to_rad(angle)) * (float)delta_time_us / (float)US_PER_SECOND;
-	y += velocity * (float)sin(deg_to_rad(angle)) * (float)delta_time_us / (float)US_PER_SECOND;
+	pos.x += velocity * (float)cos(deg_to_rad(angle)) * (float)delta_time_us / (float)US_PER_SECOND;
+	pos.y += velocity * (float)sin(deg_to_rad(angle)) * (float)delta_time_us / (float)US_PER_SECOND;
 
 	const float w_rotated = fabs((double)width * cos(deg_to_rad(angle))) + fabs((double)height * sin(deg_to_rad(angle)));
 	const float h_rotated = fabs((double)width * sin(deg_to_rad(angle))) + fabs((double)height * cos(deg_to_rad(angle)));
@@ -81,27 +82,26 @@ void Entity::update_pos(int delta_time_us)
 	const float w_rotated_radius = w_rotated / 2.0f;
 	const float h_rotated_radius = h_rotated / 2.0f;
 
-	if (x < -w_rotated_radius)
-		x = (float)(WIN_WIDTH-1) + w_rotated_radius;
-	else if (x > (float)(WIN_WIDTH-1) + w_rotated_radius)
-		x = -w_rotated_radius;
+	if (pos.x < -w_rotated_radius)
+		pos.x = (float)(WIN_WIDTH-1) + w_rotated_radius;
+	else if (pos.x > (float)(WIN_WIDTH-1) + w_rotated_radius)
+		pos.x = -w_rotated_radius;
 
-	if (y < -h_rotated_radius)
-		y = (float)(WIN_HEIGHT-1) + h_rotated_radius;
-	else if (y > (float)(WIN_HEIGHT-1) + h_rotated_radius)
-		y = -h_rotated_radius;
+	if (pos.y < -h_rotated_radius)
+		pos.y = (float)(WIN_HEIGHT-1) + h_rotated_radius;
+	else if (pos.y > (float)(WIN_HEIGHT-1) + h_rotated_radius)
+		pos.y = -h_rotated_radius;
 }
 
 bool Entity::in_fov(Entity& target)
 {
-	const float delta_x = target.x - x;
-	const float delta_y = target.y - y;
+	Vec2 delta_pos { target.pos - pos };
 
 	// Distance between the positions of this and target
-	const float distance = get_vec2_length(delta_x, delta_y);
+	const float distance = delta_pos.length();
 
 	// Angle of the vector pointing from this to target
-	const float delta_position_angle = get_vec2_angle(delta_x, delta_y);
+	const float delta_position_angle = delta_pos.angle();
 
 	// Difference in the angle of the vector pointing from this to target and
 	// the forward angle of this
