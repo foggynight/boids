@@ -11,33 +11,38 @@ extern "C" {
 
 #include "util.h"
 
-float get_vec2_angle(float delta_x, float delta_y)
+float get_vec2_angle(float x, float y)
 {
-	float phi = 0.0f;	// Shorthand for delta_position_angle
+	float theta = 0.0f;
 
-	if (delta_x == 0.0f && delta_y == 0.0f)
-		phi = 0.0f;
-	else if (delta_x == 0.0f) {
-		if (delta_y > 0.0f)
-			phi = 90.0f;
-		else	// delta_y < 0.0f
-			phi = 270.0f;
+	if (x == 0.0f && y == 0.0f)
+		theta = 0.0f;
+	else if (x == 0.0f) {
+		if (y > 0.0f)
+			theta = 90.0f;
+		else	// y < 0.0f
+			theta = 270.0f;
 	}
-	else if (delta_y == 0.0f) {
-		if (delta_x > 0.0f)
-			phi = 0.0f;
-		else	// delta_x < 0.0f
-			phi = 180.0f;
+	else if (y == 0.0f) {
+		if (x > 0.0f)
+			theta = 0.0f;
+		else	// x < 0.0f
+			theta = 180.0f;
 	}
 	else {
-		phi = rad_to_deg(atan(delta_y / delta_x));	// Already determined that delta_x != 0.0f
-		if (delta_x < 0.0f)
-			phi += 180.0f;
-		else if (delta_y < 0.0f)
-			phi += 360.0f;
+		theta = rad_to_deg(atan(y / x));	// Already determined that x != 0.0f
+		if (x < 0.0f)
+			theta += 180.0f;
+		else if (y < 0.0f)
+			theta += 360.0f;
 	}
 
-	return phi;
+	return theta;
+}
+
+float get_vec2_length(float x, float y)
+{
+	return sqrt(pow(x, 2) + pow(y, 2));
 }
 
 #ifdef __cplusplus

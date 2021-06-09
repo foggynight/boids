@@ -36,6 +36,8 @@ void Entity::rotate_towards(float target_angle, int delta_time_us)
 	assert(target_angle >= 0.0f && target_angle < 360.0f);
 
 	if (angle != target_angle) {
+		// @TODO Wrap finding the shorter rotation in a function
+
 		float cw_angle, ccw_angle;
 		if (angle < target_angle) {
 			cw_angle = target_angle - angle;
@@ -91,7 +93,7 @@ bool Entity::in_fov(Entity& target)
 	const float delta_y = target.y - y;
 
 	// Distance between the positions of this and target
-	const float distance = sqrt(pow(delta_x, 2) + pow(delta_y, 2));
+	const float distance = get_vec2_length(delta_x, delta_y);
 
 	// Angle of the vector pointing from this to target
 	const float delta_position_angle = get_vec2_angle(delta_x, delta_y);
