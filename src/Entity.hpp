@@ -28,8 +28,7 @@ public:
 	float velocity;
 
 public:
-	Entity(float x, float y, float angle, float velocity)
-		: x(x), y(y), angle(angle), velocity(velocity) {}
+	Entity(float x, float y, float angle, float velocity);
 
 	/**
 	 * Rotate this entity by adding delta_angle to its angle member, and

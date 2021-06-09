@@ -21,6 +21,9 @@ static const float fov_radius = 256.0f;	// Radius of the FOV in pixels
 static const float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees, 0 <= fov_max_angle <= 180
 // END: Entity constants
 
+Entity::Entity(float x, float y, float angle, float velocity)
+	: x(x), y(y), angle(angle), velocity(velocity) {}
+
 void Entity::rotate(float delta_angle)
 {
 	float new_angle = angle + delta_angle;
