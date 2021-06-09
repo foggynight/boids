@@ -4,7 +4,8 @@
 #ifndef VEC2_HPP
 #define VEC2_HPP
 
-class Vec2 {
+class Vec2
+{
 public:
 	float x;
 	float y;
