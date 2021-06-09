@@ -4,6 +4,8 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include "Vec2.hpp"
+
 /**
  * Entity type representing an entity in the world.
  *
@@ -11,9 +13,7 @@
  * position, and moves through the world in a forward direction based on its
  * angle and velocity.
  *
- * @member x	x position at the center of this entity
- * @member y	y position at the center of this entity
- *
+ * @member pos	Position at the center of this entity
  * @member angle	Angle in degrees relative to the right facing x-axis with a
  *		clockwise rotation
  * @member velocity	Forward velocity in pixels per second
@@ -28,14 +28,12 @@ public:
 	static float get_fov_max_angle();
 
 public:
-	float x;
-	float y;
-
+	Vec2 pos;
 	float angle;
 	float velocity;
 
 public:
-	Entity(float x, float y, float angle, float velocity);
+	Entity(Vec2 pos, float angle, float velocity);
 
 	/**
 	 * Rotate this entity by adding delta_angle to its angle member, and

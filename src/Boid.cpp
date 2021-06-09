@@ -2,10 +2,10 @@
 // Released under the GPLv2 license
 
 #include <cassert>
-#include <cstddef>
 #include <vector>
 
 #include "Boid.hpp"
+#include "Vec2.hpp"
 
 extern "C" {
 #include "util.h"
@@ -34,14 +34,10 @@ float Boid::cohesion(const std::vector<Boid *>& neighbor_vec)
 {
 	assert(neighbor_vec.size() > 0);
 
-	float mean_x = 0.0f, mean_y = 0.0f;
-	for (const auto& neighbor : neighbor_vec) {
-		mean_x += neighbor->x;
-		mean_y += neighbor->y;
-	}
-	const std::size_t neighbor_count = neighbor_vec.size();
-	mean_x /= (float)neighbor_count;
-	mean_y /= (float)neighbor_count;
+	Vec2 mean_pos;
+	for (const auto& neighbor : neighbor_vec)
+		mean_pos += neighbor->pos;
+	mean_pos /= neighbor_vec.size();
 
-	return get_vec2_angle(mean_x - x, mean_y - y);
+	return (mean_pos - pos).angle();
 }
