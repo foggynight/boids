@@ -21,6 +21,14 @@ static const float fov_radius = 256.0f;	// Radius of the FOV in pixels
 static const float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees, 0 <= fov_max_angle <= 180
 // END: Entity constants
 
+// START: Entity static functions
+int Entity::get_width() { return width; }
+int Entity::get_height() { return height; }
+
+float Entity::get_fov_radius() { return fov_radius; }
+float Entity::get_fov_max_angle() { return fov_max_angle; }
+// END: Entity static functions
+
 Entity::Entity(float x, float y, float angle, float velocity)
 	: x(x), y(y), angle(angle), velocity(velocity) {}
 
@@ -83,12 +91,6 @@ void Entity::update_pos(int delta_time_us)
 	else if (y > (float)(WIN_HEIGHT-1) + h_rotated_radius)
 		y = -h_rotated_radius;
 }
-
-int Entity::get_width() { return width; }
-int Entity::get_height() { return height; }
-
-float Entity::get_fov_radius() { return fov_radius; }
-float Entity::get_fov_max_angle() { return fov_max_angle; }
 
 bool Entity::in_fov(Entity& target)
 {

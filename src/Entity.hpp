@@ -21,6 +21,13 @@
 class Entity
 {
 public:
+	static int get_width();
+	static int get_height();
+
+	static float get_fov_radius();
+	static float get_fov_max_angle();
+
+public:
 	float x;
 	float y;
 
@@ -53,12 +60,6 @@ public:
 	 * @param delta_time_us	Microseconds since previous update
 	 **/
 	void update_pos(int delta_time_us);
-
-	int get_width();
-	int get_height();
-
-	float get_fov_radius();
-	float get_fov_max_angle();
 
 	// @TODO Explain FOV
 	bool in_fov(Entity& target);
