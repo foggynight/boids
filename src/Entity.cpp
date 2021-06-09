@@ -95,18 +95,8 @@ void Entity::update_pos(int delta_time_us)
 
 bool Entity::in_fov(Entity& target)
 {
-	Vec2 delta_pos { target.pos - pos };
-
-	// Distance between the positions of this and target
-	const float distance = delta_pos.length();
-
-	// Angle of the vector pointing from this to target
-	const float delta_position_angle = delta_pos.angle();
-
-	// Difference in the angle of the vector pointing from this to target and
-	// the forward angle of this
-	const float delta_angle = fabs(delta_position_angle - angle);
-
-	return distance <= fov_radius
+	const Vec2 delta_pos { target.pos - pos };
+	const float delta_angle = fabs(delta_pos.angle() - angle);
+	return delta_pos.length() <= fov_radius
 		&& (delta_angle <= fov_max_angle || delta_angle >= 360.0f - fov_max_angle);
 }
