@@ -14,8 +14,8 @@ public:
 	Vec2(float x = 0.0f, float y = 0.0f);
 
 	/**
-	 * Get the angle of this Vec2 relative to the right facing x-axis, with a
-	 * clockwise rotation starting at the x-axis.
+	 * Get the angle of this Vec2 in degrees relative to the right facing x-axis
+	 * with a clockwise rotation.
 	 *
 	 * @return Angle of this Vec2
 	 **/
