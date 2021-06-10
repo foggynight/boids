@@ -38,7 +38,7 @@ public:
 	 * @param neighbor_vec Vector of neighbors
 	 *
 	 * @return Angle of the vector pointing from this boid to the average
-	 *		position of its neighbors
+	 * position of its neighbors
 	 **/
 	float cohesion(const std::vector<Boid *>& neighbor_vec) const;
 };
