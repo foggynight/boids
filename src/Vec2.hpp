@@ -11,7 +11,9 @@ public:
 	float y;
 
 public:
-	Vec2(float x = 0.0f, float y = 0.0f);
+	Vec2();
+	Vec2(float angle);
+	Vec2(float x, float y);
 
 	/**
 	 * Get the angle of this Vec2 in degrees relative to the right facing x-axis
