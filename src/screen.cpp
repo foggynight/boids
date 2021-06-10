@@ -10,7 +10,6 @@
 
 #include "Boid.hpp"
 #include "Entity.hpp"
-#include "Vec2.hpp"
 #include "screen.hpp"
 
 extern "C" {
@@ -106,17 +105,15 @@ void screen::draw_boids(std::vector<Boid>& boid_vec)
 	rect.h = h;
 
 	for (auto& boid : boid_vec) {
-		// @TODO Round these values instead of truncate
-		rect.x = (int)(boid.pos.x - (float)w / 2.0f);
-		rect.y = (int)(boid.pos.y - (float)h / 2.0f);
+		rect.x = roundf(boid.pos.x - (float)w / 2.0f);
+		rect.y = roundf(boid.pos.y - (float)h / 2.0f);
 
 		SDL_RenderCopyEx(
 				renderer,
 				boid_sprite_texture,
 				NULL,
 				&rect,
-				// @TODO Round this value instead of truncate
-				(int)boid.angle + 90,	// Addition of 90 is to compensate for sprites facing upwards
+				roundf(boid.angle) + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);
