@@ -15,7 +15,7 @@
  *
  * @member pos	Position at the center of this entity
  * @member angle	Angle in degrees relative to the right facing x-axis with a
- *		clockwise rotation
+ * clockwise rotation
  * @member velocity	Forward velocity in pixels per second
  **/
 class Entity
