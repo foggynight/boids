@@ -14,17 +14,17 @@ public:
 	Vec2(float x = 0.0f, float y = 0.0f);
 
 	/**
-	 * Get the angle of the vector relative to the right facing x-axis, with a
+	 * Get the angle of this Vec2 relative to the right facing x-axis, with a
 	 * clockwise rotation starting at the x-axis.
 	 *
-	 * @return Angle of the vector
+	 * @return Angle of this Vec2
 	 **/
 	float angle() const;
 
 	/**
-	 * Get the length of the vector.
+	 * Get the length of this Vec2.
 	 *
-	 * @return Length of the vector
+	 * @return Length of this Vec2
 	 **/
 	float length() const;
 
