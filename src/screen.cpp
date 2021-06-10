@@ -54,7 +54,8 @@ void screen::init()
 			"hop",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			WIN_WIDTH, WIN_HEIGHT,
-			0);
+			0
+		);
 	if (!window) {
 		SDL_Log("Error: Failed to create window: %s", SDL_GetError());
 		exit(1);
@@ -113,7 +114,7 @@ void screen::draw_boids(std::vector<Boid>& boid_vec)
 				boid_sprite_texture,
 				NULL,
 				&rect,
-				roundf(boid.angle) + 90,	// Addition of 90 is to compensate for sprites facing upwards
+				(int)roundf(boid.angle) + 90,	// Addition of 90 is to compensate for sprites facing upwards
 				NULL,
 				SDL_FLIP_NONE
 			);
