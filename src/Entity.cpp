@@ -48,26 +48,8 @@ void Entity::rotate_towards(float target_angle, int delta_time_us)
 	assert(target_angle >= 0.0f && target_angle < 360.0f);
 
 	if (angle != target_angle) {
-		// @TODO Wrap finding the shorter rotation in a function
-
-		float cw_angle, ccw_angle;
-		if (angle < target_angle) {
-			cw_angle = target_angle - angle;
-			ccw_angle = 360.0f - target_angle + angle;
-		}
-		else {	// angle > target_angle
-			cw_angle = angle - target_angle;
-			ccw_angle = 360.0f - angle + target_angle;
-		}
-
-		float delta_angle;
-		if (cw_angle > ccw_angle)
-			delta_angle = -ccw_angle;
-		else	// cw_angle <= ccw_angle
-			delta_angle = cw_angle;
-
 		float rotation_magnitude = rotation_speed * (float)delta_time_us / (float)US_PER_SECOND;
-		rotate(delta_angle >= 0.0f ? 1 : -1 * rotation_magnitude);
+		rotate(rotation_magnitude * find_shorter_rotation(angle, target_angle));
 	}
 }
 
