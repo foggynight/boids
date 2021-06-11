@@ -52,6 +52,22 @@ float Vec2::length() const
 	return sqrt(pow(x, 2) + pow(y, 2));
 }
 
+Vec2& Vec2::to_unit_vector()
+{
+	const float len = (*this).length();
+
+	if (len > 0.0f) {
+		x /= len;
+		y /= len;
+	}
+	else {
+		x = 1.0f;
+		y = 0.0f;
+	}
+
+	return *this;
+}
+
 Vec2 Vec2::operator+(const Vec2& target) const
 {
 	return Vec2(x + target.x, y + target.y);
