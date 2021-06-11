@@ -56,6 +56,13 @@ public:
 	float length() const;
 
 	/**
+	 * Convert this Vec2 to a unit vector.
+	 *
+	 * @return This Vec2
+	 **/
+	Vec2& to_unit_vector();
+
+	/**
 	 * Perform vector addition on two Vec2s, creating a new Vec2.
 	 *
 	 * @param target	Vec2 to add to this Vec2
