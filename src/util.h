@@ -19,7 +19,7 @@
  * @return 1 if clockwise else -1
  *
  * @note If the rotation directions are equal in length, clockwise is chosen by
- * default.
+ * default
  **/
 int find_shorter_rotation(float start_angle, float end_angle);
 
