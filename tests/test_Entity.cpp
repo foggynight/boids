@@ -9,22 +9,9 @@
 #include "Vec2.hpp"
 
 extern "C" {
+#include "approx_equal.h"
 #include "util.h"
 }
-
-#define APPROX_EQUAL_THRESHOLD	0.000001f	// Default approximately equal difference threshold
-
-/**
- * Determine if two floats are approximately equal.
- *
- * @param x	First float
- * @param y	Second float
- * @param threshold	Maximum difference between the floats for them to be
- *		considered approximately equal
- *
- * @return true if floats are approximately equal else false
- **/
-bool approx_equal(float x, float y, float threshold = APPROX_EQUAL_THRESHOLD);
 
 void test_constructor();
 void test_rotate();
@@ -41,12 +28,6 @@ int main()
 	test_in_fov();
 	std::cout << "test_Entity: All tests passed" << std::endl;
 	return 0;
-}
-
-bool approx_equal(float x, float y, float threshold)
-{
-	float diff = fabs(y - x);
-	return diff <= threshold;
 }
 
 void test_constructor()
