@@ -3,10 +3,12 @@
 # Copyright (C) 2021 Robert Coffey
 # Released under the GPLv2 license
 
-# Compile tests
-gcc -o test_util.out -I../src test_util.c ../src/util.c -lm
+# Compile C tests
 
-# Run and delete tests
+# Compile C++ tests
+g++ -o test_Entity.out -I../src test_Entity.cpp ../src/Entity.cpp ../src/Vec2.cpp -lm
+
+# Run and delete all tests
 for TEST in *.out; do
 	./"$TEST"
 	rm "$TEST"
