@@ -11,6 +11,15 @@ extern "C" {
 #include "approx_equal.h"
 }
 
+void test_to_unit_vector();
+
+int main()
+{
+	test_to_unit_vector();
+	std::cout << "test_Vec2: All tests passed" << std::endl;
+	return 0;
+}
+
 void test_to_unit_vector()
 {
 	/**
@@ -79,11 +88,4 @@ void test_to_unit_vector()
 	vec.to_unit_vector();
 	assert(approx_equal(vec.x, (float)1/sqrt(2.0)));
 	assert(approx_equal(vec.y, (float)-1/sqrt(2.0)));
-}
-
-int main()
-{
-	test_to_unit_vector();
-	std::cout << "test_Vec2: All tests passed" << std::endl;
-	return 0;
 }
