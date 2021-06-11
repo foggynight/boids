@@ -48,7 +48,7 @@ void Entity::rotate_towards(float target_angle, int delta_time_us)
 	assert(target_angle >= 0.0f && target_angle < 360.0f);
 
 	if (angle != target_angle) {
-		float rotation_magnitude = rotation_speed * (float)delta_time_us / (float)US_PER_SECOND;
+		const float rotation_magnitude = rotation_speed * (float)delta_time_us / (float)US_PER_SECOND;
 		rotate(rotation_magnitude * find_shorter_rotation(angle, target_angle));
 	}
 }
