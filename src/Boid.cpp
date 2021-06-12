@@ -22,12 +22,12 @@ float Boid::alignment(const std::vector<Boid *>& neighbor_vec) const
 {
 	assert(neighbor_vec.size() > 0);
 
-	float mean_angle = 0.0f;
+	Vec2 target_direction;
 	for (const auto& neighbor : neighbor_vec)
-		mean_angle += neighbor->angle;
-	mean_angle /= (float)neighbor_vec.size();
+		target_direction += Vec2(neighbor->angle);
+	target_direction.to_unit_vector();
 
-	return mean_angle;
+	return target_direction.angle();
 }
 
 float Boid::cohesion(const std::vector<Boid *>& neighbor_vec) const
