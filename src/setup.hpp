@@ -13,7 +13,7 @@
  * Setup the boid vector by reading the initial parameters of the boids from a
  * CSV file, using those parameters to construct the boids in the vector.
  *
- * @param boid_vec	Vector to fill with boids
+ * @param boid_vec	vector to fill with boids
  * @param file_path	Path to file containing initial boid parameters
  *
  * @param false if opening the setup file fails, otherwise true
