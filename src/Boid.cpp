@@ -18,7 +18,7 @@ void Boid::get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neigh
 			neighbor_vec.push_back(&boid);
 }
 
-float Boid::alignment(const std::vector<Boid *>& neighbor_vec) const
+Vec2 Boid::alignment(const std::vector<Boid *>& neighbor_vec) const
 {
 	assert(neighbor_vec.size() > 0);
 
@@ -27,10 +27,10 @@ float Boid::alignment(const std::vector<Boid *>& neighbor_vec) const
 		target_direction += Vec2(neighbor->angle);
 	target_direction.normalize();
 
-	return target_direction.angle();
+	return target_direction;
 }
 
-float Boid::cohesion(const std::vector<Boid *>& neighbor_vec) const
+Vec2 Boid::cohesion(const std::vector<Boid *>& neighbor_vec) const
 {
 	assert(neighbor_vec.size() > 0);
 
@@ -39,5 +39,5 @@ float Boid::cohesion(const std::vector<Boid *>& neighbor_vec) const
 		mean_pos += neighbor->pos;
 	mean_pos /= neighbor_vec.size();
 
-	return (mean_pos - pos).angle();
+	return (mean_pos - pos);
 }
