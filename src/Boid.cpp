@@ -39,5 +39,5 @@ Vec2 Boid::cohesion(const std::vector<Boid *>& neighbor_vec) const
 		mean_pos += neighbor->pos;
 	mean_pos /= neighbor_vec.size();
 
-	return (mean_pos - pos);
+	return (mean_pos - pos).normalize();
 }
