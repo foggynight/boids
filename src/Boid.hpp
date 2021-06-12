@@ -17,25 +17,26 @@ public:
 	 * Get the neighbors of this boid from the boid vector. The neighbors vector
 	 * is cleared and then filled with pointers to the neighboring boids.
 	 *
-	 * @param entity_vec	Vector to derive neighbors from
-	 * @param neighbor_vec	Vector to fill with neighbor pointers
+	 * @param boid_vec	vector to derive neighbors from
+	 * @param neighbor_vec	vector to fill with neighbor pointers
 	 **/
 	void get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec) const;
 
 	/**
-	 * Get a Vec2 representing the combined directions of this boid's neighbors.
+	 * Get a unit vector representing the combined directions of this boid's
+	 * neighbors.
 	 *
-	 * @param neighbor_vec Vector of neighbors
+	 * @param neighbor_vec vector of neighbors
 	 *
 	 * @return Vec2 representing the combined directions of neighbors
 	 **/
 	Vec2 alignment(const std::vector<Boid *>& neighbor_vec) const;
 
 	/**
-	 * Get a Vec2 representing the direction pointing from this boid to the
-	 * average position of its neighbors.
+	 * Get a unit vector representing the direction pointing from this boid to
+	 * the average position of its neighbors.
 	 *
-	 * @param neighbor_vec Vector of neighbors
+	 * @param neighbor_vec vector of neighbors
 	 *
 	 * @return Vec2 representing the direction from this boid to the average
 	 * position of its neighbors

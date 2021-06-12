@@ -37,7 +37,7 @@ void present();
 /**
  * Draw all the boids.
  *
- * @param boid_vec	Vector to source boids from
+ * @param boid_vec	vector to source boids from
  **/
 void draw_boids(std::vector<Boid>& boid_vec);
 
