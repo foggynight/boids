@@ -56,11 +56,15 @@ public:
 	float length() const;
 
 	/**
-	 * Convert this Vec2 to a unit vector.
+	 * Normalize this Vec2.
 	 *
 	 * @return This Vec2
+	 *
+	 * @note For the sake of the simulation, this member function also converts
+	 * the zero vector to a vector of length one pointing along the positive
+	 * x-axis.
 	 **/
-	Vec2& to_unit_vector();
+	Vec2& normalize();
 
 	/**
 	 * Perform vector addition on two Vec2s, creating a new Vec2.

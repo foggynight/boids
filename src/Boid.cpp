@@ -25,7 +25,7 @@ float Boid::alignment(const std::vector<Boid *>& neighbor_vec) const
 	Vec2 target_direction;
 	for (const auto& neighbor : neighbor_vec)
 		target_direction += Vec2(neighbor->angle);
-	target_direction.to_unit_vector();
+	target_direction.normalize();
 
 	return target_direction.angle();
 }

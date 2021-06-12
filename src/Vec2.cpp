@@ -52,7 +52,7 @@ float Vec2::length() const
 	return sqrt(pow(x, 2) + pow(y, 2));
 }
 
-Vec2& Vec2::to_unit_vector()
+Vec2& Vec2::normalize()
 {
 	const float len = (*this).length();
 
