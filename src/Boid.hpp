@@ -23,24 +23,24 @@ public:
 	void get_neighbors(std::vector<Boid>& boid_vec, std::vector<Boid *>& neighbor_vec) const;
 
 	/**
-	 * Get the mean average angle of this boid's neighbors.
+	 * Get a Vec2 representing the combined directions of this boid's neighbors.
 	 *
 	 * @param neighbor_vec Vector of neighbors
 	 *
-	 * @return Mean average angle of this boid's neighbors
+	 * @return Vec2 representing the combined directions of neighbors
 	 **/
-	float alignment(const std::vector<Boid *>& neighbor_vec) const;
+	Vec2 alignment(const std::vector<Boid *>& neighbor_vec) const;
 
 	/**
-	 * Get the angle of the vector pointing from this boid to the average
-	 * position of this boid's neighbors.
+	 * Get a Vec2 representing the direction pointing from this boid to the
+	 * average position of its neighbors.
 	 *
 	 * @param neighbor_vec Vector of neighbors
 	 *
-	 * @return Angle of the vector pointing from this boid to the average
+	 * @return Vec2 representing the direction from this boid to the average
 	 * position of its neighbors
 	 **/
-	float cohesion(const std::vector<Boid *>& neighbor_vec) const;
+	Vec2 cohesion(const std::vector<Boid *>& neighbor_vec) const;
 };
 
 #endif	// BOID_HPP
