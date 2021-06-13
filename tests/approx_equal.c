@@ -9,7 +9,7 @@ extern "C" {
 
 #include "approx_equal.h"
 
-#define APPROX_EQUAL_THRESHOLD	0.000001f	// Default approximately equal difference threshold
+#define APPROX_EQUAL_THRESHOLD	0.000001f
 
 int approx_equal(float x, float y)
 {
