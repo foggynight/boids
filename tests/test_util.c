@@ -17,28 +17,11 @@ int main(void)
 
 void test_find_shorter_rotation(void)
 {
-	/**
-	 * Test case format: start_angle, end_angle, expected_result
-	 **/
-
-	// Test 0: 0, 0, NO_ROT
 	assert(find_shorter_rotation(0.0f, 0.0f) == NO_ROT);
-
-	// Test 1: 0, 90, CW
 	assert(find_shorter_rotation(0.0f, 90.0f) == CW);
-
-	// Test 2: 0, 180, CW
 	assert(find_shorter_rotation(0.0f, 180.0f) == CW);
-
-	// Test 3: 0, 270, CCW
 	assert(find_shorter_rotation(0.0f, 270.0f) == CCW);
-
-	// Test 4: 270, 0, CW
 	assert(find_shorter_rotation(270.0f, 0.0f) == CW);
-
-	// Test 5: 270, 90, CW
 	assert(find_shorter_rotation(270.0f, 90.0f) == CW);
-
-	// Test 6: 270, 180, CW
 	assert(find_shorter_rotation(270.0f, 180.0f) == CCW);
 }
