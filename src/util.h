@@ -9,6 +9,12 @@
 #define deg_to_rad(X)	((double)(X) * M_PI / 180.0)	// Convert degrees to radians
 #define rad_to_deg(X)	((double)(X) * 180.0 / M_PI)	// Convert radians to degrees
 
+enum rotation_direction {
+	CW = 1,	// Clockwise
+	CCW = -1,	// Counter clockwise
+	NO_ROT = 0	// No rotation
+};
+
 /**
  * Find the shorter direction for start_angle to be rotated to be equal to
  * end_angle.
