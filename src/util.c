@@ -7,10 +7,6 @@ extern "C" {
 
 #include "util.h"
 
-#define CW	1	// Clockwise
-#define CCW	-1	// Counter clockwise
-#define NO_ROT	0	// No rotation
-
 int find_shorter_rotation(float start_angle, float end_angle)
 {
 	float cw_angle, ccw_angle;
