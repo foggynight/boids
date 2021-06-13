@@ -11,81 +11,69 @@ extern "C" {
 #include "approx_equal.h"
 }
 
+void test_angle();
+void test_length();
 void test_normalize();
 
 int main()
 {
+	test_angle();
+	test_length();
 	test_normalize();
 	std::cout << "test_Vec2: All tests passed" << std::endl;
 	return 0;
 }
 
+void test_angle()
+{
+	Vec2 vec;
+	auto test = [&vec](float x, float y, float angle) {
+		vec.x = x;
+		vec.y = y;
+		assert(approx_equal(vec.angle(), angle));
+	};
+
+	// @TODO Add test_angle test cases
+}
+
+void test_length()
+{
+	Vec2 vec;
+	auto test = [&vec](float x, float y, float length) {
+		vec.x = x;
+		vec.y = y;
+		assert(approx_equal(vec.length(), length));
+	};
+
+	test(0, 0, 0);
+	test(1, 0, 1);
+	test(0, 1, 1);
+	test(-1, 0, 1);
+	test(0, -1, 1);
+	test(1, 1, sqrt(2));
+	test(-1, 1, sqrt(2));
+	test(-1, -1, sqrt(2));
+	test(1, -1, sqrt(2));
+}
+
 void test_normalize()
 {
-	/**
-	 * Test case format: input_x, input_y, expected_x, expected_y
-	 **/
+	Vec2 vec;
+	auto test = [&vec](float x, float y, float new_x, float new_y) {
+		vec.x = x;
+		vec.y = y;
+		vec.normalize();
+		assert(approx_equal(vec.x, new_x));
+		assert(approx_equal(vec.y, new_y));
+	};
 
-	Vec2 vec(0.0f, 0.0f);
-
-	// Test 0: 0, 0, 1, 0
-	vec.normalize();
-	assert(approx_equal(vec.x, 1.0f));
-	assert(approx_equal(vec.y, 0.0f));
-
-	// Test 1: 2, 0, 1, 0
-	vec.x = 2.0f;
-	vec.y = 0.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, 1.0f));
-	assert(approx_equal(vec.y, 0.0f));
-
-	// Test 2: 0, 2, 0, 1
-	vec.x = 0.0f;
-	vec.y = 2.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, 0.0f));
-	assert(approx_equal(vec.y, 1.0f));
-
-	// Test 3: -2, 0, -1, 0
-	vec.x = -2.0f;
-	vec.y = 0.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, -1.0f));
-	assert(approx_equal(vec.y, 0.0f));
-
-	// Test 4: 0, -2, 0, -1
-	vec.x = 0.0f;
-	vec.y = -2.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, 0.0f));
-	assert(approx_equal(vec.y, -1.0f));
-
-	// Test 5: 1, 1, 1/sqrt(2), 1/sqrt(2)
-	vec.x = 1.0f;
-	vec.y = 1.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, (float)1/sqrt(2.0)));
-	assert(approx_equal(vec.y, (float)1/sqrt(2.0)));
-
-	// Test 6: -1, 1, -1/sqrt(2), 1/sqrt(2)
-	vec.x = -1.0f;
-	vec.y = 1.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, (float)-1/sqrt(2.0)));
-	assert(approx_equal(vec.y, (float)1/sqrt(2.0)));
-
-	// Test 7: -1, -1, -1/sqrt(2), -1/sqrt(2)
-	vec.x = -1.0f;
-	vec.y = -1.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, (float)-1/sqrt(2.0)));
-	assert(approx_equal(vec.y, (float)-1/sqrt(2.0)));
-
-	// Test 8: 1, -1, 1/sqrt(2), -1/sqrt(2)
-	vec.x = 1.0f;
-	vec.y = -1.0f;
-	vec.normalize();
-	assert(approx_equal(vec.x, (float)1/sqrt(2.0)));
-	assert(approx_equal(vec.y, (float)-1/sqrt(2.0)));
+	test(0, 0, 1, 0);
+	test(2, 0, 1, 0);
+	test(0, 2, 0, 1);
+	test(-2, 0, -1, 0);
+	test(0, -2, 0, -1);
+	test(1, 1, 1/sqrt(2), 1/sqrt(2));
+	test(-1, 1, -1/sqrt(2), 1/sqrt(2));
+	test(-1, -1, -1/sqrt(2), -1/sqrt(2));
+	test(1, -1, 1/sqrt(2), -1/sqrt(2));
 }
