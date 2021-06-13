@@ -33,7 +33,15 @@ void test_angle()
 		assert(approx_equal(vec.angle(), angle));
 	};
 
-	// @TODO Add test_angle test cases
+	test(0, 0, 0);
+	test(1, 0, 0);
+	test(0, 1, 90);
+	test(-1, 0, 180);
+	test(0, -1, 270);
+	test(1, 1, 45);
+	test(-1, 1, 135);
+	test(-1, -1, 225);
+	test(1, -1, 315);
 }
 
 void test_length()
