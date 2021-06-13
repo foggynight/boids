@@ -24,7 +24,7 @@ if __name__ == '__main__':
     else:
         next_number = int(random_files[-1].split('-')[1].split('.')[0]) + 1
 
-    file = setup_open_new(f'random-{next_number}')
+    file = setup_open_new(f'random_{next_number}')
 
     for i in range(BOID_COUNT):
         file.write(gen_random_boid())
