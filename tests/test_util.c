@@ -6,45 +6,39 @@
 
 #include "util.h"
 
-void test_get_vec2_angle(void);
+void test_find_shorter_rotation(void);
 
 int main(void)
 {
-	test_get_vec2_angle();
+	test_find_shorter_rotation();
 	printf("test_util: All tests passed\n");
 	return 0;
 }
 
-void test_get_vec2_angle(void)
+void test_find_shorter_rotation(void)
 {
 	/**
-	 * Test case format: delta_x, delta_y, expected_result
+	 * Test case format: start_angle, end_angle, expected_result
 	 **/
 
-	// Test 0: 0, 0, 0
-	assert(get_vec2_angle(0, 0) == 0.0f);
+	// Test 0: 0, 0, NO_ROT
+	assert(find_shorter_rotation(0.0f, 0.0f) == NO_ROT);
 
-	// Test 1: 1, 0, 0
-	assert(get_vec2_angle(1, 0) == 0.0f);
+	// Test 1: 0, 90, CW
+	assert(find_shorter_rotation(0.0f, 90.0f) == CW);
 
-	// Test 2: 1, 1, 45
-	assert(get_vec2_angle(1, 1) == 45.0f);
+	// Test 2: 0, 180, CW
+	assert(find_shorter_rotation(0.0f, 180.0f) == CW);
 
-	// Test 3: 0, 1, 90
-	assert(get_vec2_angle(0, 1) == 90.0f);
+	// Test 3: 0, 270, CCW
+	assert(find_shorter_rotation(0.0f, 270.0f) == CCW);
 
-	// Test 4: -1, 1, 135
-	assert(get_vec2_angle(-1, 1) == 135.0f);
+	// Test 4: 270, 0, CW
+	assert(find_shorter_rotation(270.0f, 0.0f) == CW);
 
-	// Test 5: -1, 0, 180
-	assert(get_vec2_angle(-1, 0) == 180.0f);
+	// Test 5: 270, 90, CW
+	assert(find_shorter_rotation(270.0f, 90.0f) == CW);
 
-	// Test 6: -1, -1, 225
-	assert(get_vec2_angle(-1, -1) == 225.0f);
-
-	// Test 7: 0, -1, 270
-	assert(get_vec2_angle(0, -1) == 270.0f);
-
-	// Test 8: 1, -1, 315
-	assert(get_vec2_angle(1, -1) == 315.0f);
+	// Test 6: 270, 180, CW
+	assert(find_shorter_rotation(270.0f, 180.0f) == CCW);
 }

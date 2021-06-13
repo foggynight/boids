@@ -4,6 +4,7 @@
 # Released under the GPLv2 license
 
 # Compile C tests
+gcc -o test_util.out -I../src test_util.c ../src/util.c
 
 # Compile C++ tests
 g++ -o test_Entity.out -I../src test_Entity.cpp approx_equal.c ../src/util.c ../src/Entity.cpp ../src/Vec2.cpp -lm
