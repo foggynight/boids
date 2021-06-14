@@ -25,7 +25,10 @@ public:
 	static int get_height();
 
 	static float get_fov_radius();
+	static void set_fov_radius(float new_fov_radius);
+
 	static float get_fov_max_angle();
+	static void set_fov_max_angle(float new_fov_max_angle);
 
 public:
 	Vec2 pos;
