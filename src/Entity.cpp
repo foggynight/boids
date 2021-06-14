@@ -12,22 +12,25 @@ extern "C" {
 #include "util.h"
 }
 
-// START: Entity constants
+// START: Global Entity variables
 static const int width = 32;	// Width in pixels
 static const int height = 32;	// Height in pixels
 
 static const float rotation_speed = 90.0f;	// Rotation speed in degrees/sec
 
-static const float fov_radius = 256.0f;	// Radius of the FOV in pixels
-static const float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees, 0 <= fov_max_angle <= 180
-// END: Entity constants
+static float fov_radius = 256.0f;	// Radius of the FOV in pixels
+static float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees, 0 <= fov_max_angle <= 180
+// END: Global Entity variables
 
 // START: Entity static member functions
 int Entity::get_width() { return width; }
 int Entity::get_height() { return height; }
 
 float Entity::get_fov_radius() { return fov_radius; }
+void Entity::set_fov_radius(float new_fov_radius) { fov_radius = new_fov_radius; }
+
 float Entity::get_fov_max_angle() { return fov_max_angle; }
+void Entity::set_fov_max_angle(float new_fov_max_angle) { fov_max_angle = new_fov_max_angle; }
 // END: Entity static member functions
 
 Entity::Entity(Vec2 pos, float angle, float velocity)
