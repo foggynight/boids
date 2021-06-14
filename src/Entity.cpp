@@ -13,12 +13,12 @@ extern "C" {
 }
 
 // START: Global Entity variables
-static const int width = 32;	// Width in pixels
-static const int height = 32;	// Height in pixels
+static const int width = 16;	// Width in pixels
+static const int height = 16;	// Height in pixels
 
 static const float rotation_speed = 90.0f;	// Rotation speed in degrees/sec
 
-static float fov_radius = 256.0f;	// Radius of the FOV in pixels
+static float fov_radius = 64.0f;	// Radius of the FOV in pixels
 static float fov_max_angle = 120.0f;	// Maximum angle of the FOV in degrees, 0 <= fov_max_angle <= 180
 // END: Global Entity variables
 
