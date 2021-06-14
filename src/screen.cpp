@@ -17,7 +17,7 @@ extern "C" {
 }
 
 // Path to the boid sprite relative to the program executable
-#define BOID_SPRITE_PATH	"res/sprites/boid_wireframe.png"
+#define BOID_SPRITE_PATH	"res/sprites/16_boid_wireframe.png"
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
