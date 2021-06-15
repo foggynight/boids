@@ -16,8 +16,7 @@ extern "C" {
 #include "util.h"
 }
 
-// Path to boid setup files
-#define SETUP_FILE_PATH	"./res/setups/"
+#define SETUP_FILE_PATH	"./res/setups/"	// Path to boid setup files
 
 #define FPS	144	// Frames per second
 #define US_PER_FRAME	((float)US_PER_SECOND / (float)FPS)	// Microseconds per frame
