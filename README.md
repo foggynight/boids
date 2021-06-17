@@ -6,7 +6,6 @@ Swarm simulation.
 ## Dependencies
 
 - SDL2
-- SDL2_image
 
 
 ## License
