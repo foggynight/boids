@@ -3,6 +3,12 @@
 Swarm simulation.
 
 
+## Dependencies
+
+- SDL2
+- SDL2_image
+
+
 ## License
 
 Copyright (C) 2021 Robert Coffey
