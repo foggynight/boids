@@ -93,22 +93,16 @@
   (let* ((x (boid-x boid))
          (y (boid-y boid))
          (angle (vec2-to-angle (boid-dx boid) (boid-dy boid)))
-         (forward-point-x (floor (+ x (* *boid-radius* (cos (radians angle))))))
-         (forward-point-y (floor (+ y (* *boid-radius* (sin (radians angle))))))
-         (left-point-x (floor (+ x (* *boid-radius* (cos (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
-         (left-point-y (floor (+ y (* *boid-radius* (sin (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
-         (right-point-x (floor (+ x (* *boid-radius* (cos (radians (+ angle (- 180 (/ *boid-tail-angle* 2)))))))))
-         (right-point-y (floor (+ y (* *boid-radius* (sin (radians (+ angle (- 180 (/ *boid-tail-angle* 2))))))))))
+         (forward-x (floor (+ x (* *boid-radius* (cos (radians angle))))))
+         (forward-y (floor (+ y (* *boid-radius* (sin (radians angle))))))
+         (left-x (floor (+ x (* *boid-radius* (cos (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
+         (left-y (floor (+ y (* *boid-radius* (sin (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
+         (right-x (floor (+ x (* *boid-radius* (cos (radians (+ angle (- 180 (/ *boid-tail-angle* 2)))))))))
+         (right-y (floor (+ y (* *boid-radius* (sin (radians (+ angle (- 180 (/ *boid-tail-angle* 2))))))))))
     (sdl2:set-render-draw-color ren 0 255 0 255)
-    (sdl2:render-draw-line ren
-                           forward-point-x forward-point-y
-                           left-point-x left-point-y)
-    (sdl2:render-draw-line ren
-                           forward-point-x forward-point-y
-                           right-point-x right-point-y)
-    (sdl2:render-draw-line ren
-                           left-point-x left-point-y
-                           right-point-x right-point-y)))
+    (sdl2:render-draw-line ren forward-x forward-y left-x left-y)
+    (sdl2:render-draw-line ren forward-x forward-y right-x right-y)
+    (sdl2:render-draw-line ren left-x left-y right-x right-y)))
 
 ;; Draw a list of boids
 (defun render-draw-boids (ren boid-list)
