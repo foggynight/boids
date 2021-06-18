@@ -71,6 +71,8 @@
       (setq boid-list (cons boid boid-list)))
     boid-list))
 
+;; @TODO boid-update
+
 ;;; RENDER SECTION -------------------------------------------------------------
 
 ;; Clear the screen
@@ -79,6 +81,7 @@
   (sdl2:render-clear ren))
 
 ;; Draw the boids
+;; @TODO Draw boids proper
 (defun render-draw-boids (ren boid-list)
   (unless (eq boid-list nil)
     (let* ((boid (car boid-list))
@@ -86,9 +89,7 @@
            (y (boid-y boid))
            (angle (boid-angle boid)))
       (sdl2:set-render-draw-color ren 255 255 255 255)
-      (sdl2:render-draw-line ren
-                             x
-                             y
+      (sdl2:render-draw-line ren x y
                              (floor (+ x (* 10 (cos (radians angle)))))
                              (floor (+ y (* 10 (sin (radians angle))))))
       (sdl2:set-render-draw-color ren 0 255 0 255)
