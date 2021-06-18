@@ -18,6 +18,12 @@
 ;; Number of boids to simulate
 (defparameter *boid-count* 32)
 
+;; Radius of the circle containing a boid
+(defparameter *boid-radius* 16)
+;; Angle between the two vectors pointing from the center of a boid to its left
+;; and right tail points
+(defparameter *boid-tail-angle* 60)
+
 ;; Screen width and height
 (defparameter *sw* 1280)
 (defparameter *sh* 720)
@@ -32,6 +38,20 @@
 (defun radians (degrees)
   (* (/ degrees 180.0) pi))
 
+;; Convert an x-y vector into an angle in degrees relative to the positive
+;; x-axis with a positive rotation
+(defun vec2-to-angle (x y)
+  (let* ((angle 0))
+    (if (= x 0)
+        (cond ((> y 0) 90)
+              ((< y 0) 180)
+              (t (setq angle 0)))
+        (progn (setq angle (degrees (atan (/ y x))))
+               ;; Adjust angle for correct quadrant
+               (cond ((< x 0) (setq angle (+ angle 180)))
+                     ((< y 0) (setq angle (+ angle 360))))))
+    angle))
+
 ;;; BOID SECTION ---------------------------------------------------------------
 
 ;; @TODO Write a comment for this
@@ -41,21 +61,9 @@
    (dx :accessor boid-dx)
    (dy :accessor boid-dy)))
 
-;; Determine the angle of a boid based on its velocity, the angle is measured in
-;; degrees relative to the right facing x-axis with a clockwise rotation
+;; Determine the angle of a boid based on its velocity
 (defmethod boid-angle ((object boid))
-  (let* ((dx (boid-dx object))
-         (dy (boid-dy object))
-         (angle 0))
-    (if (= dx 0)
-        (cond ((> dy 0) 90)
-              ((< dy 0) 180)
-              (t (setq angle 0)))
-        (progn (setq angle (degrees (atan (/ dy dx))))
-               ;; Adjust angle for correct quadrant
-               (cond ((< dx 0) (setq angle (+ angle 180)))
-                     ((< dy 0) (setq angle (+ angle 360))))))
-    angle))
+  (vec2-to-angle (boid-dx object) (boid-dy object)))
 
 ;; Initialize a list of boids with random parameters
 (defun boid-init (boid-count)
@@ -80,21 +88,33 @@
   (sdl2:set-render-draw-color ren 0 0 0 255)
   (sdl2:render-clear ren))
 
-;; Draw the boids
-;; @TODO Draw boids proper
+;; Draw a boid
+(defun render-draw-boid (ren boid)
+  (let* ((x (boid-x boid))
+         (y (boid-y boid))
+         (angle (vec2-to-angle (boid-dx boid) (boid-dy boid)))
+         (forward-point-x (floor (+ x (* *boid-radius* (cos (radians angle))))))
+         (forward-point-y (floor (+ y (* *boid-radius* (sin (radians angle))))))
+         (left-point-x (floor (+ x (* *boid-radius* (cos (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
+         (left-point-y (floor (+ y (* *boid-radius* (sin (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
+         (right-point-x (floor (+ x (* *boid-radius* (cos (radians (+ angle (- 180 (/ *boid-tail-angle* 2)))))))))
+         (right-point-y (floor (+ y (* *boid-radius* (sin (radians (+ angle (- 180 (/ *boid-tail-angle* 2))))))))))
+    (sdl2:set-render-draw-color ren 0 255 0 255)
+    (sdl2:render-draw-line ren
+                           forward-point-x forward-point-y
+                           left-point-x left-point-y)
+    (sdl2:render-draw-line ren
+                           forward-point-x forward-point-y
+                           right-point-x right-point-y)
+    (sdl2:render-draw-line ren
+                           left-point-x left-point-y
+                           right-point-x right-point-y)))
+
+;; Draw a list of boids
 (defun render-draw-boids (ren boid-list)
   (unless (eq boid-list nil)
-    (let* ((boid (car boid-list))
-           (x (boid-x boid))
-           (y (boid-y boid))
-           (angle (boid-angle boid)))
-      (sdl2:set-render-draw-color ren 255 255 255 255)
-      (sdl2:render-draw-line ren x y
-                             (floor (+ x (* 10 (cos (radians angle)))))
-                             (floor (+ y (* 10 (sin (radians angle))))))
-      (sdl2:set-render-draw-color ren 0 255 0 255)
-      (sdl2:render-draw-point ren x y)
-      (render-draw-boids ren (cdr boid-list)))))
+    (render-draw-boid ren (car boid-list))
+    (render-draw-boids ren (cdr boid-list))))
 
 ;;; MAIN SECTION ---------------------------------------------------------------
 
