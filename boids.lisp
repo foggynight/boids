@@ -24,6 +24,12 @@
 ;; and right tail points.
 (defparameter *boid-tail-angle* 60)
 
+;; Distance from an obstacle indicating a boid should attempt to avoid colliding
+;; with it.
+(defparameter *boid-avoidance-distance* 100)
+;; Acceleration with which a boid can accelerate away from an obstacle.
+(defparameter *boid-avoidance-acceleration* 0.01)
+
 ;; Screen width and height.
 (defparameter *sw* 1280)
 (defparameter *sh* 720)
@@ -66,6 +72,19 @@
 (defmethod boid-angle ((object boid))
   (vec2-to-angle (boid-dx object) (boid-dy object)))
 
+;; Accelerate a boid to avoid the edges of the world.
+(defmethod boid-avoid-edges ((object boid))
+  (let ((x (boid-x object))
+        (y (boid-y object)))
+    (if (<= x *boid-avoidance-distance*)
+        (setf (boid-dx object) (+ (boid-dx object) *boid-avoidance-acceleration*)))
+    (if (>= x (- *sw* *boid-avoidance-distance*))
+        (setf (boid-dx object) (- (boid-dx object) *boid-avoidance-acceleration*)))
+    (if (<= y *boid-avoidance-distance*)
+        (setf (boid-dy object) (+ (boid-dy object) *boid-avoidance-acceleration*)))
+    (if (>= y (- *sh* *boid-avoidance-distance*))
+        (setf (boid-dy object) (- (boid-dy object) *boid-avoidance-acceleration*)))))
+
 ;; Update the position of a boid based on its velocity.
 (defmethod boid-update-pos ((object boid))
   (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
@@ -85,6 +104,12 @@
       (setf (boid-dy boid) (/ (- (random 21) 10) 10.0))
       (setq boid-list (cons boid boid-list)))
     boid-list))
+
+;; Accelerate a list of boids to avoid the edges of the world.
+(defun boid-list-avoid-edges (boid-list)
+  (unless (eq boid-list nil)
+    (boid-avoid-edges (car boid-list))
+    (boid-list-avoid-edges (cdr boid-list))))
 
 ;; Update the positions of a list of boids.
 (defun boid-list-update-pos (boid-list)
@@ -138,6 +163,7 @@
              (render-clear ren)
              (render-draw-boid-list ren boid-list)
              (sdl2:render-present ren)
+             (boid-list-avoid-edges boid-list)
              (boid-list-update-pos boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
             (:quit () t)))))))
