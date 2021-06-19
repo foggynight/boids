@@ -15,24 +15,33 @@
 
 ;;; CONFIG SECTION -------------------------------------------------------------
 
+;;; -- GENERAL --
 ;; Number of boids to simulate.
 (defparameter *boid-count* 32)
+;; Screen width and height.
+(defparameter *sw* 1280)
+(defparameter *sh* 720)
 
+;;; -- BOID GEOMETRY --
 ;; Radius of the circle containing a boid.
 (defparameter *boid-radius* 16)
 ;; Angle between the two vectors pointing from the center of a boid to its left
 ;; and right tail points.
 (defparameter *boid-tail-angle* 60)
 
+;;; -- BOID FOV --
+(defparameter *boid-fov-radius* 100)
+(defparameter *boid-fov-max-angle* 120)
+
+;;; -- BOID ALIGNMENT --
+(defparameter *boid-alignment-acceleration* 0.01)
+
+;;; -- BOID AVOIDANCE --
 ;; Distance from an obstacle indicating a boid should attempt to avoid colliding
 ;; with it.
-(defparameter *boid-avoidance-distance* 100)
+(defparameter *boid-avoidance-distance* *boid-fov-radius*)
 ;; Acceleration with which a boid can accelerate away from an obstacle.
 (defparameter *boid-avoidance-acceleration* 0.01)
-
-;; Screen width and height.
-(defparameter *sw* 1280)
-(defparameter *sh* 720)
 
 ;;; UTILITY SECTION ------------------------------------------------------------
 
@@ -43,6 +52,10 @@
 ;; Convert degrees to radians.
 (defun radians (degrees)
   (* (/ degrees 180.0) pi))
+
+;; Determine the length of an x-y vector.
+(defun vec2-length (x y)
+  (sqrt (+ (expt x 2) (expt y 2))))
 
 ;; Convert an x-y vector into an angle in degrees relative to the positive
 ;; x-axis with a positive rotation.
@@ -71,6 +84,24 @@
 ;; Determine the angle of a boid based on its velocity.
 (defmethod boid-angle ((object boid))
   (vec2-to-angle (boid-dx object) (boid-dy object)))
+
+;; Get a list of the neighbors of a boid.
+;; TODO Check if target is within view angle of the boid
+(defmethod boid-get-neighbors ((object boid) boid-list)
+  (if boid-list
+      (let* ((target (car boid-list))
+             (distance (vec2-length (- (boid-x target) (boid-x object))
+                                    (- (boid-y target) (boid-y object)))))
+        (if (<= distance *boid-fov-radius*)
+            (cons target (boid-get-neighbors (cdr boid-list)))
+            (boid-get-neighbors (cdr boid-list))))
+      nil))
+
+;; Gradually align a boid's velocity vector with the mean average velocity
+;; vector of its neighbors.
+(defmethod boid-align-with-neighbors ((object boid) neighbor-list)
+
+  )
 
 ;; Accelerate a boid to avoid the edges of the world.
 (defmethod boid-avoid-edges ((object boid))
@@ -163,6 +194,11 @@
              (render-clear ren)
              (render-draw-boid-list ren boid-list)
              (sdl2:render-present ren)
+             (dolist (item boid-list)
+               (let ((neighbor-list (boid-get-neighbors item)))
+                 (when neighbor-list
+                   (boid-align-with-neighbors item neighbor-list)
+                   )))
              (boid-list-avoid-edges boid-list)
              (boid-list-update-pos boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
