@@ -43,8 +43,8 @@
 (defun vec2-to-angle (x y)
   (let* ((angle 0))
     (if (= x 0)
-        (cond ((> y 0) 90)
-              ((< y 0) 180)
+        (cond ((> y 0) (setq angle 90))
+              ((< y 0) (setq angle 270))
               (t (setq angle 0)))
         (progn (setq angle (degrees (atan (/ y x))))
                ;; Adjust angle for correct quadrant
