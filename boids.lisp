@@ -196,8 +196,8 @@
                                     (/ *boid-separation-acceleration* delta-x))))
         (unless (= delta-y 0)
           (setf (boid-dy object) (- (boid-dy object)
-                                    (/ *boid-separation-acceleration* delta-y)))))
-      (boid-separate-from-neighbors object (cdr neighbor-list)))))
+                                    (/ *boid-separation-acceleration* delta-y))))))
+    (boid-separate-from-neighbors object (cdr neighbor-list))))
 
 ;; Initialize a list of boids with random parameters.
 (defun boid-init (boid-count)
