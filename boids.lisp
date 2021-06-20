@@ -218,7 +218,7 @@
 
 ;; Draw a list of boids.
 (defun render-draw-boid-list (ren boid-list)
-  (unless (eq boid-list nil)
+  (when boid-list
     (render-draw-boid ren (car boid-list))
     (render-draw-boid-list ren (cdr boid-list))))
 
