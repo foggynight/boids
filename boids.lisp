@@ -274,6 +274,7 @@
                    (boid-align-with-neighbors boid neighbor-list)
                    (boid-cohere-with-neighbors boid neighbor-list)
                    (boid-separate-from-neighbors boid neighbor-list))))
+             ;; TODO Limit boid speed here
              (boid-list-update-pos boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
             (:quit () t)))))))
