@@ -210,8 +210,8 @@
       ;; Random velocity with components in the range:
       ;; { v:real | -1 <= v <= 1 and v * 10 == floor(v * 10) }
       ;; TODO Replace magic numbers with global variables
-      (setf (boid-dx boid) (/ (- (random 21) 10) 10.0))
-      (setf (boid-dy boid) (/ (- (random 21) 10) 10.0))
+      (setf (boid-dx boid) (- (random 21) 10))
+      (setf (boid-dy boid) (- (random 21) 10))
       (setq boid-list (cons boid boid-list)))
     boid-list))
 
