@@ -36,16 +36,20 @@
 ;; angle of a given boid.
 (defparameter *boid-fov-max-angle* 120)
 
-;;; -- BOID ALIGNMENT --
-;; Magnitude with which a boid can accelerate to align with its neighbors.
-(defparameter *boid-alignment-acceleration* 0.1)
-
 ;;; -- BOID AVOIDANCE --
 ;; Distance from an obstacle indicating a boid should attempt to avoid colliding
 ;; with it.
 (defparameter *boid-avoidance-distance* *boid-fov-radius*)
 ;; Magnitude with which a boid can accelerate away from an obstacle.
 (defparameter *boid-avoidance-acceleration* 0.2)
+
+;;; -- BOID ALIGNMENT --
+;; Magnitude with which a boid can accelerate to align with its neighbors.
+(defparameter *boid-alignment-acceleration* 0.1)
+
+;;; -- BOID COHESION --
+;; Magnitude with which a boid can accelerate to cohere with its neighbors.
+(defparameter *boid-cohesion-acceleration* 0.001)
 
 ;;; UTILITY SECTION ------------------------------------------------------------
 
@@ -115,6 +119,24 @@
 (defmethod boid-angle ((object boid))
   (vec2-to-angle (boid-dx object) (boid-dy object)))
 
+;; Update the position of a boid based on its velocity.
+(defmethod boid-update-pos ((object boid))
+  (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
+  (setf (boid-y object) (+ (boid-y object) (boid-dy object))))
+
+;; Accelerate a boid to avoid the edges of the world.
+(defmethod boid-avoid-edges ((object boid))
+  (let ((x (boid-x object))
+        (y (boid-y object)))
+    (if (<= x *boid-avoidance-distance*)
+        (setf (boid-dx object) (+ (boid-dx object) *boid-avoidance-acceleration*)))
+    (if (>= x (- *sw* *boid-avoidance-distance*))
+        (setf (boid-dx object) (- (boid-dx object) *boid-avoidance-acceleration*)))
+    (if (<= y *boid-avoidance-distance*)
+        (setf (boid-dy object) (+ (boid-dy object) *boid-avoidance-acceleration*)))
+    (if (>= y (- *sh* *boid-avoidance-distance*))
+        (setf (boid-dy object) (- (boid-dy object) *boid-avoidance-acceleration*)))))
+
 ;; Get a list of the neighbors of a boid.
 ;; TODO Ignore self -- Currently counts self as neighbor
 ;; TODO Check if target is within view angle of the boid
@@ -139,23 +161,15 @@
     (setf (boid-dy object) (+ (boid-dy object)
                               (* *boid-alignment-acceleration* (cadr diff-vel))))))
 
-;; Accelerate a boid to avoid the edges of the world.
-(defmethod boid-avoid-edges ((object boid))
-  (let ((x (boid-x object))
-        (y (boid-y object)))
-    (if (<= x *boid-avoidance-distance*)
-        (setf (boid-dx object) (+ (boid-dx object) *boid-avoidance-acceleration*)))
-    (if (>= x (- *sw* *boid-avoidance-distance*))
-        (setf (boid-dx object) (- (boid-dx object) *boid-avoidance-acceleration*)))
-    (if (<= y *boid-avoidance-distance*)
-        (setf (boid-dy object) (+ (boid-dy object) *boid-avoidance-acceleration*)))
-    (if (>= y (- *sh* *boid-avoidance-distance*))
-        (setf (boid-dy object) (- (boid-dy object) *boid-avoidance-acceleration*)))))
-
-;; Update the position of a boid based on its velocity.
-(defmethod boid-update-pos ((object boid))
-  (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
-  (setf (boid-y object) (+ (boid-y object) (boid-dy object))))
+;;
+(defmethod boid-cohere-with-neighbors ((object boid) neighbor-list)
+  (let* ((mean-pos (vec2-div (reduce #'vec2-add (map 'list #'boid-position neighbor-list))
+                             (length neighbor-list)))
+         (diff-pos (vec2-sub mean-pos (boid-position object))))
+    (setf (boid-dx object) (+ (boid-dx object)
+                              (* *boid-cohesion-acceleration* (car diff-pos))))
+    (setf (boid-dy object) (+ (boid-dy object)
+                              (* *boid-cohesion-acceleration* (cadr diff-pos))))))
 
 ;; Initialize a list of boids with random parameters.
 (defun boid-init (boid-count)
@@ -230,12 +244,13 @@
              (render-clear ren)
              (render-draw-boid-list ren boid-list)
              (sdl2:render-present ren)
-             (dolist (item boid-list)
-               (let ((neighbor-list (boid-get-neighbors item boid-list)))
+             (dolist (target boid-list)
+               (boid-avoid-edges target)
+               (let ((neighbor-list (boid-get-neighbors target boid-list)))
                  (when neighbor-list
-                   (boid-align-with-neighbors item neighbor-list)
+                   (boid-align-with-neighbors target neighbor-list)
+                   (boid-cohere-with-neighbors target neighbor-list)
                    )))
-             (boid-list-avoid-edges boid-list)
              (boid-list-update-pos boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
             (:quit () t)))))))
