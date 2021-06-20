@@ -161,7 +161,8 @@
     (setf (boid-dy object) (+ (boid-dy object)
                               (* *boid-alignment-acceleration* (cadr diff-vel))))))
 
-;;
+;; Gradually accelerate a boid's velocity vector towards the average position of
+;; its neighbors.
 (defmethod boid-cohere-with-neighbors ((object boid) neighbor-list)
   (let* ((mean-pos (vec2-div (reduce #'vec2-add (map 'list #'boid-position neighbor-list))
                              (length neighbor-list)))
