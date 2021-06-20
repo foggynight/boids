@@ -45,11 +45,18 @@
 
 ;;; -- BOID ALIGNMENT --
 ;; Magnitude with which a boid can accelerate to align with its neighbors.
-(defparameter *boid-alignment-acceleration* 0.1)
+(defparameter *boid-alignment-acceleration* 0.02)
 
 ;;; -- BOID COHESION --
 ;; Magnitude with which a boid can accelerate to cohere with its neighbors.
 (defparameter *boid-cohesion-acceleration* 0.001)
+
+;;; -- BOID SEPARATION --
+;; Distance from another boid indicating a boid should attempt to separate
+;; itself from it.
+(defparameter *boid-separation-distance* 20)
+;; Magnitude with which a boid can accelerate to separate from its neighbors.
+(defparameter *boid-separation-acceleration* 0.1)
 
 ;;; UTILITY SECTION ------------------------------------------------------------
 
@@ -76,6 +83,9 @@
 ;; Perform scalar division on an x-y vector, creating a new vector.
 (defun vec2-div (v c)
   `(,(/ (car v) c) ,(/ (cadr v) c)))
+
+;; TODO Update vec2-length and vec2-angle to take a vector parameter rather than
+;; the two individual components.
 
 ;; Determine the length of an x-y vector.
 (defun vec2-length (x y)
@@ -155,22 +165,39 @@
 (defmethod boid-align-with-neighbors ((object boid) neighbor-list)
   (let* ((mean-vel (vec2-div (reduce #'vec2-add (map 'list #'boid-velocity neighbor-list))
                              (length neighbor-list)))
-         (diff-vel (vec2-sub mean-vel (boid-velocity object))))
+         (delta-vel (vec2-sub mean-vel (boid-velocity object))))
     (setf (boid-dx object) (+ (boid-dx object)
-                              (* *boid-alignment-acceleration* (car diff-vel))))
+                              (* *boid-alignment-acceleration* (car delta-vel))))
     (setf (boid-dy object) (+ (boid-dy object)
-                              (* *boid-alignment-acceleration* (cadr diff-vel))))))
+                              (* *boid-alignment-acceleration* (cadr delta-vel))))))
 
 ;; Gradually accelerate a boid's velocity vector towards the average position of
 ;; its neighbors.
 (defmethod boid-cohere-with-neighbors ((object boid) neighbor-list)
   (let* ((mean-pos (vec2-div (reduce #'vec2-add (map 'list #'boid-position neighbor-list))
                              (length neighbor-list)))
-         (diff-pos (vec2-sub mean-pos (boid-position object))))
+         (delta-pos (vec2-sub mean-pos (boid-position object))))
     (setf (boid-dx object) (+ (boid-dx object)
-                              (* *boid-cohesion-acceleration* (car diff-pos))))
+                              (* *boid-cohesion-acceleration* (car delta-pos))))
     (setf (boid-dy object) (+ (boid-dy object)
-                              (* *boid-cohesion-acceleration* (cadr diff-pos))))))
+                              (* *boid-cohesion-acceleration* (cadr delta-pos))))))
+
+;; Maintain distance between a boid and its neighbors by applying accelerations
+;; to its velocity vector pointing away from neighbors should they be too close.
+(defmethod boid-separate-from-neighbors ((object boid) neighbor-list)
+  (when neighbor-list
+    (let* ((delta-pos (vec2-sub (boid-position (car neighbor-list))
+                                (boid-position object)))
+           (delta-x (car delta-pos))
+           (delta-y (cadr delta-pos)))
+      (when (< (vec2-length (car delta-pos) (cadr delta-pos)) *boid-separation-distance*)
+        (unless (= delta-x 0)
+          (setf (boid-dx object) (- (boid-dx object)
+                                    (/ *boid-separation-acceleration* delta-x))))
+        (unless (= delta-y 0)
+          (setf (boid-dy object) (- (boid-dy object)
+                                    (/ *boid-separation-acceleration* delta-y)))))
+      (boid-separate-from-neighbors object (cdr neighbor-list)))))
 
 ;; Initialize a list of boids with random parameters.
 (defun boid-init (boid-count)
@@ -182,6 +209,7 @@
       (setf (boid-y boid) (random *sh*))
       ;; Random velocity with components in the range:
       ;; { v:real | -1 <= v <= 1 and v * 10 == floor(v * 10) }
+      ;; TODO Replace magic numbers with global variables
       (setf (boid-dx boid) (/ (- (random 21) 10) 10.0))
       (setf (boid-dy boid) (/ (- (random 21) 10) 10.0))
       (setq boid-list (cons boid boid-list)))
@@ -239,13 +267,13 @@
              (render-clear ren)
              (render-draw-boid-list ren boid-list)
              (sdl2:render-present ren)
-             (dolist (target boid-list)
-               (boid-avoid-edges target)
-               (let ((neighbor-list (boid-get-neighbors target boid-list)))
+             (dolist (boid boid-list)
+               (boid-avoid-edges boid)
+               (let ((neighbor-list (boid-get-neighbors boid boid-list)))
                  (when neighbor-list
-                   (boid-align-with-neighbors target neighbor-list)
-                   (boid-cohere-with-neighbors target neighbor-list)
-                   )))
+                   (boid-align-with-neighbors boid neighbor-list)
+                   (boid-cohere-with-neighbors boid neighbor-list)
+                   (boid-separate-from-neighbors boid neighbor-list))))
              (boid-list-update-pos boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
             (:quit () t)))))))
