@@ -17,7 +17,7 @@
 
 ;;; -- GENERAL --
 ;; Number of boids to simulate.
-(defparameter *boid-count* 32)
+(defparameter *boid-count* 100)
 ;; Screen width and height.
 (defparameter *sw* 1280)
 (defparameter *sh* 720)
@@ -41,22 +41,22 @@
 ;; with it.
 (defparameter *boid-avoidance-distance* *boid-fov-radius*)
 ;; Magnitude with which a boid can accelerate away from an obstacle.
-(defparameter *boid-avoidance-acceleration* 0.2)
+(defparameter *boid-avoidance-acceleration* 1.0)
 
 ;;; -- BOID ALIGNMENT --
 ;; Magnitude with which a boid can accelerate to align with its neighbors.
-(defparameter *boid-alignment-acceleration* 0.02)
+(defparameter *boid-alignment-acceleration* 0.05)
 
 ;;; -- BOID COHESION --
 ;; Magnitude with which a boid can accelerate to cohere with its neighbors.
-(defparameter *boid-cohesion-acceleration* 0.001)
+(defparameter *boid-cohesion-acceleration* 0.005)
 
 ;;; -- BOID SEPARATION --
 ;; Distance from another boid indicating a boid should attempt to separate
 ;; itself from it.
-(defparameter *boid-separation-distance* 20)
+(defparameter *boid-separation-distance* 32)
 ;; Magnitude with which a boid can accelerate to separate from its neighbors.
-(defparameter *boid-separation-acceleration* 0.1)
+(defparameter *boid-separation-acceleration* 0.05)
 
 ;;; UTILITY SECTION ------------------------------------------------------------
 
