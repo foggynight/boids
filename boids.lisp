@@ -24,7 +24,7 @@
 
 ;;; -- BOID GEOMETRY --
 ;; Radius of the circle containing a boid.
-(defparameter *boid-radius* 16)
+(defparameter *boid-radius* 8)
 ;; Angle between the two vectors pointing from the center of a boid to its left
 ;; and right tail points.
 (defparameter *boid-tail-angle* 60)
