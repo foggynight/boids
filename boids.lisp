@@ -18,6 +18,8 @@
 ;;; -- GENERAL --
 ;; Number of boids to simulate.
 (defparameter *boid-count* 100)
+;; Maximum speed of the boids.
+(defparameter *boid-speed-limit* 10)
 ;; Screen width and height.
 (defparameter *sw* 1280)
 (defparameter *sh* 720)
@@ -129,11 +131,6 @@
 (defmethod boid-angle ((object boid))
   (vec2-to-angle (boid-dx object) (boid-dy object)))
 
-;; Update the position of a boid based on its velocity.
-(defmethod boid-update-pos ((object boid))
-  (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
-  (setf (boid-y object) (+ (boid-y object) (boid-dy object))))
-
 ;; Accelerate a boid to avoid the edges of the world.
 (defmethod boid-avoid-edges ((object boid))
   (let ((x (boid-x object))
@@ -199,6 +196,18 @@
                                     (/ *boid-separation-acceleration* delta-y))))))
     (boid-separate-from-neighbors object (cdr neighbor-list))))
 
+;; Limit the speed of a boid.
+(defmethod boid-limit-speed ((object boid))
+  (let ((speed (vec2-length (boid-dx object) (boid-dy object))))
+    (when (> speed *boid-speed-limit*)
+      (setf (boid-dx object) (* (boid-dx object) (/ *boid-speed-limit* speed)))
+      (setf (boid-dy object) (* (boid-dy object) (/ *boid-speed-limit* speed))))))
+
+;; Update the position of a boid based on its velocity.
+(defmethod boid-update-pos ((object boid))
+  (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
+  (setf (boid-y object) (+ (boid-y object) (boid-dy object))))
+
 ;; Initialize a list of boids with random parameters.
 (defun boid-init (boid-count)
   (let ((boid nil)
@@ -214,6 +223,12 @@
       (setf (boid-dy boid) (- (random 21) 10))
       (setq boid-list (cons boid boid-list)))
     boid-list))
+
+;; Limit the speeds of a list of boids.
+(defun boid-list-limit-speed (boid-list)
+  (unless (eq boid-list nil)
+    (boid-limit-speed (car boid-list))
+    (boid-list-limit-speed (cdr boid-list))))
 
 ;; Update the positions of a list of boids.
 (defun boid-list-update-pos (boid-list)
@@ -274,7 +289,7 @@
                    (boid-align-with-neighbors boid neighbor-list)
                    (boid-cohere-with-neighbors boid neighbor-list)
                    (boid-separate-from-neighbors boid neighbor-list))))
-             ;; TODO Limit boid speed here
+             (boid-list-limit-speed boid-list)
              (boid-list-update-pos boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
             (:quit () t)))))))
