@@ -187,12 +187,6 @@
       (setq boid-list (cons boid boid-list)))
     boid-list))
 
-;; Accelerate a list of boids to avoid the edges of the world.
-(defun boid-list-avoid-edges (boid-list)
-  (unless (eq boid-list nil)
-    (boid-avoid-edges (car boid-list))
-    (boid-list-avoid-edges (cdr boid-list))))
-
 ;; Update the positions of a list of boids.
 (defun boid-list-update-pos (boid-list)
   (unless (eq boid-list nil)
