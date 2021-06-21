@@ -43,7 +43,7 @@
 ;; with it.
 (defparameter *boid-avoidance-distance* 64)
 ;; Magnitude with which a boid can accelerate away from an obstacle.
-(defparameter *boid-avoidance-acceleration* 1.0)
+(defparameter *boid-avoidance-acceleration* 0.5)
 
 ;;; -- BOID ALIGNMENT --
 ;; Magnitude with which a boid can accelerate to align with its neighbors.
