@@ -154,16 +154,19 @@
         (setf (boid-dy object) (- (boid-dy object) *boid-avoidance-acceleration*)))))
 
 ;; Get a list of the neighbors of a boid.
-;; TODO Ignore self -- Currently counts self as neighbor
 (defmethod boid-get-neighbors ((object boid) boid-list)
-  (if boid-list
-      (let* ((target (car boid-list))
-             (distance (vec2-length (- (boid-x target) (boid-x object))
-                                    (- (boid-y target) (boid-y object)))))
-        (if (<= distance *boid-fov-radius*)
-            (cons target (boid-get-neighbors object (cdr boid-list)))
-            (boid-get-neighbors object (cdr boid-list))))
-      nil))
+  (let ((neighbor-list nil))
+    (dolist (target boid-list)
+      (when (<= (vec2-vlength (vec2-sub (boid-position target)
+                                        (boid-position object)))
+                *boid-fov-radius*)
+        (setq neighbor-list (cons target neighbor-list))))
+    (remove-if (lambda (target) (and (vec2-eq (boid-position target)
+                                              (boid-position object))
+                                     (vec2-eq (boid-velocity target)
+                                              (boid-velocity object))))
+               neighbor-list
+               :count 1)))
 
 ;; Gradually align a boid's velocity vector with the mean average velocity
 ;; vector of its neighbors.
