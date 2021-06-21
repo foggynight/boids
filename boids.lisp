@@ -181,6 +181,7 @@
 
 ;; Maintain distance between a boid and its neighbors by applying accelerations
 ;; to its velocity vector pointing away from neighbors should they be too close.
+;; TODO Combine move vectors before applying an acceleration
 (defmethod boid-separate-from-neighbors ((object boid) neighbor-list)
   (when neighbor-list
     (let* ((delta-pos (vec2-sub (boid-position (car neighbor-list))
