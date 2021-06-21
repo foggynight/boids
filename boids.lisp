@@ -86,12 +86,21 @@
 (defun vec2-div (v c)
   `(,(/ (car v) c) ,(/ (cadr v) c)))
 
+;; Check if two x-y vectors are equal.
+(defun vec2-eq (v0 v1)
+  (and (= (car v0)
+          (car v1))
+       (= (cadr v0)
+          (cadr v1))))
+
 ;; TODO Update vec2-length and vec2-angle to take a vector parameter rather than
 ;; the two individual components.
 
 ;; Determine the length of an x-y vector.
 (defun vec2-length (x y)
   (sqrt (+ (expt x 2) (expt y 2))))
+(defun vec2-vlength (v)
+  (sqrt (+ (expt (car v) 2) (expt (cadr v) 2))))
 
 ;; Convert an x-y vector into an angle in degrees relative to the positive
 ;; x-axis with a positive rotation.
