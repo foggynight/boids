@@ -41,7 +41,7 @@
 ;;; -- BOID AVOIDANCE --
 ;; Distance from an obstacle indicating a boid should attempt to avoid colliding
 ;; with it.
-(defparameter *boid-avoidance-distance* *boid-fov-radius*)
+(defparameter *boid-avoidance-distance* 64)
 ;; Magnitude with which a boid can accelerate away from an obstacle.
 (defparameter *boid-avoidance-acceleration* 1.0)
 
