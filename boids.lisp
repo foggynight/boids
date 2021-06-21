@@ -181,21 +181,18 @@
 
 ;; Maintain distance between a boid and its neighbors by applying accelerations
 ;; to its velocity vector pointing away from neighbors should they be too close.
-;; TODO Combine move vectors before applying an acceleration
 (defmethod boid-separate-from-neighbors ((object boid) neighbor-list)
-  (when neighbor-list
-    (let* ((delta-pos (vec2-sub (boid-position (car neighbor-list))
-                                (boid-position object)))
-           (delta-x (car delta-pos))
-           (delta-y (cadr delta-pos)))
-      (when (< (vec2-length (car delta-pos) (cadr delta-pos)) *boid-separation-distance*)
-        (unless (= delta-x 0)
-          (setf (boid-dx object) (- (boid-dx object)
-                                    (/ *boid-separation-acceleration* delta-x))))
-        (unless (= delta-y 0)
-          (setf (boid-dy object) (- (boid-dy object)
-                                    (/ *boid-separation-acceleration* delta-y))))))
-    (boid-separate-from-neighbors object (cdr neighbor-list))))
+  (let ((move-vector '(0 0)))
+    (dolist (neighbor neighbor-list)
+      (let* ((delta-pos (vec2-sub (boid-position object) (boid-position neighbor)))
+             (delta-x (car delta-pos))
+             (delta-y (cadr delta-pos)))
+        (when (<= (vec2-length delta-x delta-y) *boid-separation-distance*)
+          (setq move-vector (vec2-add move-vector delta-pos)))))
+    (setf (boid-dx object) (+ (boid-dx object)
+                              (* *boid-separation-acceleration* (car move-vector))))
+    (setf (boid-dy object) (+ (boid-dy object)
+                              (* *boid-separation-acceleration* (cadr move-vector))))))
 
 ;; Limit the speed of a boid.
 (defmethod boid-limit-speed ((object boid))
