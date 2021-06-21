@@ -146,7 +146,6 @@
 
 ;; Get a list of the neighbors of a boid.
 ;; TODO Ignore self -- Currently counts self as neighbor
-;; TODO Check if target is within view angle of the boid
 (defmethod boid-get-neighbors ((object boid) boid-list)
   (if boid-list
       (let* ((target (car boid-list))
