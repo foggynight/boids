@@ -1,7 +1,7 @@
 ;;;
 ;; --- boids.lisp ---
 ;;
-;; Boids algorithm implemented in Common Lisp using the SDL2 library.
+;; Boids algorithm implemented in Common Lisp using SDL2.
 ;;
 ;; -- References --
 ;; 1. Flocks, Herds, and Schools: A Distributed Behavioral Model, Craig

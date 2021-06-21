@@ -1,6 +1,6 @@
 # boids
 
-Swarm simulation.
+Boids algorithm implemented in Common Lisp using SDL2.
 
 
 ## Dependencies
