@@ -93,19 +93,16 @@
        (= (cadr v0)
           (cadr v1))))
 
-;; TODO Update vec2-length and vec2-angle to take a vector parameter rather than
-;; the two individual components.
-
 ;; Determine the length of an x-y vector.
-(defun vec2-length (x y)
-  (sqrt (+ (expt x 2) (expt y 2))))
-(defun vec2-vlength (v)
+(defun vec2-length (v)
   (sqrt (+ (expt (car v) 2) (expt (cadr v) 2))))
 
 ;; Convert an x-y vector into an angle in degrees relative to the positive
 ;; x-axis with a positive rotation.
-(defun vec2-to-angle (x y)
-  (let* ((angle 0))
+(defun vec2-to-angle (v)
+  (let ((x (car v))
+        (y (cadr v))
+        (angle 0))
     (if (= x 0)
         (cond ((> y 0) (setq angle 90))
               ((< y 0) (setq angle 270))
@@ -138,7 +135,7 @@
 
 ;; Determine the angle of a boid based on its velocity.
 (defmethod boid-angle ((object boid))
-  (vec2-to-angle (boid-dx object) (boid-dy object)))
+  (vec2-to-angle (boid-velocity object)))
 
 ;; Accelerate a boid to avoid the edges of the world.
 (defmethod boid-avoid-edges ((object boid))
@@ -157,8 +154,8 @@
 (defmethod boid-get-neighbors ((object boid) boid-list)
   (let ((neighbor-list nil))
     (dolist (target boid-list)
-      (when (<= (vec2-vlength (vec2-sub (boid-position target)
-                                        (boid-position object)))
+      (when (<= (vec2-length (vec2-sub (boid-position target)
+                                       (boid-position object)))
                 *boid-fov-radius*)
         (setq neighbor-list (cons target neighbor-list))))
     (remove-if (lambda (target) (and (vec2-eq (boid-position target)
@@ -195,10 +192,8 @@
 (defmethod boid-separate-from-neighbors ((object boid) neighbor-list)
   (let ((move-vector '(0 0)))
     (dolist (neighbor neighbor-list)
-      (let* ((delta-pos (vec2-sub (boid-position object) (boid-position neighbor)))
-             (delta-x (car delta-pos))
-             (delta-y (cadr delta-pos)))
-        (when (<= (vec2-length delta-x delta-y) *boid-separation-distance*)
+      (let* ((delta-pos (vec2-sub (boid-position object) (boid-position neighbor))))
+        (when (<= (vec2-length delta-pos) *boid-separation-distance*)
           (setq move-vector (vec2-add move-vector delta-pos)))))
     (setf (boid-dx object) (+ (boid-dx object)
                               (* *boid-separation-acceleration* (car move-vector))))
@@ -207,7 +202,7 @@
 
 ;; Limit the speed of a boid.
 (defmethod boid-limit-speed ((object boid))
-  (let ((speed (vec2-length (boid-dx object) (boid-dy object))))
+  (let ((speed (vec2-length (boid-velocity object))))
     (when (> speed *boid-speed-limit*)
       (setf (boid-dx object) (* (boid-dx object) (/ *boid-speed-limit* speed)))
       (setf (boid-dy object) (* (boid-dy object) (/ *boid-speed-limit* speed))))))
@@ -256,7 +251,7 @@
 (defun render-draw-boid (ren boid)
   (let* ((x (boid-x boid))
          (y (boid-y boid))
-         (angle (vec2-to-angle (boid-dx boid) (boid-dy boid)))
+         (angle (vec2-to-angle (boid-velocity boid)))
          (forward-x (floor (+ x (* *boid-radius* (cos (radians angle))))))
          (forward-y (floor (+ y (* *boid-radius* (sin (radians angle))))))
          (left-x (floor (+ x (* *boid-radius* (cos (radians (- angle (- 180 (/ *boid-tail-angle* 2)))))))))
