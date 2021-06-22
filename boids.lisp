@@ -214,7 +214,9 @@
   (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
   (setf (boid-y object) (+ (boid-y object) (boid-dy object))))
 
-;; Initialize a list of boids with random parameters.
+;; Initialize a list containing a boid-count number of boids with random
+;; parameters. Specifically, boid positions are within the screen dimensions and
+;; boid velocities are within the boid speed limit in a random direction.
 (defun boid-init (boid-count)
   (let ((boid nil)
         (boid-list nil))
@@ -222,12 +224,12 @@
       (setq boid (make-instance 'boid))
       (setf (boid-x boid) (random *sw*))
       (setf (boid-y boid) (random *sh*))
-      ;; Random velocity with components in the range:
-      ;; { v:real | -1 <= v <= 1 and v * 10 == floor(v * 10) }
-      ;; TODO Replace magic numbers with global variables
-      (setf (boid-dx boid) (- (random 21) 10))
-      (setf (boid-dy boid) (- (random 21) 10))
-      (setq boid-list (cons boid boid-list)))
+      (let ((random-cap (sqrt *boid-speed-limit*)))
+        (setf (boid-dx boid) (* (random random-cap)
+                                (- (* (random 2) 2) 1)))
+        (setf (boid-dy boid) (* (random random-cap)
+                                (- (* (random 2) 2) 1)))
+      (setq boid-list (cons boid boid-list))))
     boid-list))
 
 ;; Limit the speeds of a list of boids.
