@@ -244,6 +244,19 @@ boid velocities are within the boid speed limit in a random direction."
     (boid-update-pos (car boid-list))
     (boid-list-update-pos (cdr boid-list))))
 
+(defun boid-list-update (boid-list)
+  "Update the velocities of a list of boids based on the boid various behaviors,
+and then update their positions."
+  (dolist (boid boid-list)
+    (boid-avoid-edges boid)
+    (let ((neighbor-list (boid-get-neighbors boid boid-list)))
+      (when neighbor-list
+        (boid-align-with-neighbors boid neighbor-list)
+        (boid-cohere-with-neighbors boid neighbor-list)
+        (boid-separate-from-neighbors boid neighbor-list))))
+  (boid-list-limit-speed boid-list)
+  (boid-list-update-pos boid-list))
+
 ;;; RENDER SECTION -------------------------------------------------------------
 
 (defun render-clear (ren)
@@ -293,14 +306,6 @@ boid velocities are within the boid speed limit in a random direction."
              (render-clear ren)
              (render-draw-boid-list ren boid-list)
              (sdl2:render-present ren)
-             (dolist (boid boid-list)
-               (boid-avoid-edges boid)
-               (let ((neighbor-list (boid-get-neighbors boid boid-list)))
-                 (when neighbor-list
-                   (boid-align-with-neighbors boid neighbor-list)
-                   (boid-cohere-with-neighbors boid neighbor-list)
-                   (boid-separate-from-neighbors boid neighbor-list))))
-             (boid-list-limit-speed boid-list)
-             (boid-list-update-pos boid-list)
+             (boid-list-update boid-list)
              (sdl2:delay 7)) ; 7 ms ~= 1000 ms / 144 fps
             (:quit () t)))))))
