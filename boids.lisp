@@ -139,6 +139,11 @@ components."
   "Determine the angle of a boid based on its velocity."
   (vec2-to-angle (boid-velocity object)))
 
+(defmethod boid-push ((object boid) dv)
+  "Apply an acceleration to the velocity of a boid."
+  (setf (boid-dx object) (+ (boid-dx object) (car dv)))
+  (setf (boid-dy object) (+ (boid-dy object) (cadr dv))))
+
 (defmethod boid-avoid-edges ((object boid))
   "Accelerate a boid to avoid the edges of the world."
   (let ((x (boid-x object))
@@ -173,10 +178,7 @@ vector of its neighbors."
   (let* ((mean-vel (vec2-div (reduce #'vec2-add (map 'list #'boid-velocity neighbor-list))
                              (length neighbor-list)))
          (delta-vel (vec2-sub mean-vel (boid-velocity object))))
-    (setf (boid-dx object) (+ (boid-dx object)
-                              (* *boid-alignment-acceleration* (car delta-vel))))
-    (setf (boid-dy object) (+ (boid-dy object)
-                              (* *boid-alignment-acceleration* (cadr delta-vel))))))
+    (boid-push object (vec2-mul delta-vel *boid-alignment-acceleration*))))
 
 (defmethod boid-cohere-with-neighbors ((object boid) neighbor-list)
   "Gradually accelerate a boid's velocity vector towards the average position of
@@ -184,10 +186,7 @@ its neighbors."
   (let* ((mean-pos (vec2-div (reduce #'vec2-add (map 'list #'boid-position neighbor-list))
                              (length neighbor-list)))
          (delta-pos (vec2-sub mean-pos (boid-position object))))
-    (setf (boid-dx object) (+ (boid-dx object)
-                              (* *boid-cohesion-acceleration* (car delta-pos))))
-    (setf (boid-dy object) (+ (boid-dy object)
-                              (* *boid-cohesion-acceleration* (cadr delta-pos))))))
+    (boid-push object (vec2-mul delta-pos *boid-cohesion-acceleration*))))
 
 (defmethod boid-separate-from-neighbors ((object boid) neighbor-list)
   "Maintain distance between a boid and its neighbors by applying accelerations
@@ -197,22 +196,23 @@ to its velocity vector pointing away from neighbors should they be too close."
       (let* ((delta-pos (vec2-sub (boid-position object) (boid-position neighbor))))
         (when (<= (vec2-length delta-pos) *boid-separation-distance*)
           (setq move-vector (vec2-add move-vector delta-pos)))))
-    (setf (boid-dx object) (+ (boid-dx object)
-                              (* *boid-separation-acceleration* (car move-vector))))
-    (setf (boid-dy object) (+ (boid-dy object)
-                              (* *boid-separation-acceleration* (cadr move-vector))))))
+    (boid-push object (vec2-mul move-vector *boid-separation-acceleration*))))
 
 (defmethod boid-limit-speed ((object boid))
   "Limit the speed of a boid."
   (let ((speed (vec2-length (boid-velocity object))))
     (when (> speed *boid-speed-limit*)
-      (setf (boid-dx object) (* (boid-dx object) (/ *boid-speed-limit* speed)))
-      (setf (boid-dy object) (* (boid-dy object) (/ *boid-speed-limit* speed))))))
+      (let ((new-speed (vec2-mul (boid-velocity object)
+                                 (/ *boid-speed-limit* speed))))
+        (setf (boid-dx object) (car new-speed))
+        (setf (boid-dy object) (cadr new-speed))))))
 
 (defmethod boid-update-pos ((object boid))
   "Update the position of a boid based on its velocity."
-  (setf (boid-x object) (+ (boid-x object) (boid-dx object)))
-  (setf (boid-y object) (+ (boid-y object) (boid-dy object))))
+  (let ((new-position (vec2-add (boid-position object)
+                                (boid-velocity object))))
+    (setf (boid-x object) (car new-position))
+    (setf (boid-y object) (cadr new-position))))
 
 (defun boid-init (boid-count)
   "Initialize a list containing a boid-count number of boids with random
