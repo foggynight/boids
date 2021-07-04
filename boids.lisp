@@ -1,15 +1,4 @@
-;;; --- boids.lisp ---
-;;
-;; Boids algorithm implemented in Common Lisp using SDL2.
-;;
-;; -- References --
-;; 1. Flocks, Herds, and Schools: A Distributed Behavioral Model, Craig
-;;    Reynolds, https://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/
-;; 2. Boids, Timmie Wong, https://cs.stanford.edu/people/eroberts/courses/soco/
-;;    projects/2008-09/modeling-natural-systems/boids.html
-;;
-;; Copyright (C) 2021 Robert Coffey
-;; Released under the GPLv2 license
+;;; PACKAGE SECTION ------------------------------------------------------------
 
 (require :sdl2)
 
