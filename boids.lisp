@@ -179,7 +179,7 @@ its neighbors."
 to its velocity vector pointing away from neighbors should they be too close."
   (let ((move-vector '(0 0)))
     (dolist (neighbor neighbor-list)
-      (let* ((delta-pos (vec2-sub (boid-position object) (boid-position neighbor))))
+      (let ((delta-pos (vec2-sub (boid-position object) (boid-position neighbor))))
         (when (<= (vec2-length delta-pos) *boid-separation-distance*)
           (setq move-vector (vec2-add move-vector delta-pos)))))
     (boid-push object (vec2-mul move-vector *boid-separation-acceleration*))))
