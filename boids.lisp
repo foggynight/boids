@@ -1,5 +1,4 @@
-;;;
-;; --- boids.lisp ---
+;;; --- boids.lisp ---
 ;;
 ;; Boids algorithm implemented in Common Lisp using SDL2.
 ;;
@@ -11,7 +10,6 @@
 ;;
 ;; Copyright (C) 2021 Robert Coffey
 ;; Released under the GPLv2 license
-;;;
 
 (require :sdl2)
 
