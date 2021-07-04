@@ -24,9 +24,6 @@ and right tail points.")
 ;;; -- BOID FOV --
 (defparameter *boid-fov-radius* 100
   "Radius of the boids' FOV.")
-(defparameter *boid-fov-max-angle* 120
-  "Maximum angle of the boids' FOV measured as the difference from the forward
-angle of a given boid.")
 
 ;;; -- BOID AVOIDANCE --
 (defparameter *boid-avoidance-distance* 64
