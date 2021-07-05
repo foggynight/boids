@@ -245,6 +245,12 @@ and then update their positions."
 
 ;;; SCREEN SECTION -------------------------------------------------------------
 
+(defmacro screen-update-size (win)
+  `(multiple-value-bind (screen-width screen-height)
+       (sdl2:get-window-size ,win)
+     (setq *screen-width* screen-width)
+     (setq *screen-height* screen-height)))
+
 (defun render-clear (ren)
   "Clear the screen."
   (sdl2:set-render-draw-color ren 0 0 0 255)
@@ -271,12 +277,6 @@ and then update their positions."
   (when boid-list
     (render-draw-boid ren (car boid-list))
     (render-draw-boid-list ren (cdr boid-list))))
-
-(defmacro screen-update-size (win)
-  `(multiple-value-bind (screen-width screen-height)
-       (sdl2:get-window-size ,win)
-     (setq *screen-width* screen-width)
-     (setq *screen-height* screen-height)))
 
 ;;; MAIN SECTION ---------------------------------------------------------------
 ;;
