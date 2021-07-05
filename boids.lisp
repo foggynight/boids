@@ -297,8 +297,10 @@ and then update their positions."
           (sdl2:with-event-loop (:method :poll)
             (:keydown
              (:keysym key)
-             (when (sdl2:scancode= (sdl2:scancode-value key) :scancode-escape)
-               (sdl2:push-event :quit)))
+             (cond ((sdl2:scancode= (sdl2:scancode-value key) :scancode-r)
+                    (setq boid-list (boid-init *boid-count*)))
+                   ((sdl2:scancode= (sdl2:scancode-value key) :scancode-q)
+                    (sdl2:push-event :quit))))
             (:windowevent
              ()
              (screen-update-size win))
