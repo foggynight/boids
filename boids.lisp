@@ -243,7 +243,7 @@ and then update their positions."
   (boid-list-limit-speed boid-list)
   (boid-list-update-pos boid-list))
 
-;;; RENDER SECTION -------------------------------------------------------------
+;;; SCREEN SECTION -------------------------------------------------------------
 
 (defun render-clear (ren)
   "Clear the screen."
@@ -272,23 +272,40 @@ and then update their positions."
     (render-draw-boid ren (car boid-list))
     (render-draw-boid-list ren (cdr boid-list))))
 
+(defmacro screen-update-size (win)
+  `(multiple-value-bind (screen-width screen-height)
+       (sdl2:get-window-size ,win)
+     (setq *screen-width* screen-width)
+     (setq *screen-height* screen-height)))
+
 ;;; MAIN SECTION ---------------------------------------------------------------
+;;
+;; The boid list is not created until within the event loop because otherwise
+;; the initial positions of the boids would be based on the original window
+;; size, as opposed to the window size after the initial window events (such as
+;; the initial resize in a window manager).
 
 (defun main ()
-  (let ((boid-list (boid-init *boid-count*)))
-    (sdl2:with-init (:everything)
-      (sdl2:with-window (win :title "boids"
-                             :w *screen-width*
-                             :h *screen-height*
-                             :flags '(:shown))
+  (sdl2:with-init (:everything)
+    (sdl2:with-window (win :title "boids"
+                           :w *screen-width*
+                           :h *screen-height*
+                           :flags '(:resizable
+                                    :shown))
+      (let ((boid-list nil))
         (sdl2:with-renderer (ren win :flags '(:accelerated))
           (sdl2:with-event-loop (:method :poll)
             (:keydown
              (:keysym key)
              (when (sdl2:scancode= (sdl2:scancode-value key) :scancode-escape)
                (sdl2:push-event :quit)))
+            (:windowevent
+             ()
+             (screen-update-size win))
             (:idle
              ()
+             (unless boid-list
+               (setq boid-list (boid-init *boid-count*)))
              (render-clear ren)
              (render-draw-boid-list ren boid-list)
              (sdl2:render-present ren)
