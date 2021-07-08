@@ -5,7 +5,7 @@
 ;;; CONFIG SECTION -------------------------------------------------------------
 
 ;;; -- GENERAL --
-(defparameter *boid-count* 100
+(defparameter *boid-count* 30
   "Number of boids to simulate.")
 (defparameter *boid-speed-limit* 10
   "Maximum speed of the boids.")
@@ -22,29 +22,29 @@
 and right tail points.")
 
 ;;; -- BOID FOV --
-(defparameter *boid-fov-radius* 100
+(defparameter *boid-fov-radius* 64
   "Radius of the boids' FOV.")
 
 ;;; -- BOID AVOIDANCE --
-(defparameter *boid-avoidance-distance* 64
+(defparameter *boid-avoidance-distance* 128
   "Distance from an obstacle indicating a boid should attempt to avoid colliding
 with it.")
-(defparameter *boid-avoidance-acceleration* 0.5
+(defparameter *boid-avoidance-acceleration* 0.1
   "Magnitude with which a boid can accelerate away from an obstacle.")
 
 ;;; -- BOID ALIGNMENT --
-(defparameter *boid-alignment-acceleration* 0.05
+(defparameter *boid-alignment-acceleration* 0.01
   "Magnitude with which a boid can accelerate to align with its neighbors.")
 
 ;;; -- BOID COHESION --
-(defparameter *boid-cohesion-acceleration* 0.005
+(defparameter *boid-cohesion-acceleration* 0.0005
   "Magnitude with which a boid can accelerate to cohere with its neighbors.")
 
 ;;; -- BOID SEPARATION --
-(defparameter *boid-separation-distance* 32
+(defparameter *boid-separation-distance* 16
   "Distance from another boid indicating a boid should attempt to separate
 itself from it.")
-(defparameter *boid-separation-acceleration* 0.05
+(defparameter *boid-separation-acceleration* 0.001
   "Magnitude with which a boid can accelerate to separate from its neighbors.")
 
 ;;; UTILITY SECTION ------------------------------------------------------------
