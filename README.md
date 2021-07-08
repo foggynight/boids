@@ -1,5 +1,7 @@
 # boids
 
+## Description
+
 Boids algorithm implemented in Common Lisp using SDL2.
 
 
