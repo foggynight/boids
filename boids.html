@@ -20,14 +20,14 @@ html {
 ;; config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define BOID-COLOR "lightgreen")
-(define BOID-COUNT 2)
+(define BOID-COUNT 100)
 
 (define CANVAS-WIDTH 800)
 (define CANVAS-HEIGHT 600)
 
 (define NEIGHBOR-DIST 100)
 
-(define SPEED-LIMIT 1)
+(define SPEED-LIMIT 10)
 
 (define SLEEP-TIME (/ 1 60))
 
@@ -148,17 +148,19 @@ html {
           '()
           (cons (make-boid i) (loop (1+ i))))))
   (do ((i 0 (+ i 1))) (#f)
-    (for-each (lambda (boid)
-                (let ((neighbors (get-neighbors boid boids)))
-                  (null? neighbors)
-                  )
-                (avoid-walls! boid)
-                )
-              boids)
-    (for-each boid-limit! boids)
-    (for-each boid-move! boids)
+    (do ((lst boids (cdr lst)))
+        ((null? lst))
+      (let ((neighbors (get-neighbors (car lst) boids)))
+        (null? neighbors)
+        )
+      (avoid-walls! (car lst))
+      )
     (js-invoke ctx "clearRect" 0 0 CANVAS-WIDTH CANVAS-HEIGHT)
-    (for-each draw-boid boids)
+    (do ((lst boids (cdr lst)))
+        ((null? lst))
+      (boid-limit! (car lst))
+      (boid-move! (car lst))
+      (draw-boid (car lst)))
     (sleep SLEEP-TIME)))
 
 (main)
