@@ -59,8 +59,7 @@ const Vec2_sub = (v1, v2) => new Vec2(v2.x - v1.x, v2.y - v1.y)
 // boid ////////////////////////////////////////////////////////////////////////
 
 class Boid {
-    constructor(id) {
-        this.id = id
+    constructor() {
         this.pos = new Vec2(rand_float(CANVAS_WIDTH), rand_float(CANVAS_HEIGHT))
         this.vel = new Vec2(rand_float(SPEED_LIMIT) - SPEED_LIMIT / 2,
                             rand_float(SPEED_LIMIT) - SPEED_LIMIT / 2)
@@ -72,7 +71,7 @@ class Boid {
     accelerate(acc) { this.vel.add(acc) }
 
     is_neighbor(boid) {
-        if (this.id === boid.id) return false
+        if (this === boid) return false
         const dist = Vec2_sub(boid.pos, this.pos).length()
         return dist <= NEIGH_DIST
     }
@@ -163,7 +162,7 @@ const ctx = canvas.getContext('2d')
 async function main() {
     const boids = []
     for (let i = 0; i < BOID_COUNT; ++i)
-        boids.push(new Boid(i))
+        boids.push(new Boid())
     while (true) {
         for (let boid of boids) {
             neighbors = boid.get_neighbors(boids)
