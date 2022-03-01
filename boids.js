@@ -4,27 +4,52 @@
 
 // config //////////////////////////////////////////////////////////////////////
 
-const BOID_COLOR = "lightgreen"
-const BOID_COUNT = 100
+config = {
+    BOID_COLOR: "lightgreen",
+    BOID_COUNT: parseInt(document.getElementById('count').value),
 
-const CANVAS_WIDTH = 800
-const CANVAS_HEIGHT = 600
+    // TODO: Change canvas on window resize.
+    CANVAS_WIDTH: document.body.offsetWidth,
+    CANVAS_HEIGHT: Math.floor(document.body.offsetWidth * 3 / 4),
 
-const NEIGH_DIST = 32
+    NEIGH_DIST: parseFloat(document.getElementById('dist').value),
+    NEIGH_ALIGN_ACCEL: parseFloat(document.getElementById('align').value),
+    NEIGH_CLUSTER_ACCEL: parseFloat(document.getElementById('cluster').value),
+    NEIGH_AVOID_DIST: parseFloat(document.getElementById('avoid-dist').value),
+    NEIGH_AVOID_ACCEL: parseFloat(document.getElementById('avoid-accel').value),
 
-const NEIGH_ALIGN_ACCEL = 0.01
+    SPEED_LIMIT: parseFloat(document.getElementById('limit').value),
 
-const NEIGH_CLUSTER_ACCEL = 0.01
+    SLEEP_TIME: 1 / 60,
 
-const NEIGH_AVOID_DIST = 10
-const NEIGH_AVOID_ACCEL = 0.1
+    WALL_DIST: parseFloat(document.getElementById('wall-dist').value),
+    WALL_ACCEL: parseFloat(document.getElementById('wall-accel').value),
+}
 
-const SPEED_LIMIT = 2
+document.getElementById('count').oninput = () => {
+    config.BOID_COUNT = parseInt(document.getElementById('count').value)
+    document.getElementById('output-count').value = config.BOID_COUNT
 
-const SLEEP_TIME = 1 / 60
+    const delta = config.BOID_COUNT - boids.length
+    if (delta < 0) for (let i = 0; i < -delta; ++i) boids.pop()
+    else if (delta > 0) for (let i = 0; i < delta; ++i) boids.push(new Boid())
+}
 
-const WALL_DIST = 100
-const WALL_ACCEL = 0.1
+function hook_input(elem_id, config_var) {
+    document.getElementById(elem_id).oninput = () => {
+        config[config_var] = parseFloat(document.getElementById(elem_id).value)
+        document.getElementById('output-' + elem_id).value = config[config_var]
+    }
+}
+
+hook_input('dist', 'NEIGH_DIST')
+hook_input('align', 'NEIGH_ALIGN_ACCEL')
+hook_input('cluster', 'NEIGH_CLUSTER_ACCEL')
+hook_input('avoid-dist', 'NEIGH_AVOID_DIST')
+hook_input('avoid-accel', 'NEIGH_AVOID_ACCEL')
+hook_input('limit', 'SPEED_LIMIT')
+hook_input('wall-dist', 'WALL_DIST')
+hook_input('wall-accel', 'WALL_ACCEL')
 
 // utility /////////////////////////////////////////////////////////////////////
 
@@ -60,9 +85,10 @@ const Vec2_sub = (v1, v2) => new Vec2(v2.x - v1.x, v2.y - v1.y)
 
 class Boid {
     constructor() {
-        this.pos = new Vec2(rand_float(CANVAS_WIDTH), rand_float(CANVAS_HEIGHT))
-        this.vel = new Vec2(rand_float(SPEED_LIMIT) - SPEED_LIMIT / 2,
-                            rand_float(SPEED_LIMIT) - SPEED_LIMIT / 2)
+        this.pos = new Vec2(rand_float(config.CANVAS_WIDTH),
+                            rand_float(config.CANVAS_HEIGHT))
+        this.vel = new Vec2(rand_float(config.SPEED_LIMIT)-config.SPEED_LIMIT/2,
+                            rand_float(config.SPEED_LIMIT)-config.SPEED_LIMIT/2)
     }
 
     speed() { return Math.sqrt(Math.pow(this.vel.x, 2)
@@ -73,7 +99,7 @@ class Boid {
     is_neighbor(boid) {
         if (this === boid) return false
         const dist = Vec2_sub(boid.pos, this.pos).length()
-        return dist <= NEIGH_DIST
+        return dist <= config.NEIGH_DIST
     }
 
     get_neighbors(boids) {
@@ -93,8 +119,8 @@ class Boid {
         pos.y /= neighbors.length
         const delta_pos = Vec2_sub(this.pos, pos)
         delta_pos.normalize()
-        delta_pos.x *= NEIGH_CLUSTER_ACCEL
-        delta_pos.y *= NEIGH_CLUSTER_ACCEL
+        delta_pos.x *= config.NEIGH_CLUSTER_ACCEL
+        delta_pos.y *= config.NEIGH_CLUSTER_ACCEL
         this.accelerate(delta_pos)
     }
 
@@ -106,8 +132,8 @@ class Boid {
         vel.y /= neighbors.length
         const delta_vel = Vec2_sub(this.vel, vel)
         delta_vel.normalize()
-        delta_vel.x *= NEIGH_ALIGN_ACCEL
-        delta_vel.y *= NEIGH_ALIGN_ACCEL
+        delta_vel.x *= config.NEIGH_ALIGN_ACCEL
+        delta_vel.y *= config.NEIGH_ALIGN_ACCEL
         this.accelerate(delta_vel)
     }
 
@@ -115,36 +141,42 @@ class Boid {
         const acc = new Vec2(0, 0)
         for (let neigh of neighbors) {
             const delta_pos = Vec2_sub(this.pos, neigh.pos)
-            if (delta_pos.length() < NEIGH_AVOID_DIST) {
+            if (delta_pos.length() < config.NEIGH_AVOID_DIST) {
                 acc.x += 1 - delta_pos.x
                 acc.y += 1 - delta_pos.y
             }
         }
         acc.normalize()
-        acc.x *= NEIGH_AVOID_ACCEL
-        acc.y *= NEIGH_AVOID_ACCEL
+        acc.x *= config.NEIGH_AVOID_ACCEL
+        acc.y *= config.NEIGH_AVOID_ACCEL
         this.accelerate(acc)
     }
 
     avoid_walls() {
         const acc = new Vec2(0, 0)
-        if (this.pos.x < WALL_DIST) acc.x = WALL_ACCEL
-        else if (this.pos.x > CANVAS_WIDTH - WALL_DIST) acc.x = -WALL_ACCEL
-        if (this.pos.y < WALL_DIST) acc.y = WALL_ACCEL
-        else if (this.pos.y > CANVAS_HEIGHT - WALL_DIST) acc.y = -WALL_ACCEL
+        if (this.pos.x < config.WALL_DIST)
+            acc.x = config.WALL_ACCEL
+        else if (this.pos.x > config.CANVAS_WIDTH - config.WALL_DIST)
+            acc.x = -config.WALL_ACCEL
+
+        if (this.pos.y < config.WALL_DIST)
+            acc.y = config.WALL_ACCEL
+        else if (this.pos.y > config.CANVAS_HEIGHT - config.WALL_DIST)
+            acc.y = -config.WALL_ACCEL
+
         this.accelerate(acc)
     }
 
     limit_speed() {
         const speed = this.speed()
-        if (speed > SPEED_LIMIT) {
-            this.vel.x = this.vel.x / speed * SPEED_LIMIT
-            this.vel.y = this.vel.y / speed * SPEED_LIMIT
+        if (speed > config.SPEED_LIMIT) {
+            this.vel.x = this.vel.x / speed * config.SPEED_LIMIT
+            this.vel.y = this.vel.y / speed * config.SPEED_LIMIT
         }
     }
 
     draw() {
-        ctx.strokeStyle = BOID_COLOR
+        ctx.strokeStyle = config.BOID_COLOR
         ctx.beginPath()
         ctx.moveTo(this.pos.x, this.pos.y)
         ctx.lineTo(this.pos.x + this.vel.x * 10, this.pos.y + this.vel.y * 10)
@@ -152,16 +184,17 @@ class Boid {
     }
 }
 
+const boids = []
+
 // main ////////////////////////////////////////////////////////////////////////
 
 const canvas = document.getElementById('boids')
-canvas.width = CANVAS_WIDTH
-canvas.height = CANVAS_HEIGHT
+canvas.width = config.CANVAS_WIDTH
+canvas.height = config.CANVAS_HEIGHT
 const ctx = canvas.getContext('2d')
 
 async function main() {
-    const boids = []
-    for (let i = 0; i < BOID_COUNT; ++i)
+    for (let i = 0; i < config.BOID_COUNT; ++i)
         boids.push(new Boid())
     while (true) {
         for (let boid of boids) {
@@ -175,9 +208,9 @@ async function main() {
             boid.limit_speed()
             boid.move()
         }
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+        ctx.clearRect(0, 0, config.CANVAS_WIDTH, config.CANVAS_HEIGHT)
         boids.forEach(boid => boid.draw())
-        await sleep(SLEEP_TIME)
+        await sleep(config.SLEEP_TIME)
     }
 }
 

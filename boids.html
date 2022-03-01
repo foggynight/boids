@@ -7,10 +7,76 @@
           background: #111111;
           color: lightgreen;
       }
+      #controls {
+          display: flex;
+          flex-direction: row;
+          height: fit-content;
+          width: fit-content;
+      }
+      #controls div {
+          display: flex;
+          flex-direction: column;
+          margin: 0 auto;
+          vertical-align: center;
+      }
+      #controls div * {
+          flex-grow: 1;
+      }
+      #controls div label {
+          text-align: left;
+          width: 31ch;
+      }
     </style>
   </head>
   <body>
-    <canvas id="boids"></canvas>
+    <center>
+      <h1>Boids Algorithm</h1>
+      <canvas id="boids"></canvas>
+      <div id="controls">
+        <div>
+          <label for="count">boid count</label>
+          <label for="limit">speed limit</label>
+          <label for="dist">neighbor distance</label>
+          <label for="align">neighbor alignment acceleration</label>
+          <label for="cluster">neighbor clustering acceleration</label>
+          <label for="avoid-dist">neighbor avoidance distance</label>
+          <label for="avoid-accel">neighbor avoidance acceleration</label>
+          <label for="wall-dist">wall avoidance distance</label>
+          <label for="wall-accel">wall avoidance acceleration</label>
+        </div>
+        <div>
+          <input id="count" name="count" type="range" min="0" max="1000" value="100"
+                 oninput="document.getElementById('output-count').value = this.value">
+          <input id="limit" name="limit" type="range" min="0" max="10" value="2"
+                 oninput="document.getElementById('output-limit').value = this.value">
+          <input id="dist" type="range" min="0" max="100" value="32"
+                 oninput="document.getElementById('output-dist').value = this.value">
+          <input id="align" type="range" min="0" max="0.2" step="0.001" value="0.01"
+                 oninput="document.getElementById('output-align').value = this.value">
+          <input id="cluster" type="range" min="0" max="0.2" step="0.001" value="0.01"
+                 oninput="document.getElementById('output-cluster').value = this.value">
+          <input id="avoid-dist" type="range" min="0" max="100" value="10"
+                 oninput="document.getElementById('output-avoid-dist').value = this.value">
+          <input id="avoid-accel" type="range" min="0" max="0.5" step="0.01" value="0.1"
+                 oninput="document.getElementById('output-avoid-accel').value = this.value">
+          <input id="wall-dist" type="range" min="0" max="400" value="100"
+                 oninput="document.getElementById('output-wall-dist').value = this.value">
+          <input id="wall-accel" type="range" min="0" max="1" step="0.01" value="0.1"
+                 oninput="document.getElementById('output-wall-accel').value = this.value">
+        </div>
+        <div>
+          <output id="output-count">100</output>
+          <output id="output-limit">2</output>
+          <output id="output-dist">32</output>
+          <output id="output-align">0.01</output>
+          <output id="output-cluster">0.01</output>
+          <output id="output-avoid-dist">10</output>
+          <output id="output-avoid-accel">0.1</output>
+          <output id="output-wall-dist">100</output>
+          <output id="output-wall-accel">0.1</output>
+        </div>
+      </div>
+    </center>
     <script type="text/javascript" src="boids.js"></script>
   </body>
 </html>
