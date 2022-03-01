@@ -58,16 +58,11 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 // vec2 ////////////////////////////////////////////////////////////////////////
 
 class Vec2 {
-    constructor(x, y) {
-        this.x = x
-        this.y = y
-    }
-
-    add(vec) { this.x += vec.x; this.y += vec.y }
-
-    length() {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
-    }
+    constructor(x, y) { this.x = x; this.y = y }
+    mul(scalar) { this.x *= scalar; this.y *= scalar }
+    div(scalar) { this.x /= scalar; this.y /= scalar }
+    add_vec(vec) { this.x += vec.x; this.y += vec.y }
+    length() { return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2)) }
 
     normalize() {
         const len = this.length()
@@ -90,10 +85,9 @@ class Boid {
                             rand_float(config.SPEED_LIMIT)-config.SPEED_LIMIT/2)
     }
 
-    speed() { return Math.sqrt(Math.pow(this.vel.x, 2)
-                               + Math.pow(this.vel.y, 2)) }
-    move() { this.pos.add(this.vel) }
-    accelerate(acc) { this.vel.add(acc) }
+    speed() { return this.vel.length() }
+    move() { this.pos.add_vec(this.vel) }
+    accelerate(acc) { this.vel.add_vec(acc) }
 
     is_neighbor(boid) {
         if (this === boid) return false
@@ -113,26 +107,22 @@ class Boid {
     move_toward_neighbors(neighbors) {
         const pos = new Vec2(0, 0)
         for (let neigh of neighbors)
-            pos.add(neigh.pos)
-        pos.x /= neighbors.length
-        pos.y /= neighbors.length
+            pos.add_vec(neigh.pos)
+        pos.div(neighbors.length)
         const delta_pos = Vec2_sub(this.pos, pos)
         delta_pos.normalize()
-        delta_pos.x *= config.NEIGH_CLUSTER_ACCEL
-        delta_pos.y *= config.NEIGH_CLUSTER_ACCEL
+        delta_pos.mul(config.NEIGH_CLUSTER_ACCEL)
         this.accelerate(delta_pos)
     }
 
     align_with_neighbors(neighbors) {
         const vel = new Vec2(0, 0)
         for (let neigh of neighbors)
-            vel.add(neigh.vel)
-        vel.x /= neighbors.length
-        vel.y /= neighbors.length
+            vel.add_vec(neigh.vel)
+        vel.div(neighbors.length)
         const delta_vel = Vec2_sub(this.vel, vel)
         delta_vel.normalize()
-        delta_vel.x *= config.NEIGH_ALIGN_ACCEL
-        delta_vel.y *= config.NEIGH_ALIGN_ACCEL
+        delta_vel.mul(config.NEIGH_ALIGN_ACCEL)
         this.accelerate(delta_vel)
     }
 
@@ -146,8 +136,7 @@ class Boid {
             }
         }
         acc.normalize()
-        acc.x *= config.NEIGH_AVOID_ACCEL
-        acc.y *= config.NEIGH_AVOID_ACCEL
+        acc.mul(config.NEIGH_AVOID_ACCEL)
         this.accelerate(acc)
     }
 
@@ -168,10 +157,8 @@ class Boid {
 
     limit_speed() {
         const speed = this.speed()
-        if (speed > config.SPEED_LIMIT) {
-            this.vel.x = this.vel.x / speed * config.SPEED_LIMIT
-            this.vel.y = this.vel.y / speed * config.SPEED_LIMIT
-        }
+        if (speed > config.SPEED_LIMIT)
+            this.vel.div(speed * config.SPEED_LIMIT)
     }
 
     draw() {
@@ -183,14 +170,14 @@ class Boid {
     }
 }
 
-const boids = []
-
 // main ////////////////////////////////////////////////////////////////////////
 
 const canvas = document.getElementById('boids')
 canvas.width = config.CANVAS_WIDTH
 canvas.height = config.CANVAS_HEIGHT
 const ctx = canvas.getContext('2d')
+
+const boids = []
 
 async function main() {
     for (let i = 0; i < config.BOID_COUNT; ++i)
