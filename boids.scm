@@ -1,3 +1,9 @@
+;; boids.scm - Boids algorithm implemented in BiwaScheme.
+;; Copyright (C) 2022 Robert Coffey
+;; Released under the GPLv3.
+
+;; config ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define BOID-COLOR "lightgreen")
 (define BOID-COUNT 20)
 
@@ -6,10 +12,21 @@
 
 (define SLEEP-TIME (/ 1 60))
 
+;; misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define (1+ n) (+ n 1))
 (define (1- n) (- n 1))
 
+;; boid ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define (%make-boid x y vx vy) (vector x y vx vy))
+
+(define (make-boid)
+  (define x (random-integer CANVAS-WIDTH))
+  (define y (random-integer CANVAS-HEIGHT))
+  (define vx (- (random-integer 30) 15))
+  (define vy (- (random-integer 30) 15))
+  (%make-boid x y vx vy))
 
 (define (boid-x boid) (vector-ref boid 0))
 (define (boid-x-set! boid e) (vector-set! boid 0 e))
@@ -31,12 +48,7 @@
   (boid-x-set! boid (+ (boid-x boid) (boid-vx boid)))
   (boid-y-set! boid (+ (boid-y boid) (boid-vy boid))))
 
-(define (make-boid)
-  (define x (random-integer CANVAS-WIDTH))
-  (define y (random-integer CANVAS-HEIGHT))
-  (define vx (- (random-integer 30) 15))
-  (define vy (- (random-integer 30) 15))
-  (%make-boid x y vx vy))
+;; draw ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define ctx)
 
@@ -53,6 +65,8 @@
              (+ (boid-x boid) (boid-vx boid))
              (+ (boid-y boid) (boid-vy boid))
              BOID-COLOR))
+
+;; main ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (main)
   (define canvas (js-ref (getelem "canvas") "0"))
