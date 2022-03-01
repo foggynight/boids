@@ -46,24 +46,15 @@
           <label for="wall-accel">wall avoidance acceleration</label>
         </div>
         <div>
-          <input id="count" name="count" type="range" min="0" max="1000" value="100"
-                 oninput="document.getElementById('output-count').value = this.value">
-          <input id="limit" name="limit" type="range" min="0" max="10" value="2"
-                 oninput="document.getElementById('output-limit').value = this.value">
-          <input id="dist" type="range" min="0" max="100" value="32"
-                 oninput="document.getElementById('output-dist').value = this.value">
-          <input id="align" type="range" min="0" max="0.2" step="0.001" value="0.01"
-                 oninput="document.getElementById('output-align').value = this.value">
-          <input id="cluster" type="range" min="0" max="0.2" step="0.001" value="0.01"
-                 oninput="document.getElementById('output-cluster').value = this.value">
-          <input id="avoid-dist" type="range" min="0" max="100" value="10"
-                 oninput="document.getElementById('output-avoid-dist').value = this.value">
-          <input id="avoid-accel" type="range" min="0" max="0.5" step="0.01" value="0.1"
-                 oninput="document.getElementById('output-avoid-accel').value = this.value">
-          <input id="wall-dist" type="range" min="0" max="400" value="100"
-                 oninput="document.getElementById('output-wall-dist').value = this.value">
-          <input id="wall-accel" type="range" min="0" max="1" step="0.01" value="0.1"
-                 oninput="document.getElementById('output-wall-accel').value = this.value">
+          <input id="count" name="count" type="range" min="0" max="1000" value="100">
+          <input id="limit" name="limit" type="range" min="0" max="10" value="2">
+          <input id="dist" type="range" min="0" max="100" value="32">
+          <input id="align" type="range" min="0" max="0.2" step="0.001" value="0.01">
+          <input id="cluster" type="range" min="0" max="0.2" step="0.001" value="0.01">
+          <input id="avoid-dist" type="range" min="0" max="100" value="10">
+          <input id="avoid-accel" type="range" min="0" max="0.5" step="0.01" value="0.1">
+          <input id="wall-dist" type="range" min="0" max="400" value="100">
+          <input id="wall-accel" type="range" min="0" max="1" step="0.01" value="0.1">
         </div>
         <div>
           <output id="output-count">100</output>
