@@ -1,4 +1,4 @@
-// boids.js - Boids algorithm demonstration.
+// boids.js - Boids algorithm.
 // Copyright (C) 2022 Robert Coffey
 // Released under the GPLv3.
 
