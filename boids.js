@@ -155,7 +155,7 @@ class Boid {
 
 // main ////////////////////////////////////////////////////////////////////////
 
-const canvas = document.getElementById('canvas')
+const canvas = document.getElementById('boids')
 canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
 const ctx = canvas.getContext('2d')
