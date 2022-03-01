@@ -1,8 +1,10 @@
+(define BOID-COLOR "lightgreen")
+(define BOID-COUNT 20)
+
 (define CANVAS-WIDTH 512)
 (define CANVAS-HEIGHT 512)
 
-(define BOID-COLOR "lightgreen")
-(define BOID-COUNT 20)
+(define SLEEP-TIME (/ 1 60))
 
 (define (1+ n) (+ n 1))
 (define (1- n) (- n 1))
@@ -66,6 +68,6 @@
     (for-each boid-move! boids)
     (js-invoke ctx "clearRect" 0 0 CANVAS-WIDTH CANVAS-HEIGHT)
     (for-each draw-boid boids)
-    (sleep 0.017)))
+    (sleep SLEEP-TIME)))
 
 (main)
