@@ -8,7 +8,6 @@ config = {
     BOID_COLOR: "lightgreen",
     BOID_COUNT: parseInt(document.getElementById('count').value),
 
-    // TODO: Change canvas on window resize.
     CANVAS_WIDTH: document.body.offsetWidth,
     CANVAS_HEIGHT: Math.floor(document.body.offsetWidth * 3 / 4),
 
