@@ -146,12 +146,10 @@ class Boid {
             acc.x = config.WALL_ACCEL
         else if (this.pos.x > config.CANVAS_WIDTH - config.WALL_DIST)
             acc.x = -config.WALL_ACCEL
-
         if (this.pos.y < config.WALL_DIST)
             acc.y = config.WALL_ACCEL
         else if (this.pos.y > config.CANVAS_HEIGHT - config.WALL_DIST)
             acc.y = -config.WALL_ACCEL
-
         this.accelerate(acc)
     }
 
