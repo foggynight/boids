@@ -1,4 +1,4 @@
-// boids.js - Boids algorithm.
+// boids.js - Boids algorithm written in JavaScript.
 // Copyright (C) 2022 Robert Coffey
 // Released under the GPLv3.
 
